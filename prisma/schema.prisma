@@ -1,0 +1,273 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  DISCOVERY
+  PROPOSAL_SENT
+  NEGOTIATION
+  WON
+  LOST
+}
+
+enum LeadSource {
+  WEBSITE
+  AUDIT
+  REFERRAL
+  WHATSAPP
+  EMAIL
+  PHONE
+  LINKEDIN
+  SOCIAL_MEDIA
+  DIRECT
+  OTHER
+}
+
+enum AuditStatus {
+  REQUESTED
+  CONTACTED
+  SCHEDULED
+  COMPLETED
+  REPORT_SENT
+  PROPOSAL_SENT
+  WON
+  LOST
+}
+
+enum OpportunityPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum OpportunityStatus {
+  IDENTIFIED
+  DISCUSSED
+  PROPOSED
+  APPROVED
+  IN_PROGRESS
+  COMPLETED
+  DECLINED
+}
+
+enum ActivityType {
+  NOTE
+  EMAIL
+  PHONE_CALL
+  WHATSAPP
+  MEETING
+  AUDIT
+  PROPOSAL
+  FOLLOW_UP
+  STATUS_CHANGE
+  OTHER
+}
+
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  website     String?
+  industry    String?
+  companySize String?
+
+  contacts    Contact[]
+  leads       Lead[]
+  audits      AuditRequest[]
+  activities  Activity[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([name])
+  @@index([industry])
+  @@map("organizations")
+}
+
+model Contact {
+  id             String       @id @default(cuid())
+  organizationId String
+
+  name           String
+  email          String
+  phone          String?
+  role           String?
+
+  organization   Organization @relation(
+    fields: [organizationId],
+    references: [id],
+    onDelete: Cascade
+  )
+
+  leads          Lead[]
+  audits         AuditRequest[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("contacts")
+}
+
+model Lead {
+  id             String       @id @default(cuid())
+  organizationId String
+  contactId      String?
+
+  status         LeadStatus   @default(NEW)
+  source         LeadSource   @default(WEBSITE)
+
+  notes          String?
+  estimatedValue Decimal?     @db.Decimal(15, 2)
+
+  organization   Organization @relation(
+    fields: [organizationId],
+    references: [id],
+    onDelete: Cascade
+  )
+
+  contact        Contact?     @relation(
+    fields: [contactId],
+    references: [id],
+    onDelete: SetNull
+  )
+
+  auditRequests  AuditRequest[]
+  activities     Activity[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([contactId])
+  @@index([status])
+  @@index([source])
+  @@map("leads")
+}
+
+model AuditRequest {
+  id                     String       @id @default(cuid())
+
+  organizationId         String
+  contactId              String
+  leadId                 String?
+
+  improvements           String[]
+  manualWork             String
+  existingSystems        String?
+  additionalInformation  String?
+
+  status                 AuditStatus  @default(REQUESTED)
+  source                 LeadSource   @default(AUDIT)
+
+  scheduledAt            DateTime?
+  completedAt            DateTime?
+  reportSentAt           DateTime?
+
+  organization           Organization @relation(
+    fields: [organizationId],
+    references: [id],
+    onDelete: Cascade
+  )
+
+  contact                Contact      @relation(
+    fields: [contactId],
+    references: [id],
+    onDelete: Cascade
+  )
+
+  lead                   Lead?        @relation(
+    fields: [leadId],
+    references: [id],
+    onDelete: SetNull
+  )
+
+  opportunities          Opportunity[]
+  activities             Activity[]
+
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([contactId])
+  @@index([leadId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("audit_requests")
+}
+
+model Opportunity {
+  id             String              @id @default(cuid())
+
+  auditRequestId String
+
+  name           String
+  description    String?
+  priority       OpportunityPriority @default(MEDIUM)
+  status         OpportunityStatus   @default(IDENTIFIED)
+
+  estimatedValue Decimal?            @db.Decimal(15, 2)
+
+  auditRequest   AuditRequest        @relation(
+    fields: [auditRequestId],
+    references: [id],
+    onDelete: Cascade
+  )
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([auditRequestId])
+  @@index([priority])
+  @@index([status])
+  @@map("opportunities")
+}
+
+model Activity {
+  id             String       @id @default(cuid())
+
+  organizationId String
+  leadId         String?
+  auditRequestId String?
+
+  type           ActivityType
+  description    String
+
+  metadata       Json?
+
+  organization   Organization @relation(
+    fields: [organizationId],
+    references: [id],
+    onDelete: Cascade
+  )
+
+  lead           Lead?        @relation(
+    fields: [leadId],
+    references: [id],
+    onDelete: SetNull
+  )
+
+  auditRequest   AuditRequest? @relation(
+    fields: [auditRequestId],
+    references: [id],
+    onDelete: SetNull
+  )
+
+  createdAt      DateTime @default(now())
+
+  @@index([organizationId])
+  @@index([leadId])
+  @@index([auditRequestId])
+  @@index([type])
+  @@index([createdAt])
+  @@map("activities")
+}
