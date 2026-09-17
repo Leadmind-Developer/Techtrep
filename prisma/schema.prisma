@@ -1,10 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum LeadStatus {
@@ -73,19 +73,19 @@ enum ActivityType {
 }
 
 model Organization {
-  id          String   @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
   website     String?
   industry    String?
   companySize String?
 
-  contacts    Contact[]
-  leads       Lead[]
-  audits      AuditRequest[]
-  activities  Activity[]
+  contacts   Contact[]
+  leads      Lead[]
+  audits     AuditRequest[]
+  activities Activity[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([name])
   @@index([industry])
@@ -93,25 +93,21 @@ model Organization {
 }
 
 model Contact {
-  id             String       @id @default(cuid())
+  id             String @id @default(cuid())
   organizationId String
 
-  name           String
-  email          String
-  phone          String?
-  role           String?
+  name  String
+  email String
+  phone String?
+  role  String?
 
-  organization   Organization @relation(
-    fields: [organizationId],
-    references: [id],
-    onDelete: Cascade
-  )
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  leads          Lead[]
-  audits         AuditRequest[]
+  leads  Lead[]
+  audits AuditRequest[]
 
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([organizationId])
   @@index([email])
@@ -119,33 +115,24 @@ model Contact {
 }
 
 model Lead {
-  id             String       @id @default(cuid())
+  id             String  @id @default(cuid())
   organizationId String
   contactId      String?
 
-  status         LeadStatus   @default(NEW)
-  source         LeadSource   @default(WEBSITE)
+  status LeadStatus @default(NEW)
+  source LeadSource @default(WEBSITE)
 
   notes          String?
-  estimatedValue Decimal?     @db.Decimal(15, 2)
+  estimatedValue Decimal? @db.Decimal(15, 2)
 
-  organization   Organization @relation(
-    fields: [organizationId],
-    references: [id],
-    onDelete: Cascade
-  )
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  contact      Contact?     @relation(fields: [contactId], references: [id], onDelete: SetNull)
 
-  contact        Contact?     @relation(
-    fields: [contactId],
-    references: [id],
-    onDelete: SetNull
-  )
+  auditRequests AuditRequest[]
+  activities    Activity[]
 
-  auditRequests  AuditRequest[]
-  activities     Activity[]
-
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([organizationId])
   @@index([contactId])
@@ -155,47 +142,33 @@ model Lead {
 }
 
 model AuditRequest {
-  id                     String       @id @default(cuid())
+  id String @id @default(cuid())
 
-  organizationId         String
-  contactId              String
-  leadId                 String?
+  organizationId String
+  contactId      String
+  leadId         String?
 
-  improvements           String[]
-  manualWork             String
-  existingSystems        String?
-  additionalInformation  String?
+  improvements          String[]
+  manualWork            String
+  existingSystems       String?
+  additionalInformation String?
 
-  status                 AuditStatus  @default(REQUESTED)
-  source                 LeadSource   @default(AUDIT)
+  status AuditStatus @default(REQUESTED)
+  source LeadSource  @default(AUDIT)
 
-  scheduledAt            DateTime?
-  completedAt            DateTime?
-  reportSentAt           DateTime?
+  scheduledAt  DateTime?
+  completedAt  DateTime?
+  reportSentAt DateTime?
 
-  organization           Organization @relation(
-    fields: [organizationId],
-    references: [id],
-    onDelete: Cascade
-  )
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  contact      Contact      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  lead         Lead?        @relation(fields: [leadId], references: [id], onDelete: SetNull)
 
-  contact                Contact      @relation(
-    fields: [contactId],
-    references: [id],
-    onDelete: Cascade
-  )
+  opportunities Opportunity[]
+  activities    Activity[]
 
-  lead                   Lead?        @relation(
-    fields: [leadId],
-    references: [id],
-    onDelete: SetNull
-  )
-
-  opportunities          Opportunity[]
-  activities             Activity[]
-
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([organizationId])
   @@index([contactId])
@@ -206,25 +179,19 @@ model AuditRequest {
 }
 
 model Opportunity {
-  id             String              @id @default(cuid())
-
+  id             String @id @default(cuid())
   auditRequestId String
 
   name           String
   description    String?
   priority       OpportunityPriority @default(MEDIUM)
   status         OpportunityStatus   @default(IDENTIFIED)
-
   estimatedValue Decimal?            @db.Decimal(15, 2)
 
-  auditRequest   AuditRequest        @relation(
-    fields: [auditRequestId],
-    references: [id],
-    onDelete: Cascade
-  )
+  auditRequest AuditRequest @relation(fields: [auditRequestId], references: [id], onDelete: Cascade)
 
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([auditRequestId])
   @@index([priority])
@@ -233,36 +200,20 @@ model Opportunity {
 }
 
 model Activity {
-  id             String       @id @default(cuid())
-
+  id             String  @id @default(cuid())
   organizationId String
   leadId         String?
   auditRequestId String?
 
-  type           ActivityType
-  description    String
+  type        ActivityType
+  description String
+  metadata    Json?
 
-  metadata       Json?
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  lead         Lead?         @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  auditRequest AuditRequest? @relation(fields: [auditRequestId], references: [id], onDelete: SetNull)
 
-  organization   Organization @relation(
-    fields: [organizationId],
-    references: [id],
-    onDelete: Cascade
-  )
-
-  lead           Lead?        @relation(
-    fields: [leadId],
-    references: [id],
-    onDelete: SetNull
-  )
-
-  auditRequest   AuditRequest? @relation(
-    fields: [auditRequestId],
-    references: [id],
-    onDelete: SetNull
-  )
-
-  createdAt      DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@index([organizationId])
   @@index([leadId])
