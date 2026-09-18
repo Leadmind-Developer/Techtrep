@@ -66,7 +66,7 @@ function formatList(items: string[]): string {
 }
 
 /**
- * Sends an internal notification to the Techtrep Business 
+ * Sends an internal notification to the Techtrep Business Solutions team.
  */
 export async function sendAuditNotification(
   data: AuditEmailData
