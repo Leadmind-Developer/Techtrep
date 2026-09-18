@@ -72,6 +72,60 @@ enum ActivityType {
   OTHER
 }
 
+enum UserRole {
+  ADMIN
+  STAFF
+}
+
+enum AuditAction {
+  LOGIN_SUCCESS
+  LOGIN_FAILED
+  LOGOUT
+  SESSION_EXPIRED
+  DISABLED_ACCOUNT
+  USER_CREATED
+  USER_UPDATED
+  USER_DISABLED
+  USER_ENABLED
+  PASSWORD_CHANGED
+  PASSWORD_RESET
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String?
+  email        String    @unique
+  passwordHash String
+  role         UserRole  @default(STAFF)
+  active       Boolean   @default(true)
+  lastLoginAt  DateTime?
+
+  sessions  Session[]
+  auditLogs AuditLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([role])
+  @@index([active])
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
 model Organization {
   id          String  @id @default(cuid())
   name        String
@@ -221,4 +275,26 @@ model Activity {
   @@index([type])
   @@index([createdAt])
   @@map("activities")
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  userId    String?
+  action    AuditAction
+  requestId String?
+
+  ipAddress String?
+  userAgent String?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@index([requestId])
+  @@map("audit_logs")
 }
