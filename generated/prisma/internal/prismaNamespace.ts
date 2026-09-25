@@ -402,8 +402,10 @@ export const ModelName = {
   Organization: 'Organization',
   Contact: 'Contact',
   Lead: 'Lead',
+  LeadAssignment: 'LeadAssignment',
   AuditRequest: 'AuditRequest',
   Opportunity: 'Opportunity',
+  OpportunityAssignment: 'OpportunityAssignment',
   Activity: 'Activity',
   AuditLog: 'AuditLog'
 } as const
@@ -421,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "organization" | "contact" | "lead" | "auditRequest" | "opportunity" | "activity" | "auditLog"
+    modelProps: "user" | "session" | "organization" | "contact" | "lead" | "leadAssignment" | "auditRequest" | "opportunity" | "opportunityAssignment" | "activity" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -795,6 +797,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LeadAssignment: {
+      payload: Prisma.$LeadAssignmentPayload<ExtArgs>
+      fields: Prisma.LeadAssignmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LeadAssignmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadAssignmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LeadAssignmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadAssignmentPayload>
+        }
+        findFirst: {
+          args: Prisma.LeadAssignmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadAssignmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LeadAssignmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadAssignmentPayload>
+        }
+        findMany: {
+          args: Prisma.LeadAssignmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadAssignmentPayload>[]
+        }
+        create: {
+          args: Prisma.LeadAssignmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadAssignmentPayload>
+        }
+        createMany: {
+          args: Prisma.LeadAssignmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LeadAssignmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadAssignmentPayload>[]
+        }
+        delete: {
+          args: Prisma.LeadAssignmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadAssignmentPayload>
+        }
+        update: {
+          args: Prisma.LeadAssignmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadAssignmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.LeadAssignmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LeadAssignmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LeadAssignmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadAssignmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.LeadAssignmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadAssignmentPayload>
+        }
+        aggregate: {
+          args: Prisma.LeadAssignmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLeadAssignment>
+        }
+        groupBy: {
+          args: Prisma.LeadAssignmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeadAssignmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LeadAssignmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeadAssignmentCountAggregateOutputType> | number
+        }
+      }
+    }
     AuditRequest: {
       payload: Prisma.$AuditRequestPayload<ExtArgs>
       fields: Prisma.AuditRequestFieldRefs
@@ -940,6 +1016,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.OpportunityCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.OpportunityCountAggregateOutputType> | number
+        }
+      }
+    }
+    OpportunityAssignment: {
+      payload: Prisma.$OpportunityAssignmentPayload<ExtArgs>
+      fields: Prisma.OpportunityAssignmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OpportunityAssignmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityAssignmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OpportunityAssignmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityAssignmentPayload>
+        }
+        findFirst: {
+          args: Prisma.OpportunityAssignmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityAssignmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OpportunityAssignmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityAssignmentPayload>
+        }
+        findMany: {
+          args: Prisma.OpportunityAssignmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityAssignmentPayload>[]
+        }
+        create: {
+          args: Prisma.OpportunityAssignmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityAssignmentPayload>
+        }
+        createMany: {
+          args: Prisma.OpportunityAssignmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OpportunityAssignmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityAssignmentPayload>[]
+        }
+        delete: {
+          args: Prisma.OpportunityAssignmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityAssignmentPayload>
+        }
+        update: {
+          args: Prisma.OpportunityAssignmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityAssignmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.OpportunityAssignmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OpportunityAssignmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OpportunityAssignmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityAssignmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.OpportunityAssignmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityAssignmentPayload>
+        }
+        aggregate: {
+          args: Prisma.OpportunityAssignmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOpportunityAssignment>
+        }
+        groupBy: {
+          args: Prisma.OpportunityAssignmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OpportunityAssignmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OpportunityAssignmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OpportunityAssignmentCountAggregateOutputType> | number
         }
       }
     }
@@ -1187,6 +1337,8 @@ export const LeadScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   contactId: 'contactId',
+  createdByUserId: 'createdByUserId',
+  assignedToUserId: 'assignedToUserId',
   status: 'status',
   source: 'source',
   notes: 'notes',
@@ -1196,6 +1348,19 @@ export const LeadScalarFieldEnum = {
 } as const
 
 export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
+
+
+export const LeadAssignmentScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  assignedToUserId: 'assignedToUserId',
+  assignedByUserId: 'assignedByUserId',
+  assignedAt: 'assignedAt',
+  unassignedAt: 'unassignedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type LeadAssignmentScalarFieldEnum = (typeof LeadAssignmentScalarFieldEnum)[keyof typeof LeadAssignmentScalarFieldEnum]
 
 
 export const AuditRequestScalarFieldEnum = {
@@ -1222,11 +1387,14 @@ export type AuditRequestScalarFieldEnum = (typeof AuditRequestScalarFieldEnum)[k
 export const OpportunityScalarFieldEnum = {
   id: 'id',
   auditRequestId: 'auditRequestId',
+  createdByUserId: 'createdByUserId',
+  assignedToUserId: 'assignedToUserId',
   name: 'name',
   description: 'description',
   priority: 'priority',
   status: 'status',
   estimatedValue: 'estimatedValue',
+  closedAt: 'closedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1234,11 +1402,25 @@ export const OpportunityScalarFieldEnum = {
 export type OpportunityScalarFieldEnum = (typeof OpportunityScalarFieldEnum)[keyof typeof OpportunityScalarFieldEnum]
 
 
+export const OpportunityAssignmentScalarFieldEnum = {
+  id: 'id',
+  opportunityId: 'opportunityId',
+  assignedToUserId: 'assignedToUserId',
+  assignedByUserId: 'assignedByUserId',
+  assignedAt: 'assignedAt',
+  unassignedAt: 'unassignedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type OpportunityAssignmentScalarFieldEnum = (typeof OpportunityAssignmentScalarFieldEnum)[keyof typeof OpportunityAssignmentScalarFieldEnum]
+
+
 export const ActivityScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   leadId: 'leadId',
   auditRequestId: 'auditRequestId',
+  createdByUserId: 'createdByUserId',
   type: 'type',
   description: 'description',
   metadata: 'metadata',
@@ -1653,8 +1835,10 @@ export type GlobalOmitConfig = {
   organization?: Prisma.OrganizationOmit
   contact?: Prisma.ContactOmit
   lead?: Prisma.LeadOmit
+  leadAssignment?: Prisma.LeadAssignmentOmit
   auditRequest?: Prisma.AuditRequestOmit
   opportunity?: Prisma.OpportunityOmit
+  opportunityAssignment?: Prisma.OpportunityAssignmentOmit
   activity?: Prisma.ActivityOmit
   auditLog?: Prisma.AuditLogOmit
 }

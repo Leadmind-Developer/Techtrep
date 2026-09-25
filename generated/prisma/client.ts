@@ -67,6 +67,11 @@ export type Contact = Prisma.ContactModel
  */
 export type Lead = Prisma.LeadModel
 /**
+ * Model LeadAssignment
+ * 
+ */
+export type LeadAssignment = Prisma.LeadAssignmentModel
+/**
  * Model AuditRequest
  * 
  */
@@ -76,6 +81,11 @@ export type AuditRequest = Prisma.AuditRequestModel
  * 
  */
 export type Opportunity = Prisma.OpportunityModel
+/**
+ * Model OpportunityAssignment
+ * 
+ */
+export type OpportunityAssignment = Prisma.OpportunityAssignmentModel
 /**
  * Model Activity
  * 

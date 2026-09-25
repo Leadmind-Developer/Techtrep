@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { getCurrentUser } from "@/lib/auth/authorization";
+import { prisma } from "@/lib/prisma";
 import { getOpportunityById } from "@/lib/opportunities";
 
 import OpportunityManagement from "./OpportunityManagement";
+import OwnershipControl from "./OwnershipControl";
 
 type OpportunityDetailPageProps = {
   params: Promise<{
@@ -19,6 +22,8 @@ const statusLabels: Record<string, string> = {
   IN_PROGRESS: "In Progress",
   COMPLETED: "Completed",
   DECLINED: "Declined",
+  WON: "Won",
+  LOST: "Lost",
 };
 
 const priorityLabels: Record<string, string> = {
@@ -117,11 +122,33 @@ export default async function OpportunityDetailPage({
 }: OpportunityDetailPageProps) {
   const { id } = await params;
 
-  const opportunity = await getOpportunityById(id);
+  const [opportunity, currentUser] =
+    await Promise.all([
+      getOpportunityById(id),
+      getCurrentUser(),
+    ]);
 
   if (!opportunity) {
     notFound();
   }  
+
+  const activeUsers =
+   currentUser?.role === "ADMIN"
+    ? await prisma.user.findMany({
+        where: {
+          active: true,
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+        orderBy: [
+          { name: "asc" },
+          { email: "asc" },
+        ],
+      })
+    : [];
 
   const auditRequest = opportunity.auditRequest;
   const organization = auditRequest.organization;
@@ -426,6 +453,13 @@ export default async function OpportunityDetailPage({
 
         {/* Sidebar */}
         <aside className="space-y-6">
+          <OwnershipControl
+            opportunityId={opportunity.id}
+            createdByUser={opportunity.createdByUser}
+            assignedToUser={opportunity.assignedToUser}
+            activeUsers={activeUsers}
+            canManage={currentUser?.role === "ADMIN"}
+          />
           {/* Source Audit */}
           <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
             <div className="border-b border-slate-200 px-5 py-4">

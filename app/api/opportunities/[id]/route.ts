@@ -26,6 +26,8 @@ const VALID_STATUSES: OpportunityStatus[] = [
   "IN_PROGRESS",
   "COMPLETED",
   "DECLINED",
+  "WON",
+  "LOST",
 ];
 
 function isValidPriority(
@@ -138,6 +140,7 @@ export async function PATCH(
       priority?: OpportunityPriority;
       status?: OpportunityStatus;
       estimatedValue?: number | null;
+      closedAt?: Date | null;
     } = {};
 
     const changes: Record<
@@ -290,8 +293,28 @@ export async function PATCH(
           previous: existing.status,
           next: body.status,
         };
-      }
-    }
+
+        const isClosingStatus =
+          body.status === "WON" || body.status === "LOST";
+
+          const nextClosedAt = isClosingStatus
+            ? new Date()
+            : null;
+
+        data.closedAt = nextClosedAt;   
+        
+          changes.closedAt = {
+            previous:
+              existing.closedAt !== null            
+                ? existing.closedAt.toISOString()
+                : null,
+            next:
+              nextClosedAt !== null
+                ? nextClosedAt.toISOString()
+                : null,
+          };
+        } 
+      }    
 
     if (body.estimatedValue !== undefined) {
       const estimatedValue = parseEstimatedValue(
@@ -367,6 +390,7 @@ export async function PATCH(
               changes.status
                 ? "STATUS_CHANGE"
                 : "OTHER",
+            createdByUserId: user.id,
             description: `Opportunity updated: ${updated.name}`,
             metadata: {
               opportunityId: updated.id,

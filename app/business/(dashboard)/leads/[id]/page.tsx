@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { getCurrentUser } from "@/lib/auth/authorization";
+import { prisma } from "@/lib/prisma";
 import { getLeadById } from "@/lib/leads";
 
 import AddLeadActivityForm from "./AddLeadActivityForm";
 import LeadStatusControl from "./LeadStatusControl";
+import OwnershipControl from "./OwnershipControl";
 
 type LeadDetailsPageProps = {
   params: Promise<{
@@ -140,11 +143,36 @@ export default async function LeadDetailsPage({
   const { id } = await params;
   const { activity } = await searchParams;
 
-  const lead = await getLeadById(id);
+  const [lead, currentUser] = await Promise.all([
+    getLeadById(id),
+    getCurrentUser(),
+  ]);
 
   if (!lead) {
     notFound();
   }
+
+  const activeUsers =
+    currentUser?.role === "ADMIN"
+      ? await prisma.user.findMany({
+          where: {
+            active: true,
+          },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+          orderBy: [
+            {
+            name: "asc",
+            },
+            {
+              email: "asc",
+            },
+          ],          
+        })
+      : [];
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -379,6 +407,14 @@ export default async function LeadDetailsPage({
   </div>
 </div>
           </section>
+
+          <OwnershipControl
+            leadId={lead.id}
+            createdByUser={lead.createdByUser}
+            assignedToUser={lead.assignedToUser}
+            activeUsers={activeUsers}
+            canManage={currentUser?.role === "ADMIN"}
+          />         
 
           <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
             <div className="border-b border-slate-200 px-5 py-4">

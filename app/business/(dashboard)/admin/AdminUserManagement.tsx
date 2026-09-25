@@ -363,7 +363,8 @@ export default function AdminUserManagement({
                     <select
                       value={user.role}
                       disabled={
-                        loadingId === user.id
+                        loadingId === user.id ||
+                        resetLoading
                       }
                       onChange={(event) =>
                         updateUser(user.id, {

@@ -7,24 +7,25 @@ import Header from "./components/Header";
 import MobileNav from "./components/MobileNav";
 
 export default async function BusinessLayout({
-children,
+  children,
 }: {
-children: ReactNode;
+  children: ReactNode;
 }) {
-const user = await requireUser();
+  const user = await requireUser();
 
-return ( <div className="min-h-screen bg-slate-50"> <Sidebar user={user} />
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <Sidebar user={user} />
 
-  <div className="lg:pl-64">
-    <Header user={user} />
+      <div className="lg:pl-64">
+        <Header user={user} />
 
-    <MobileNav user={user} />
+        <MobileNav user={user} />
 
-    <main className="min-h-[calc(100vh-4rem)] p-4 sm:p-6 lg:p-8">
-      {children}
-    </main>
-  </div>
-</div>
-
-);
+        <main className="min-h-[calc(100vh-4rem)] p-4 sm:p-6 lg:p-8">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
 }

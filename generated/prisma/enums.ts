@@ -70,7 +70,9 @@ export const OpportunityStatus = {
   APPROVED: 'APPROVED',
   IN_PROGRESS: 'IN_PROGRESS',
   COMPLETED: 'COMPLETED',
-  DECLINED: 'DECLINED'
+  DECLINED: 'DECLINED',
+  WON: 'WON',
+  LOST: 'LOST'
 } as const
 
 export type OpportunityStatus = (typeof OpportunityStatus)[keyof typeof OpportunityStatus]

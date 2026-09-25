@@ -56,8 +56,10 @@ export const ModelName = {
   Organization: 'Organization',
   Contact: 'Contact',
   Lead: 'Lead',
+  LeadAssignment: 'LeadAssignment',
   AuditRequest: 'AuditRequest',
   Opportunity: 'Opportunity',
+  OpportunityAssignment: 'OpportunityAssignment',
   Activity: 'Activity',
   AuditLog: 'AuditLog'
 } as const
@@ -135,6 +137,8 @@ export const LeadScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   contactId: 'contactId',
+  createdByUserId: 'createdByUserId',
+  assignedToUserId: 'assignedToUserId',
   status: 'status',
   source: 'source',
   notes: 'notes',
@@ -144,6 +148,19 @@ export const LeadScalarFieldEnum = {
 } as const
 
 export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
+
+
+export const LeadAssignmentScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  assignedToUserId: 'assignedToUserId',
+  assignedByUserId: 'assignedByUserId',
+  assignedAt: 'assignedAt',
+  unassignedAt: 'unassignedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type LeadAssignmentScalarFieldEnum = (typeof LeadAssignmentScalarFieldEnum)[keyof typeof LeadAssignmentScalarFieldEnum]
 
 
 export const AuditRequestScalarFieldEnum = {
@@ -170,11 +187,14 @@ export type AuditRequestScalarFieldEnum = (typeof AuditRequestScalarFieldEnum)[k
 export const OpportunityScalarFieldEnum = {
   id: 'id',
   auditRequestId: 'auditRequestId',
+  createdByUserId: 'createdByUserId',
+  assignedToUserId: 'assignedToUserId',
   name: 'name',
   description: 'description',
   priority: 'priority',
   status: 'status',
   estimatedValue: 'estimatedValue',
+  closedAt: 'closedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -182,11 +202,25 @@ export const OpportunityScalarFieldEnum = {
 export type OpportunityScalarFieldEnum = (typeof OpportunityScalarFieldEnum)[keyof typeof OpportunityScalarFieldEnum]
 
 
+export const OpportunityAssignmentScalarFieldEnum = {
+  id: 'id',
+  opportunityId: 'opportunityId',
+  assignedToUserId: 'assignedToUserId',
+  assignedByUserId: 'assignedByUserId',
+  assignedAt: 'assignedAt',
+  unassignedAt: 'unassignedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type OpportunityAssignmentScalarFieldEnum = (typeof OpportunityAssignmentScalarFieldEnum)[keyof typeof OpportunityAssignmentScalarFieldEnum]
+
+
 export const ActivityScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   leadId: 'leadId',
   auditRequestId: 'auditRequestId',
+  createdByUserId: 'createdByUserId',
   type: 'type',
   description: 'description',
   metadata: 'metadata',

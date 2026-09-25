@@ -25,6 +25,8 @@ const statusOptions: OpportunityStatus[] = [
   "IN_PROGRESS",
   "COMPLETED",
   "DECLINED",
+  "WON",
+  "LOST",
 ];
 
 const priorityOptions: OpportunityPriority[] = [
@@ -42,6 +44,8 @@ const statusLabels: Record<OpportunityStatus, string> = {
   IN_PROGRESS: "In Progress",
   COMPLETED: "Completed",
   DECLINED: "Declined",
+  WON: "Won",
+  LOST: "Lost",
 };
 
 const priorityLabels: Record<OpportunityPriority, string> = {

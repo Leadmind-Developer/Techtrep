@@ -221,6 +221,10 @@ export async function POST(request: Request) {
         data: {
           organizationId,
           contactId: contact?.id ?? null,
+
+          createdByUserId: user.id,
+          assignedToUserId: user.id,
+
           source,
           status,
           estimatedValue,
@@ -243,10 +247,19 @@ export async function POST(request: Request) {
         },
       });
 
+      await tx.leadAssignment.create({
+        data: {
+          leadId: createdLead.id,
+          assignedToUserId: user.id,
+          assignedByUserId: user.id,
+        },
+      });
+
       await tx.activity.create({
         data: {
           organizationId,
           leadId: createdLead.id,
+          createdByUserId: user.id,
           type: "STATUS_CHANGE",
           description: `Lead created with status ${status}.`,
           metadata: {

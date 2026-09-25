@@ -29,6 +29,7 @@ export type ActivityMinAggregateOutputType = {
   organizationId: string | null
   leadId: string | null
   auditRequestId: string | null
+  createdByUserId: string | null
   type: $Enums.ActivityType | null
   description: string | null
   createdAt: Date | null
@@ -39,6 +40,7 @@ export type ActivityMaxAggregateOutputType = {
   organizationId: string | null
   leadId: string | null
   auditRequestId: string | null
+  createdByUserId: string | null
   type: $Enums.ActivityType | null
   description: string | null
   createdAt: Date | null
@@ -49,6 +51,7 @@ export type ActivityCountAggregateOutputType = {
   organizationId: number
   leadId: number
   auditRequestId: number
+  createdByUserId: number
   type: number
   description: number
   metadata: number
@@ -62,6 +65,7 @@ export type ActivityMinAggregateInputType = {
   organizationId?: true
   leadId?: true
   auditRequestId?: true
+  createdByUserId?: true
   type?: true
   description?: true
   createdAt?: true
@@ -72,6 +76,7 @@ export type ActivityMaxAggregateInputType = {
   organizationId?: true
   leadId?: true
   auditRequestId?: true
+  createdByUserId?: true
   type?: true
   description?: true
   createdAt?: true
@@ -82,6 +87,7 @@ export type ActivityCountAggregateInputType = {
   organizationId?: true
   leadId?: true
   auditRequestId?: true
+  createdByUserId?: true
   type?: true
   description?: true
   metadata?: true
@@ -166,6 +172,7 @@ export type ActivityGroupByOutputType = {
   organizationId: string
   leadId: string | null
   auditRequestId: string | null
+  createdByUserId: string | null
   type: $Enums.ActivityType
   description: string
   metadata: runtime.JsonValue | null
@@ -198,6 +205,7 @@ export type ActivityWhereInput = {
   organizationId?: Prisma.StringFilter<"Activity"> | string
   leadId?: Prisma.StringNullableFilter<"Activity"> | string | null
   auditRequestId?: Prisma.StringNullableFilter<"Activity"> | string | null
+  createdByUserId?: Prisma.StringNullableFilter<"Activity"> | string | null
   type?: Prisma.EnumActivityTypeFilter<"Activity"> | $Enums.ActivityType
   description?: Prisma.StringFilter<"Activity"> | string
   metadata?: Prisma.JsonNullableFilter<"Activity">
@@ -205,6 +213,7 @@ export type ActivityWhereInput = {
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
   auditRequest?: Prisma.XOR<Prisma.AuditRequestNullableScalarRelationFilter, Prisma.AuditRequestWhereInput> | null
+  createdByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type ActivityOrderByWithRelationInput = {
@@ -212,6 +221,7 @@ export type ActivityOrderByWithRelationInput = {
   organizationId?: Prisma.SortOrder
   leadId?: Prisma.SortOrderInput | Prisma.SortOrder
   auditRequestId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdByUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -219,6 +229,7 @@ export type ActivityOrderByWithRelationInput = {
   organization?: Prisma.OrganizationOrderByWithRelationInput
   lead?: Prisma.LeadOrderByWithRelationInput
   auditRequest?: Prisma.AuditRequestOrderByWithRelationInput
+  createdByUser?: Prisma.UserOrderByWithRelationInput
 }
 
 export type ActivityWhereUniqueInput = Prisma.AtLeast<{
@@ -229,6 +240,7 @@ export type ActivityWhereUniqueInput = Prisma.AtLeast<{
   organizationId?: Prisma.StringFilter<"Activity"> | string
   leadId?: Prisma.StringNullableFilter<"Activity"> | string | null
   auditRequestId?: Prisma.StringNullableFilter<"Activity"> | string | null
+  createdByUserId?: Prisma.StringNullableFilter<"Activity"> | string | null
   type?: Prisma.EnumActivityTypeFilter<"Activity"> | $Enums.ActivityType
   description?: Prisma.StringFilter<"Activity"> | string
   metadata?: Prisma.JsonNullableFilter<"Activity">
@@ -236,6 +248,7 @@ export type ActivityWhereUniqueInput = Prisma.AtLeast<{
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
   auditRequest?: Prisma.XOR<Prisma.AuditRequestNullableScalarRelationFilter, Prisma.AuditRequestWhereInput> | null
+  createdByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type ActivityOrderByWithAggregationInput = {
@@ -243,6 +256,7 @@ export type ActivityOrderByWithAggregationInput = {
   organizationId?: Prisma.SortOrder
   leadId?: Prisma.SortOrderInput | Prisma.SortOrder
   auditRequestId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdByUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -260,6 +274,7 @@ export type ActivityScalarWhereWithAggregatesInput = {
   organizationId?: Prisma.StringWithAggregatesFilter<"Activity"> | string
   leadId?: Prisma.StringNullableWithAggregatesFilter<"Activity"> | string | null
   auditRequestId?: Prisma.StringNullableWithAggregatesFilter<"Activity"> | string | null
+  createdByUserId?: Prisma.StringNullableWithAggregatesFilter<"Activity"> | string | null
   type?: Prisma.EnumActivityTypeWithAggregatesFilter<"Activity"> | $Enums.ActivityType
   description?: Prisma.StringWithAggregatesFilter<"Activity"> | string
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"Activity">
@@ -275,6 +290,7 @@ export type ActivityCreateInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutActivitiesInput
   lead?: Prisma.LeadCreateNestedOneWithoutActivitiesInput
   auditRequest?: Prisma.AuditRequestCreateNestedOneWithoutActivitiesInput
+  createdByUser?: Prisma.UserCreateNestedOneWithoutCreatedActivitiesInput
 }
 
 export type ActivityUncheckedCreateInput = {
@@ -282,6 +298,7 @@ export type ActivityUncheckedCreateInput = {
   organizationId: string
   leadId?: string | null
   auditRequestId?: string | null
+  createdByUserId?: string | null
   type: $Enums.ActivityType
   description: string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -297,6 +314,7 @@ export type ActivityUpdateInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutActivitiesNestedInput
   lead?: Prisma.LeadUpdateOneWithoutActivitiesNestedInput
   auditRequest?: Prisma.AuditRequestUpdateOneWithoutActivitiesNestedInput
+  createdByUser?: Prisma.UserUpdateOneWithoutCreatedActivitiesNestedInput
 }
 
 export type ActivityUncheckedUpdateInput = {
@@ -304,6 +322,7 @@ export type ActivityUncheckedUpdateInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   auditRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumActivityTypeFieldUpdateOperationsInput | $Enums.ActivityType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -315,6 +334,7 @@ export type ActivityCreateManyInput = {
   organizationId: string
   leadId?: string | null
   auditRequestId?: string | null
+  createdByUserId?: string | null
   type: $Enums.ActivityType
   description: string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -334,6 +354,7 @@ export type ActivityUncheckedUpdateManyInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   auditRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumActivityTypeFieldUpdateOperationsInput | $Enums.ActivityType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -355,6 +376,7 @@ export type ActivityCountOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
   auditRequestId?: Prisma.SortOrder
+  createdByUserId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
@@ -366,6 +388,7 @@ export type ActivityMaxOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
   auditRequestId?: Prisma.SortOrder
+  createdByUserId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -376,9 +399,52 @@ export type ActivityMinOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
   auditRequestId?: Prisma.SortOrder
+  createdByUserId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type ActivityCreateNestedManyWithoutCreatedByUserInput = {
+  create?: Prisma.XOR<Prisma.ActivityCreateWithoutCreatedByUserInput, Prisma.ActivityUncheckedCreateWithoutCreatedByUserInput> | Prisma.ActivityCreateWithoutCreatedByUserInput[] | Prisma.ActivityUncheckedCreateWithoutCreatedByUserInput[]
+  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutCreatedByUserInput | Prisma.ActivityCreateOrConnectWithoutCreatedByUserInput[]
+  createMany?: Prisma.ActivityCreateManyCreatedByUserInputEnvelope
+  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+}
+
+export type ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput = {
+  create?: Prisma.XOR<Prisma.ActivityCreateWithoutCreatedByUserInput, Prisma.ActivityUncheckedCreateWithoutCreatedByUserInput> | Prisma.ActivityCreateWithoutCreatedByUserInput[] | Prisma.ActivityUncheckedCreateWithoutCreatedByUserInput[]
+  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutCreatedByUserInput | Prisma.ActivityCreateOrConnectWithoutCreatedByUserInput[]
+  createMany?: Prisma.ActivityCreateManyCreatedByUserInputEnvelope
+  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+}
+
+export type ActivityUpdateManyWithoutCreatedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ActivityCreateWithoutCreatedByUserInput, Prisma.ActivityUncheckedCreateWithoutCreatedByUserInput> | Prisma.ActivityCreateWithoutCreatedByUserInput[] | Prisma.ActivityUncheckedCreateWithoutCreatedByUserInput[]
+  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutCreatedByUserInput | Prisma.ActivityCreateOrConnectWithoutCreatedByUserInput[]
+  upsert?: Prisma.ActivityUpsertWithWhereUniqueWithoutCreatedByUserInput | Prisma.ActivityUpsertWithWhereUniqueWithoutCreatedByUserInput[]
+  createMany?: Prisma.ActivityCreateManyCreatedByUserInputEnvelope
+  set?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  disconnect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  delete?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  update?: Prisma.ActivityUpdateWithWhereUniqueWithoutCreatedByUserInput | Prisma.ActivityUpdateWithWhereUniqueWithoutCreatedByUserInput[]
+  updateMany?: Prisma.ActivityUpdateManyWithWhereWithoutCreatedByUserInput | Prisma.ActivityUpdateManyWithWhereWithoutCreatedByUserInput[]
+  deleteMany?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
+}
+
+export type ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ActivityCreateWithoutCreatedByUserInput, Prisma.ActivityUncheckedCreateWithoutCreatedByUserInput> | Prisma.ActivityCreateWithoutCreatedByUserInput[] | Prisma.ActivityUncheckedCreateWithoutCreatedByUserInput[]
+  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutCreatedByUserInput | Prisma.ActivityCreateOrConnectWithoutCreatedByUserInput[]
+  upsert?: Prisma.ActivityUpsertWithWhereUniqueWithoutCreatedByUserInput | Prisma.ActivityUpsertWithWhereUniqueWithoutCreatedByUserInput[]
+  createMany?: Prisma.ActivityCreateManyCreatedByUserInputEnvelope
+  set?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  disconnect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  delete?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  update?: Prisma.ActivityUpdateWithWhereUniqueWithoutCreatedByUserInput | Prisma.ActivityUpdateWithWhereUniqueWithoutCreatedByUserInput[]
+  updateMany?: Prisma.ActivityUpdateManyWithWhereWithoutCreatedByUserInput | Prisma.ActivityUpdateManyWithWhereWithoutCreatedByUserInput[]
+  deleteMany?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
 }
 
 export type ActivityCreateNestedManyWithoutOrganizationInput = {
@@ -511,6 +577,69 @@ export type EnumActivityTypeFieldUpdateOperationsInput = {
   set?: $Enums.ActivityType
 }
 
+export type ActivityCreateWithoutCreatedByUserInput = {
+  id?: string
+  type: $Enums.ActivityType
+  description: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutActivitiesInput
+  lead?: Prisma.LeadCreateNestedOneWithoutActivitiesInput
+  auditRequest?: Prisma.AuditRequestCreateNestedOneWithoutActivitiesInput
+}
+
+export type ActivityUncheckedCreateWithoutCreatedByUserInput = {
+  id?: string
+  organizationId: string
+  leadId?: string | null
+  auditRequestId?: string | null
+  type: $Enums.ActivityType
+  description: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+}
+
+export type ActivityCreateOrConnectWithoutCreatedByUserInput = {
+  where: Prisma.ActivityWhereUniqueInput
+  create: Prisma.XOR<Prisma.ActivityCreateWithoutCreatedByUserInput, Prisma.ActivityUncheckedCreateWithoutCreatedByUserInput>
+}
+
+export type ActivityCreateManyCreatedByUserInputEnvelope = {
+  data: Prisma.ActivityCreateManyCreatedByUserInput | Prisma.ActivityCreateManyCreatedByUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type ActivityUpsertWithWhereUniqueWithoutCreatedByUserInput = {
+  where: Prisma.ActivityWhereUniqueInput
+  update: Prisma.XOR<Prisma.ActivityUpdateWithoutCreatedByUserInput, Prisma.ActivityUncheckedUpdateWithoutCreatedByUserInput>
+  create: Prisma.XOR<Prisma.ActivityCreateWithoutCreatedByUserInput, Prisma.ActivityUncheckedCreateWithoutCreatedByUserInput>
+}
+
+export type ActivityUpdateWithWhereUniqueWithoutCreatedByUserInput = {
+  where: Prisma.ActivityWhereUniqueInput
+  data: Prisma.XOR<Prisma.ActivityUpdateWithoutCreatedByUserInput, Prisma.ActivityUncheckedUpdateWithoutCreatedByUserInput>
+}
+
+export type ActivityUpdateManyWithWhereWithoutCreatedByUserInput = {
+  where: Prisma.ActivityScalarWhereInput
+  data: Prisma.XOR<Prisma.ActivityUpdateManyMutationInput, Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserInput>
+}
+
+export type ActivityScalarWhereInput = {
+  AND?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
+  OR?: Prisma.ActivityScalarWhereInput[]
+  NOT?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
+  id?: Prisma.StringFilter<"Activity"> | string
+  organizationId?: Prisma.StringFilter<"Activity"> | string
+  leadId?: Prisma.StringNullableFilter<"Activity"> | string | null
+  auditRequestId?: Prisma.StringNullableFilter<"Activity"> | string | null
+  createdByUserId?: Prisma.StringNullableFilter<"Activity"> | string | null
+  type?: Prisma.EnumActivityTypeFilter<"Activity"> | $Enums.ActivityType
+  description?: Prisma.StringFilter<"Activity"> | string
+  metadata?: Prisma.JsonNullableFilter<"Activity">
+  createdAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
+}
+
 export type ActivityCreateWithoutOrganizationInput = {
   id?: string
   type: $Enums.ActivityType
@@ -519,12 +648,14 @@ export type ActivityCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   lead?: Prisma.LeadCreateNestedOneWithoutActivitiesInput
   auditRequest?: Prisma.AuditRequestCreateNestedOneWithoutActivitiesInput
+  createdByUser?: Prisma.UserCreateNestedOneWithoutCreatedActivitiesInput
 }
 
 export type ActivityUncheckedCreateWithoutOrganizationInput = {
   id?: string
   leadId?: string | null
   auditRequestId?: string | null
+  createdByUserId?: string | null
   type: $Enums.ActivityType
   description: string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -557,20 +688,6 @@ export type ActivityUpdateManyWithWhereWithoutOrganizationInput = {
   data: Prisma.XOR<Prisma.ActivityUpdateManyMutationInput, Prisma.ActivityUncheckedUpdateManyWithoutOrganizationInput>
 }
 
-export type ActivityScalarWhereInput = {
-  AND?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
-  OR?: Prisma.ActivityScalarWhereInput[]
-  NOT?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
-  id?: Prisma.StringFilter<"Activity"> | string
-  organizationId?: Prisma.StringFilter<"Activity"> | string
-  leadId?: Prisma.StringNullableFilter<"Activity"> | string | null
-  auditRequestId?: Prisma.StringNullableFilter<"Activity"> | string | null
-  type?: Prisma.EnumActivityTypeFilter<"Activity"> | $Enums.ActivityType
-  description?: Prisma.StringFilter<"Activity"> | string
-  metadata?: Prisma.JsonNullableFilter<"Activity">
-  createdAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
-}
-
 export type ActivityCreateWithoutLeadInput = {
   id?: string
   type: $Enums.ActivityType
@@ -579,12 +696,14 @@ export type ActivityCreateWithoutLeadInput = {
   createdAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutActivitiesInput
   auditRequest?: Prisma.AuditRequestCreateNestedOneWithoutActivitiesInput
+  createdByUser?: Prisma.UserCreateNestedOneWithoutCreatedActivitiesInput
 }
 
 export type ActivityUncheckedCreateWithoutLeadInput = {
   id?: string
   organizationId: string
   auditRequestId?: string | null
+  createdByUserId?: string | null
   type: $Enums.ActivityType
   description: string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -625,12 +744,14 @@ export type ActivityCreateWithoutAuditRequestInput = {
   createdAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutActivitiesInput
   lead?: Prisma.LeadCreateNestedOneWithoutActivitiesInput
+  createdByUser?: Prisma.UserCreateNestedOneWithoutCreatedActivitiesInput
 }
 
 export type ActivityUncheckedCreateWithoutAuditRequestInput = {
   id?: string
   organizationId: string
   leadId?: string | null
+  createdByUserId?: string | null
   type: $Enums.ActivityType
   description: string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -663,10 +784,55 @@ export type ActivityUpdateManyWithWhereWithoutAuditRequestInput = {
   data: Prisma.XOR<Prisma.ActivityUpdateManyMutationInput, Prisma.ActivityUncheckedUpdateManyWithoutAuditRequestInput>
 }
 
+export type ActivityCreateManyCreatedByUserInput = {
+  id?: string
+  organizationId: string
+  leadId?: string | null
+  auditRequestId?: string | null
+  type: $Enums.ActivityType
+  description: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+}
+
+export type ActivityUpdateWithoutCreatedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumActivityTypeFieldUpdateOperationsInput | $Enums.ActivityType
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutActivitiesNestedInput
+  lead?: Prisma.LeadUpdateOneWithoutActivitiesNestedInput
+  auditRequest?: Prisma.AuditRequestUpdateOneWithoutActivitiesNestedInput
+}
+
+export type ActivityUncheckedUpdateWithoutCreatedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  auditRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumActivityTypeFieldUpdateOperationsInput | $Enums.ActivityType
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ActivityUncheckedUpdateManyWithoutCreatedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  auditRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumActivityTypeFieldUpdateOperationsInput | $Enums.ActivityType
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type ActivityCreateManyOrganizationInput = {
   id?: string
   leadId?: string | null
   auditRequestId?: string | null
+  createdByUserId?: string | null
   type: $Enums.ActivityType
   description: string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -681,12 +847,14 @@ export type ActivityUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lead?: Prisma.LeadUpdateOneWithoutActivitiesNestedInput
   auditRequest?: Prisma.AuditRequestUpdateOneWithoutActivitiesNestedInput
+  createdByUser?: Prisma.UserUpdateOneWithoutCreatedActivitiesNestedInput
 }
 
 export type ActivityUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   auditRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumActivityTypeFieldUpdateOperationsInput | $Enums.ActivityType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -697,6 +865,7 @@ export type ActivityUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   auditRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumActivityTypeFieldUpdateOperationsInput | $Enums.ActivityType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -707,6 +876,7 @@ export type ActivityCreateManyLeadInput = {
   id?: string
   organizationId: string
   auditRequestId?: string | null
+  createdByUserId?: string | null
   type: $Enums.ActivityType
   description: string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -721,12 +891,14 @@ export type ActivityUpdateWithoutLeadInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutActivitiesNestedInput
   auditRequest?: Prisma.AuditRequestUpdateOneWithoutActivitiesNestedInput
+  createdByUser?: Prisma.UserUpdateOneWithoutCreatedActivitiesNestedInput
 }
 
 export type ActivityUncheckedUpdateWithoutLeadInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   auditRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumActivityTypeFieldUpdateOperationsInput | $Enums.ActivityType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -737,6 +909,7 @@ export type ActivityUncheckedUpdateManyWithoutLeadInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   auditRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumActivityTypeFieldUpdateOperationsInput | $Enums.ActivityType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -747,6 +920,7 @@ export type ActivityCreateManyAuditRequestInput = {
   id?: string
   organizationId: string
   leadId?: string | null
+  createdByUserId?: string | null
   type: $Enums.ActivityType
   description: string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -761,12 +935,14 @@ export type ActivityUpdateWithoutAuditRequestInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutActivitiesNestedInput
   lead?: Prisma.LeadUpdateOneWithoutActivitiesNestedInput
+  createdByUser?: Prisma.UserUpdateOneWithoutCreatedActivitiesNestedInput
 }
 
 export type ActivityUncheckedUpdateWithoutAuditRequestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumActivityTypeFieldUpdateOperationsInput | $Enums.ActivityType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -777,6 +953,7 @@ export type ActivityUncheckedUpdateManyWithoutAuditRequestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumActivityTypeFieldUpdateOperationsInput | $Enums.ActivityType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -790,6 +967,7 @@ export type ActivitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   organizationId?: boolean
   leadId?: boolean
   auditRequestId?: boolean
+  createdByUserId?: boolean
   type?: boolean
   description?: boolean
   metadata?: boolean
@@ -797,6 +975,7 @@ export type ActivitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   lead?: boolean | Prisma.Activity$leadArgs<ExtArgs>
   auditRequest?: boolean | Prisma.Activity$auditRequestArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Activity$createdByUserArgs<ExtArgs>
 }, ExtArgs["result"]["activity"]>
 
 export type ActivitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -804,6 +983,7 @@ export type ActivitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   organizationId?: boolean
   leadId?: boolean
   auditRequestId?: boolean
+  createdByUserId?: boolean
   type?: boolean
   description?: boolean
   metadata?: boolean
@@ -811,6 +991,7 @@ export type ActivitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   lead?: boolean | Prisma.Activity$leadArgs<ExtArgs>
   auditRequest?: boolean | Prisma.Activity$auditRequestArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Activity$createdByUserArgs<ExtArgs>
 }, ExtArgs["result"]["activity"]>
 
 export type ActivitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -818,6 +999,7 @@ export type ActivitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   organizationId?: boolean
   leadId?: boolean
   auditRequestId?: boolean
+  createdByUserId?: boolean
   type?: boolean
   description?: boolean
   metadata?: boolean
@@ -825,6 +1007,7 @@ export type ActivitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   lead?: boolean | Prisma.Activity$leadArgs<ExtArgs>
   auditRequest?: boolean | Prisma.Activity$auditRequestArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Activity$createdByUserArgs<ExtArgs>
 }, ExtArgs["result"]["activity"]>
 
 export type ActivitySelectScalar = {
@@ -832,27 +1015,31 @@ export type ActivitySelectScalar = {
   organizationId?: boolean
   leadId?: boolean
   auditRequestId?: boolean
+  createdByUserId?: boolean
   type?: boolean
   description?: boolean
   metadata?: boolean
   createdAt?: boolean
 }
 
-export type ActivityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "leadId" | "auditRequestId" | "type" | "description" | "metadata" | "createdAt", ExtArgs["result"]["activity"]>
+export type ActivityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "leadId" | "auditRequestId" | "createdByUserId" | "type" | "description" | "metadata" | "createdAt", ExtArgs["result"]["activity"]>
 export type ActivityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   lead?: boolean | Prisma.Activity$leadArgs<ExtArgs>
   auditRequest?: boolean | Prisma.Activity$auditRequestArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Activity$createdByUserArgs<ExtArgs>
 }
 export type ActivityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   lead?: boolean | Prisma.Activity$leadArgs<ExtArgs>
   auditRequest?: boolean | Prisma.Activity$auditRequestArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Activity$createdByUserArgs<ExtArgs>
 }
 export type ActivityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   lead?: boolean | Prisma.Activity$leadArgs<ExtArgs>
   auditRequest?: boolean | Prisma.Activity$auditRequestArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Activity$createdByUserArgs<ExtArgs>
 }
 
 export type $ActivityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -861,12 +1048,14 @@ export type $ActivityPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     organization: Prisma.$OrganizationPayload<ExtArgs>
     lead: Prisma.$LeadPayload<ExtArgs> | null
     auditRequest: Prisma.$AuditRequestPayload<ExtArgs> | null
+    createdByUser: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     organizationId: string
     leadId: string | null
     auditRequestId: string | null
+    createdByUserId: string | null
     type: $Enums.ActivityType
     description: string
     metadata: runtime.JsonValue | null
@@ -1268,6 +1457,7 @@ export interface Prisma__ActivityClient<T, Null = never, ExtArgs extends runtime
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   lead<T extends Prisma.Activity$leadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Activity$leadArgs<ExtArgs>>): Prisma.Prisma__LeadClient<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   auditRequest<T extends Prisma.Activity$auditRequestArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Activity$auditRequestArgs<ExtArgs>>): Prisma.Prisma__AuditRequestClient<runtime.Types.Result.GetResult<Prisma.$AuditRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  createdByUser<T extends Prisma.Activity$createdByUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Activity$createdByUserArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1301,6 +1491,7 @@ export interface ActivityFieldRefs {
   readonly organizationId: Prisma.FieldRef<"Activity", 'String'>
   readonly leadId: Prisma.FieldRef<"Activity", 'String'>
   readonly auditRequestId: Prisma.FieldRef<"Activity", 'String'>
+  readonly createdByUserId: Prisma.FieldRef<"Activity", 'String'>
   readonly type: Prisma.FieldRef<"Activity", 'ActivityType'>
   readonly description: Prisma.FieldRef<"Activity", 'String'>
   readonly metadata: Prisma.FieldRef<"Activity", 'Json'>
@@ -1741,6 +1932,25 @@ export type Activity$auditRequestArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   include?: Prisma.AuditRequestInclude<ExtArgs> | null
   where?: Prisma.AuditRequestWhereInput
+}
+
+/**
+ * Activity.createdByUser
+ */
+export type Activity$createdByUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

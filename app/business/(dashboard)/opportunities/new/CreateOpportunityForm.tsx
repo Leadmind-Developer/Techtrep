@@ -273,8 +273,14 @@ export default function CreateOpportunityForm({
                 <option value="DECLINED">
                   Declined
                 </option>
+                <option value="WON">
+                  Won
+                </option>
+                <option value="LOST">
+                  Lost
+                </option>
               </select>
-            </div>
+            </div>              
 
             <div>
               <label

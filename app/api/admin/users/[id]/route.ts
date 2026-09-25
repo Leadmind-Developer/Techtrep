@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { requireApiRole } from "@/lib/auth/api";
 import { createAuditLog } from "@/lib/audit-log";
-import { logger } from "@/lib/logger";
 import { getRequestId } from "@/lib/api/request";
+import { logger } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 import type { UserRole } from "@/generated/prisma/client";
@@ -196,7 +196,9 @@ export async function PATCH(
     if (email !== targetUser.email) {
       const existingUser = await prisma.user.findUnique({
         where: { email },
-        select: { id: true },
+        select: {
+          id: true,
+        },
       });
 
       if (existingUser && existingUser.id !== id) {
@@ -297,32 +299,69 @@ export async function PATCH(
   }
 
   try {
-    const updatedUser = await prisma.user.update({
-      where: { id },
-      data: {
-        ...(hasName ? { name } : {}),
-        ...(hasEmail ? { email } : {}),
-        ...(hasRole ? { role } : {}),
-        ...(hasActive ? { active } : {}),
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        active: true,
-        lastLoginAt: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+    const updatedUser = await prisma.$transaction(
+      async (tx) => {
+        const updated = await tx.user.update({
+          where: {
+            id,
+          },
+          data: {
+            ...(hasName ? { name } : {}),
+            ...(hasEmail ? { email } : {}),
+            ...(hasRole ? { role } : {}),
+            ...(hasActive ? { active } : {}),
+          },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            active: true,
+            lastLoginAt: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        });
 
-    const action =
-      active === false
-        ? "USER_DISABLED"
-        : active === true
-          ? "USER_ENABLED"
-          : "USER_UPDATED";
+        /*
+         * When an account is disabled, immediately invalidate
+         * all existing sessions for that user.
+         *
+         * The active=false check in getCurrentUser() remains
+         * authoritative, while deleting sessions provides an
+         * additional server-side security boundary.
+         */
+        if (
+          hasActive &&
+          active === false &&
+          targetUser.active === true
+        ) {
+          await tx.session.deleteMany({
+            where: {
+              userId: targetUser.id,
+            },
+          });
+        }
+
+        return updated;
+      },
+    );
+
+    const wasDisabled =
+      hasActive &&
+      active === false &&
+      targetUser.active === true;
+
+    const wasEnabled =
+      hasActive &&
+      active === true &&
+      targetUser.active === false;
+
+    const action = wasDisabled
+      ? "USER_DISABLED"
+      : wasEnabled
+        ? "USER_ENABLED"
+        : "USER_UPDATED";
 
     await createAuditLog({
       action,
@@ -331,6 +370,11 @@ export async function PATCH(
       metadata: {
         targetUserId: targetUser.id,
         changes,
+        ...(wasDisabled
+          ? {
+              sessionsInvalidated: true,
+            }
+          : {}),
       },
     });
 
@@ -339,11 +383,20 @@ export async function PATCH(
       adminUserId: auth.user.id,
       targetUserId: targetUser.id,
       action,
+      ...(wasDisabled
+        ? {
+            sessionsInvalidated: true,
+          }
+        : {}),
     });
 
     return NextResponse.json({
       success: true,
-      message: "User updated successfully.",
+      message: wasDisabled
+        ? "User disabled successfully."
+        : wasEnabled
+          ? "User enabled successfully."
+          : "User updated successfully.",
       data: {
         user: updatedUser,
       },

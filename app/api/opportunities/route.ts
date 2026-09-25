@@ -25,6 +25,8 @@ const VALID_STATUSES: OpportunityStatus[] = [
   "IN_PROGRESS",
   "COMPLETED",
   "DECLINED",
+  "WON",
+  "LOST",
 ];
 
 function isValidPriority(
@@ -94,6 +96,10 @@ export async function POST(request: Request) {
 
     const priority = body.priority ?? "MEDIUM";
     const status = body.status ?? "IDENTIFIED";
+    const closedAt =
+      status === "WON" || status === "LOST"
+        ? new Date()
+        : null;
 
     if (!name) {
       return NextResponse.json(
@@ -231,11 +237,22 @@ export async function POST(request: Request) {
         const created = await tx.opportunity.create({
           data: {
             auditRequestId,
+            createdByUserId: user.id,
+            assignedToUserId: user.id,
             name,
             description: description || null,
             priority,
             status,
             estimatedValue,
+            closedAt,
+          },
+        });
+        
+        await tx.opportunityAssignment.create({
+          data: {
+            opportunityId: created.id,
+            assignedByUserId: user.id,
+            assignedToUserId: user.id,
           },
         });
 
@@ -245,6 +262,7 @@ export async function POST(request: Request) {
               auditRequest.organizationId,
             auditRequestId,
             type: "OTHER",
+            createdByUserId: user.id,
             description: `Opportunity created: ${created.name}`,
             metadata: {
               opportunityId: created.id,
