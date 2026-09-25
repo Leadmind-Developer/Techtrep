@@ -39,3 +39,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# Prisma generated client
+/generated/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# local environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
