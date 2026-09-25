@@ -132,6 +132,21 @@ export async function getLeadById(id: string) {
           role: true,
         },
       },
+      createdByUser: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+      assignedToUser: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          active: true,
+        },
+      },
       activities: {
         orderBy: {
           createdAt: "desc",

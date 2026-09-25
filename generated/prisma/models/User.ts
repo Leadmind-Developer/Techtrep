@@ -216,6 +216,15 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sessions?: Prisma.SessionListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
+  createdLeads?: Prisma.LeadListRelationFilter
+  assignedLeads?: Prisma.LeadListRelationFilter
+  createdOpportunities?: Prisma.OpportunityListRelationFilter
+  assignedOpportunities?: Prisma.OpportunityListRelationFilter
+  createdActivities?: Prisma.ActivityListRelationFilter
+  leadAssignmentsCreated?: Prisma.LeadAssignmentListRelationFilter
+  leadAssignmentsReceived?: Prisma.LeadAssignmentListRelationFilter
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentListRelationFilter
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -230,6 +239,15 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
+  createdLeads?: Prisma.LeadOrderByRelationAggregateInput
+  assignedLeads?: Prisma.LeadOrderByRelationAggregateInput
+  createdOpportunities?: Prisma.OpportunityOrderByRelationAggregateInput
+  assignedOpportunities?: Prisma.OpportunityOrderByRelationAggregateInput
+  createdActivities?: Prisma.ActivityOrderByRelationAggregateInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentOrderByRelationAggregateInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentOrderByRelationAggregateInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentOrderByRelationAggregateInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -247,6 +265,15 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sessions?: Prisma.SessionListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
+  createdLeads?: Prisma.LeadListRelationFilter
+  assignedLeads?: Prisma.LeadListRelationFilter
+  createdOpportunities?: Prisma.OpportunityListRelationFilter
+  assignedOpportunities?: Prisma.OpportunityListRelationFilter
+  createdActivities?: Prisma.ActivityListRelationFilter
+  leadAssignmentsCreated?: Prisma.LeadAssignmentListRelationFilter
+  leadAssignmentsReceived?: Prisma.LeadAssignmentListRelationFilter
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentListRelationFilter
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -291,6 +318,15 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedToUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -305,6 +341,15 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
 }
 
 export type UserUpdateInput = {
@@ -319,6 +364,15 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedToUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -333,6 +387,15 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -455,6 +518,146 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
 }
 
+export type UserCreateNestedOneWithoutCreatedLeadsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedLeadsInput, Prisma.UserUncheckedCreateWithoutCreatedLeadsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedLeadsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutAssignedLeadsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedLeadsInput, Prisma.UserUncheckedCreateWithoutAssignedLeadsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedLeadsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCreatedLeadsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedLeadsInput, Prisma.UserUncheckedCreateWithoutCreatedLeadsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedLeadsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedLeadsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedLeadsInput, Prisma.UserUpdateWithoutCreatedLeadsInput>, Prisma.UserUncheckedUpdateWithoutCreatedLeadsInput>
+}
+
+export type UserUpdateOneWithoutAssignedLeadsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedLeadsInput, Prisma.UserUncheckedCreateWithoutAssignedLeadsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedLeadsInput
+  upsert?: Prisma.UserUpsertWithoutAssignedLeadsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedLeadsInput, Prisma.UserUpdateWithoutAssignedLeadsInput>, Prisma.UserUncheckedUpdateWithoutAssignedLeadsInput>
+}
+
+export type UserCreateNestedOneWithoutLeadAssignmentsReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLeadAssignmentsReceivedInput, Prisma.UserUncheckedCreateWithoutLeadAssignmentsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLeadAssignmentsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutLeadAssignmentsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLeadAssignmentsCreatedInput, Prisma.UserUncheckedCreateWithoutLeadAssignmentsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLeadAssignmentsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutLeadAssignmentsReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLeadAssignmentsReceivedInput, Prisma.UserUncheckedCreateWithoutLeadAssignmentsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLeadAssignmentsReceivedInput
+  upsert?: Prisma.UserUpsertWithoutLeadAssignmentsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLeadAssignmentsReceivedInput, Prisma.UserUpdateWithoutLeadAssignmentsReceivedInput>, Prisma.UserUncheckedUpdateWithoutLeadAssignmentsReceivedInput>
+}
+
+export type UserUpdateOneWithoutLeadAssignmentsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLeadAssignmentsCreatedInput, Prisma.UserUncheckedCreateWithoutLeadAssignmentsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLeadAssignmentsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutLeadAssignmentsCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLeadAssignmentsCreatedInput, Prisma.UserUpdateWithoutLeadAssignmentsCreatedInput>, Prisma.UserUncheckedUpdateWithoutLeadAssignmentsCreatedInput>
+}
+
+export type UserCreateNestedOneWithoutCreatedOpportunitiesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutCreatedOpportunitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedOpportunitiesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutAssignedOpportunitiesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutAssignedOpportunitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedOpportunitiesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCreatedOpportunitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutCreatedOpportunitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedOpportunitiesInput
+  upsert?: Prisma.UserUpsertWithoutCreatedOpportunitiesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedOpportunitiesInput, Prisma.UserUpdateWithoutCreatedOpportunitiesInput>, Prisma.UserUncheckedUpdateWithoutCreatedOpportunitiesInput>
+}
+
+export type UserUpdateOneWithoutAssignedOpportunitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutAssignedOpportunitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedOpportunitiesInput
+  upsert?: Prisma.UserUpsertWithoutAssignedOpportunitiesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedOpportunitiesInput, Prisma.UserUpdateWithoutAssignedOpportunitiesInput>, Prisma.UserUncheckedUpdateWithoutAssignedOpportunitiesInput>
+}
+
+export type UserCreateNestedOneWithoutOpportunityAssignmentsReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOpportunityAssignmentsReceivedInput, Prisma.UserUncheckedCreateWithoutOpportunityAssignmentsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOpportunityAssignmentsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutOpportunityAssignmentsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOpportunityAssignmentsCreatedInput, Prisma.UserUncheckedCreateWithoutOpportunityAssignmentsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOpportunityAssignmentsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOpportunityAssignmentsReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOpportunityAssignmentsReceivedInput, Prisma.UserUncheckedCreateWithoutOpportunityAssignmentsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOpportunityAssignmentsReceivedInput
+  upsert?: Prisma.UserUpsertWithoutOpportunityAssignmentsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOpportunityAssignmentsReceivedInput, Prisma.UserUpdateWithoutOpportunityAssignmentsReceivedInput>, Prisma.UserUncheckedUpdateWithoutOpportunityAssignmentsReceivedInput>
+}
+
+export type UserUpdateOneWithoutOpportunityAssignmentsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOpportunityAssignmentsCreatedInput, Prisma.UserUncheckedCreateWithoutOpportunityAssignmentsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOpportunityAssignmentsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutOpportunityAssignmentsCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOpportunityAssignmentsCreatedInput, Prisma.UserUpdateWithoutOpportunityAssignmentsCreatedInput>, Prisma.UserUncheckedUpdateWithoutOpportunityAssignmentsCreatedInput>
+}
+
+export type UserCreateNestedOneWithoutCreatedActivitiesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedActivitiesInput, Prisma.UserUncheckedCreateWithoutCreatedActivitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedActivitiesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCreatedActivitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedActivitiesInput, Prisma.UserUncheckedCreateWithoutCreatedActivitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedActivitiesInput
+  upsert?: Prisma.UserUpsertWithoutCreatedActivitiesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedActivitiesInput, Prisma.UserUpdateWithoutCreatedActivitiesInput>, Prisma.UserUncheckedUpdateWithoutCreatedActivitiesInput>
+}
+
 export type UserCreateNestedOneWithoutAuditLogsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsInput
@@ -482,6 +685,15 @@ export type UserCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedToUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -495,6 +707,15 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -524,6 +745,15 @@ export type UserUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedToUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -537,6 +767,951 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserCreateWithoutCreatedLeadsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserUncheckedCreateWithoutCreatedLeadsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserCreateOrConnectWithoutCreatedLeadsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedLeadsInput, Prisma.UserUncheckedCreateWithoutCreatedLeadsInput>
+}
+
+export type UserCreateWithoutAssignedLeadsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatedByUserInput
+  createdOpportunities?: Prisma.OpportunityCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserUncheckedCreateWithoutAssignedLeadsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatedByUserInput
+  createdOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserCreateOrConnectWithoutAssignedLeadsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedLeadsInput, Prisma.UserUncheckedCreateWithoutAssignedLeadsInput>
+}
+
+export type UserUpsertWithoutCreatedLeadsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedLeadsInput, Prisma.UserUncheckedUpdateWithoutCreatedLeadsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedLeadsInput, Prisma.UserUncheckedCreateWithoutCreatedLeadsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedLeadsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedLeadsInput, Prisma.UserUncheckedUpdateWithoutCreatedLeadsInput>
+}
+
+export type UserUpdateWithoutCreatedLeadsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  assignedLeads?: Prisma.LeadUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedLeadsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserUpsertWithoutAssignedLeadsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAssignedLeadsInput, Prisma.UserUncheckedUpdateWithoutAssignedLeadsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedLeadsInput, Prisma.UserUncheckedCreateWithoutAssignedLeadsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAssignedLeadsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAssignedLeadsInput, Prisma.UserUncheckedUpdateWithoutAssignedLeadsInput>
+}
+
+export type UserUpdateWithoutAssignedLeadsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUpdateManyWithoutCreatedByUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAssignedLeadsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserCreateWithoutLeadAssignmentsReceivedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserUncheckedCreateWithoutLeadAssignmentsReceivedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserCreateOrConnectWithoutLeadAssignmentsReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLeadAssignmentsReceivedInput, Prisma.UserUncheckedCreateWithoutLeadAssignmentsReceivedInput>
+}
+
+export type UserCreateWithoutLeadAssignmentsCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserUncheckedCreateWithoutLeadAssignmentsCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserCreateOrConnectWithoutLeadAssignmentsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLeadAssignmentsCreatedInput, Prisma.UserUncheckedCreateWithoutLeadAssignmentsCreatedInput>
+}
+
+export type UserUpsertWithoutLeadAssignmentsReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLeadAssignmentsReceivedInput, Prisma.UserUncheckedUpdateWithoutLeadAssignmentsReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLeadAssignmentsReceivedInput, Prisma.UserUncheckedCreateWithoutLeadAssignmentsReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLeadAssignmentsReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLeadAssignmentsReceivedInput, Prisma.UserUncheckedUpdateWithoutLeadAssignmentsReceivedInput>
+}
+
+export type UserUpdateWithoutLeadAssignmentsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLeadAssignmentsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserUpsertWithoutLeadAssignmentsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLeadAssignmentsCreatedInput, Prisma.UserUncheckedUpdateWithoutLeadAssignmentsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLeadAssignmentsCreatedInput, Prisma.UserUncheckedCreateWithoutLeadAssignmentsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLeadAssignmentsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLeadAssignmentsCreatedInput, Prisma.UserUncheckedUpdateWithoutLeadAssignmentsCreatedInput>
+}
+
+export type UserUpdateWithoutLeadAssignmentsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLeadAssignmentsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserCreateWithoutCreatedOpportunitiesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssignedToUserInput
+  assignedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserUncheckedCreateWithoutCreatedOpportunitiesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToUserInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserCreateOrConnectWithoutCreatedOpportunitiesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutCreatedOpportunitiesInput>
+}
+
+export type UserCreateWithoutAssignedOpportunitiesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityCreateNestedManyWithoutCreatedByUserInput
+  createdActivities?: Prisma.ActivityCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserUncheckedCreateWithoutAssignedOpportunitiesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  createdActivities?: Prisma.ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserCreateOrConnectWithoutAssignedOpportunitiesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutAssignedOpportunitiesInput>
+}
+
+export type UserUpsertWithoutCreatedOpportunitiesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedOpportunitiesInput, Prisma.UserUncheckedUpdateWithoutCreatedOpportunitiesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutCreatedOpportunitiesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedOpportunitiesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedOpportunitiesInput, Prisma.UserUncheckedUpdateWithoutCreatedOpportunitiesInput>
+}
+
+export type UserUpdateWithoutCreatedOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUpdateManyWithoutAssignedToUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserUpsertWithoutAssignedOpportunitiesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAssignedOpportunitiesInput, Prisma.UserUncheckedUpdateWithoutAssignedOpportunitiesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutAssignedOpportunitiesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAssignedOpportunitiesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAssignedOpportunitiesInput, Prisma.UserUncheckedUpdateWithoutAssignedOpportunitiesInput>
+}
+
+export type UserUpdateWithoutAssignedOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUpdateManyWithoutCreatedByUserNestedInput
+  createdActivities?: Prisma.ActivityUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAssignedOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  createdActivities?: Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserCreateWithoutOpportunityAssignmentsReceivedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedByUserInput
+}
+
+export type UserUncheckedCreateWithoutOpportunityAssignmentsReceivedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+}
+
+export type UserCreateOrConnectWithoutOpportunityAssignmentsReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOpportunityAssignmentsReceivedInput, Prisma.UserUncheckedCreateWithoutOpportunityAssignmentsReceivedInput>
+}
+
+export type UserCreateWithoutOpportunityAssignmentsCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserUncheckedCreateWithoutOpportunityAssignmentsCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserCreateOrConnectWithoutOpportunityAssignmentsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOpportunityAssignmentsCreatedInput, Prisma.UserUncheckedCreateWithoutOpportunityAssignmentsCreatedInput>
+}
+
+export type UserUpsertWithoutOpportunityAssignmentsReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOpportunityAssignmentsReceivedInput, Prisma.UserUncheckedUpdateWithoutOpportunityAssignmentsReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOpportunityAssignmentsReceivedInput, Prisma.UserUncheckedCreateWithoutOpportunityAssignmentsReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOpportunityAssignmentsReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOpportunityAssignmentsReceivedInput, Prisma.UserUncheckedUpdateWithoutOpportunityAssignmentsReceivedInput>
+}
+
+export type UserUpdateWithoutOpportunityAssignmentsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedByUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOpportunityAssignmentsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+}
+
+export type UserUpsertWithoutOpportunityAssignmentsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOpportunityAssignmentsCreatedInput, Prisma.UserUncheckedUpdateWithoutOpportunityAssignmentsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOpportunityAssignmentsCreatedInput, Prisma.UserUncheckedCreateWithoutOpportunityAssignmentsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOpportunityAssignmentsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOpportunityAssignmentsCreatedInput, Prisma.UserUncheckedUpdateWithoutOpportunityAssignmentsCreatedInput>
+}
+
+export type UserUpdateWithoutOpportunityAssignmentsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOpportunityAssignmentsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserCreateWithoutCreatedActivitiesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAssignedToUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserUncheckedCreateWithoutCreatedActivitiesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  role?: $Enums.UserRole
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+}
+
+export type UserCreateOrConnectWithoutCreatedActivitiesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedActivitiesInput, Prisma.UserUncheckedCreateWithoutCreatedActivitiesInput>
+}
+
+export type UserUpsertWithoutCreatedActivitiesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedActivitiesInput, Prisma.UserUncheckedUpdateWithoutCreatedActivitiesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedActivitiesInput, Prisma.UserUncheckedCreateWithoutCreatedActivitiesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedActivitiesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedActivitiesInput, Prisma.UserUncheckedUpdateWithoutCreatedActivitiesInput>
+}
+
+export type UserUpdateWithoutCreatedActivitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUpdateManyWithoutAssignedToUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedActivitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -550,6 +1725,15 @@ export type UserCreateWithoutAuditLogsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentCreateNestedManyWithoutAssignedToUserInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -563,6 +1747,15 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput
+  createdActivities?: Prisma.ActivityUncheckedCreateNestedManyWithoutCreatedByUserInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedByUserInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutAssignedToUserInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -592,6 +1785,15 @@ export type UserUpdateWithoutAuditLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUpdateManyWithoutAssignedToUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -605,6 +1807,15 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  assignedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  createdActivities?: Prisma.ActivityUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  leadAssignmentsCreated?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  leadAssignmentsReceived?: Prisma.LeadAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
+  opportunityAssignmentsCreated?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedByUserNestedInput
+  opportunityAssignmentsReceived?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutAssignedToUserNestedInput
 }
 
 
@@ -615,11 +1826,29 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
 export type UserCountOutputType = {
   sessions: number
   auditLogs: number
+  createdLeads: number
+  assignedLeads: number
+  createdOpportunities: number
+  assignedOpportunities: number
+  createdActivities: number
+  leadAssignmentsCreated: number
+  leadAssignmentsReceived: number
+  opportunityAssignmentsCreated: number
+  opportunityAssignmentsReceived: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+  createdLeads?: boolean | UserCountOutputTypeCountCreatedLeadsArgs
+  assignedLeads?: boolean | UserCountOutputTypeCountAssignedLeadsArgs
+  createdOpportunities?: boolean | UserCountOutputTypeCountCreatedOpportunitiesArgs
+  assignedOpportunities?: boolean | UserCountOutputTypeCountAssignedOpportunitiesArgs
+  createdActivities?: boolean | UserCountOutputTypeCountCreatedActivitiesArgs
+  leadAssignmentsCreated?: boolean | UserCountOutputTypeCountLeadAssignmentsCreatedArgs
+  leadAssignmentsReceived?: boolean | UserCountOutputTypeCountLeadAssignmentsReceivedArgs
+  opportunityAssignmentsCreated?: boolean | UserCountOutputTypeCountOpportunityAssignmentsCreatedArgs
+  opportunityAssignmentsReceived?: boolean | UserCountOutputTypeCountOpportunityAssignmentsReceivedArgs
 }
 
 /**
@@ -646,6 +1875,69 @@ export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.AuditLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeadWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAssignedLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeadWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpportunityWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAssignedOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpportunityWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedActivitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ActivityWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLeadAssignmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeadAssignmentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLeadAssignmentsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeadAssignmentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOpportunityAssignmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpportunityAssignmentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOpportunityAssignmentsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpportunityAssignmentWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -659,6 +1951,15 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  createdLeads?: boolean | Prisma.User$createdLeadsArgs<ExtArgs>
+  assignedLeads?: boolean | Prisma.User$assignedLeadsArgs<ExtArgs>
+  createdOpportunities?: boolean | Prisma.User$createdOpportunitiesArgs<ExtArgs>
+  assignedOpportunities?: boolean | Prisma.User$assignedOpportunitiesArgs<ExtArgs>
+  createdActivities?: boolean | Prisma.User$createdActivitiesArgs<ExtArgs>
+  leadAssignmentsCreated?: boolean | Prisma.User$leadAssignmentsCreatedArgs<ExtArgs>
+  leadAssignmentsReceived?: boolean | Prisma.User$leadAssignmentsReceivedArgs<ExtArgs>
+  opportunityAssignmentsCreated?: boolean | Prisma.User$opportunityAssignmentsCreatedArgs<ExtArgs>
+  opportunityAssignmentsReceived?: boolean | Prisma.User$opportunityAssignmentsReceivedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -702,6 +2003,15 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  createdLeads?: boolean | Prisma.User$createdLeadsArgs<ExtArgs>
+  assignedLeads?: boolean | Prisma.User$assignedLeadsArgs<ExtArgs>
+  createdOpportunities?: boolean | Prisma.User$createdOpportunitiesArgs<ExtArgs>
+  assignedOpportunities?: boolean | Prisma.User$assignedOpportunitiesArgs<ExtArgs>
+  createdActivities?: boolean | Prisma.User$createdActivitiesArgs<ExtArgs>
+  leadAssignmentsCreated?: boolean | Prisma.User$leadAssignmentsCreatedArgs<ExtArgs>
+  leadAssignmentsReceived?: boolean | Prisma.User$leadAssignmentsReceivedArgs<ExtArgs>
+  opportunityAssignmentsCreated?: boolean | Prisma.User$opportunityAssignmentsCreatedArgs<ExtArgs>
+  opportunityAssignmentsReceived?: boolean | Prisma.User$opportunityAssignmentsReceivedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -712,6 +2022,15 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+    createdLeads: Prisma.$LeadPayload<ExtArgs>[]
+    assignedLeads: Prisma.$LeadPayload<ExtArgs>[]
+    createdOpportunities: Prisma.$OpportunityPayload<ExtArgs>[]
+    assignedOpportunities: Prisma.$OpportunityPayload<ExtArgs>[]
+    createdActivities: Prisma.$ActivityPayload<ExtArgs>[]
+    leadAssignmentsCreated: Prisma.$LeadAssignmentPayload<ExtArgs>[]
+    leadAssignmentsReceived: Prisma.$LeadAssignmentPayload<ExtArgs>[]
+    opportunityAssignmentsCreated: Prisma.$OpportunityAssignmentPayload<ExtArgs>[]
+    opportunityAssignmentsReceived: Prisma.$OpportunityAssignmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1119,6 +2438,15 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdLeads<T extends Prisma.User$createdLeadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignedLeads<T extends Prisma.User$assignedLeadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdOpportunities<T extends Prisma.User$createdOpportunitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdOpportunitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignedOpportunities<T extends Prisma.User$assignedOpportunitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedOpportunitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdActivities<T extends Prisma.User$createdActivitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdActivitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  leadAssignmentsCreated<T extends Prisma.User$leadAssignmentsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$leadAssignmentsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  leadAssignmentsReceived<T extends Prisma.User$leadAssignmentsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$leadAssignmentsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  opportunityAssignmentsCreated<T extends Prisma.User$opportunityAssignmentsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$opportunityAssignmentsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  opportunityAssignmentsReceived<T extends Prisma.User$opportunityAssignmentsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$opportunityAssignmentsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1595,6 +2923,222 @@ export type User$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.createdLeads
+ */
+export type User$createdLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Lead
+   */
+  select?: Prisma.LeadSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Lead
+   */
+  omit?: Prisma.LeadOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeadInclude<ExtArgs> | null
+  where?: Prisma.LeadWhereInput
+  orderBy?: Prisma.LeadOrderByWithRelationInput | Prisma.LeadOrderByWithRelationInput[]
+  cursor?: Prisma.LeadWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeadScalarFieldEnum | Prisma.LeadScalarFieldEnum[]
+}
+
+/**
+ * User.assignedLeads
+ */
+export type User$assignedLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Lead
+   */
+  select?: Prisma.LeadSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Lead
+   */
+  omit?: Prisma.LeadOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeadInclude<ExtArgs> | null
+  where?: Prisma.LeadWhereInput
+  orderBy?: Prisma.LeadOrderByWithRelationInput | Prisma.LeadOrderByWithRelationInput[]
+  cursor?: Prisma.LeadWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeadScalarFieldEnum | Prisma.LeadScalarFieldEnum[]
+}
+
+/**
+ * User.createdOpportunities
+ */
+export type User$createdOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Opportunity
+   */
+  select?: Prisma.OpportunitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Opportunity
+   */
+  omit?: Prisma.OpportunityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpportunityInclude<ExtArgs> | null
+  where?: Prisma.OpportunityWhereInput
+  orderBy?: Prisma.OpportunityOrderByWithRelationInput | Prisma.OpportunityOrderByWithRelationInput[]
+  cursor?: Prisma.OpportunityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpportunityScalarFieldEnum | Prisma.OpportunityScalarFieldEnum[]
+}
+
+/**
+ * User.assignedOpportunities
+ */
+export type User$assignedOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Opportunity
+   */
+  select?: Prisma.OpportunitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Opportunity
+   */
+  omit?: Prisma.OpportunityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpportunityInclude<ExtArgs> | null
+  where?: Prisma.OpportunityWhereInput
+  orderBy?: Prisma.OpportunityOrderByWithRelationInput | Prisma.OpportunityOrderByWithRelationInput[]
+  cursor?: Prisma.OpportunityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpportunityScalarFieldEnum | Prisma.OpportunityScalarFieldEnum[]
+}
+
+/**
+ * User.createdActivities
+ */
+export type User$createdActivitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Activity
+   */
+  select?: Prisma.ActivitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Activity
+   */
+  omit?: Prisma.ActivityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ActivityInclude<ExtArgs> | null
+  where?: Prisma.ActivityWhereInput
+  orderBy?: Prisma.ActivityOrderByWithRelationInput | Prisma.ActivityOrderByWithRelationInput[]
+  cursor?: Prisma.ActivityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ActivityScalarFieldEnum | Prisma.ActivityScalarFieldEnum[]
+}
+
+/**
+ * User.leadAssignmentsCreated
+ */
+export type User$leadAssignmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LeadAssignment
+   */
+  select?: Prisma.LeadAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LeadAssignment
+   */
+  omit?: Prisma.LeadAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeadAssignmentInclude<ExtArgs> | null
+  where?: Prisma.LeadAssignmentWhereInput
+  orderBy?: Prisma.LeadAssignmentOrderByWithRelationInput | Prisma.LeadAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.LeadAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeadAssignmentScalarFieldEnum | Prisma.LeadAssignmentScalarFieldEnum[]
+}
+
+/**
+ * User.leadAssignmentsReceived
+ */
+export type User$leadAssignmentsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LeadAssignment
+   */
+  select?: Prisma.LeadAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LeadAssignment
+   */
+  omit?: Prisma.LeadAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeadAssignmentInclude<ExtArgs> | null
+  where?: Prisma.LeadAssignmentWhereInput
+  orderBy?: Prisma.LeadAssignmentOrderByWithRelationInput | Prisma.LeadAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.LeadAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeadAssignmentScalarFieldEnum | Prisma.LeadAssignmentScalarFieldEnum[]
+}
+
+/**
+ * User.opportunityAssignmentsCreated
+ */
+export type User$opportunityAssignmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OpportunityAssignment
+   */
+  select?: Prisma.OpportunityAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OpportunityAssignment
+   */
+  omit?: Prisma.OpportunityAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpportunityAssignmentInclude<ExtArgs> | null
+  where?: Prisma.OpportunityAssignmentWhereInput
+  orderBy?: Prisma.OpportunityAssignmentOrderByWithRelationInput | Prisma.OpportunityAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.OpportunityAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpportunityAssignmentScalarFieldEnum | Prisma.OpportunityAssignmentScalarFieldEnum[]
+}
+
+/**
+ * User.opportunityAssignmentsReceived
+ */
+export type User$opportunityAssignmentsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OpportunityAssignment
+   */
+  select?: Prisma.OpportunityAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OpportunityAssignment
+   */
+  omit?: Prisma.OpportunityAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpportunityAssignmentInclude<ExtArgs> | null
+  where?: Prisma.OpportunityAssignmentWhereInput
+  orderBy?: Prisma.OpportunityAssignmentOrderByWithRelationInput | Prisma.OpportunityAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.OpportunityAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpportunityAssignmentScalarFieldEnum | Prisma.OpportunityAssignmentScalarFieldEnum[]
 }
 
 /**

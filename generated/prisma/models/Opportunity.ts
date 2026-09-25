@@ -37,11 +37,14 @@ export type OpportunitySumAggregateOutputType = {
 export type OpportunityMinAggregateOutputType = {
   id: string | null
   auditRequestId: string | null
+  createdByUserId: string | null
+  assignedToUserId: string | null
   name: string | null
   description: string | null
   priority: $Enums.OpportunityPriority | null
   status: $Enums.OpportunityStatus | null
   estimatedValue: runtime.Decimal | null
+  closedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -49,11 +52,14 @@ export type OpportunityMinAggregateOutputType = {
 export type OpportunityMaxAggregateOutputType = {
   id: string | null
   auditRequestId: string | null
+  createdByUserId: string | null
+  assignedToUserId: string | null
   name: string | null
   description: string | null
   priority: $Enums.OpportunityPriority | null
   status: $Enums.OpportunityStatus | null
   estimatedValue: runtime.Decimal | null
+  closedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -61,11 +67,14 @@ export type OpportunityMaxAggregateOutputType = {
 export type OpportunityCountAggregateOutputType = {
   id: number
   auditRequestId: number
+  createdByUserId: number
+  assignedToUserId: number
   name: number
   description: number
   priority: number
   status: number
   estimatedValue: number
+  closedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -83,11 +92,14 @@ export type OpportunitySumAggregateInputType = {
 export type OpportunityMinAggregateInputType = {
   id?: true
   auditRequestId?: true
+  createdByUserId?: true
+  assignedToUserId?: true
   name?: true
   description?: true
   priority?: true
   status?: true
   estimatedValue?: true
+  closedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -95,11 +107,14 @@ export type OpportunityMinAggregateInputType = {
 export type OpportunityMaxAggregateInputType = {
   id?: true
   auditRequestId?: true
+  createdByUserId?: true
+  assignedToUserId?: true
   name?: true
   description?: true
   priority?: true
   status?: true
   estimatedValue?: true
+  closedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -107,11 +122,14 @@ export type OpportunityMaxAggregateInputType = {
 export type OpportunityCountAggregateInputType = {
   id?: true
   auditRequestId?: true
+  createdByUserId?: true
+  assignedToUserId?: true
   name?: true
   description?: true
   priority?: true
   status?: true
   estimatedValue?: true
+  closedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -206,11 +224,14 @@ export type OpportunityGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type OpportunityGroupByOutputType = {
   id: string
   auditRequestId: string
+  createdByUserId: string | null
+  assignedToUserId: string | null
   name: string
   description: string | null
   priority: $Enums.OpportunityPriority
   status: $Enums.OpportunityStatus
   estimatedValue: runtime.Decimal | null
+  closedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: OpportunityCountAggregateOutputType | null
@@ -241,27 +262,39 @@ export type OpportunityWhereInput = {
   NOT?: Prisma.OpportunityWhereInput | Prisma.OpportunityWhereInput[]
   id?: Prisma.StringFilter<"Opportunity"> | string
   auditRequestId?: Prisma.StringFilter<"Opportunity"> | string
+  createdByUserId?: Prisma.StringNullableFilter<"Opportunity"> | string | null
+  assignedToUserId?: Prisma.StringNullableFilter<"Opportunity"> | string | null
   name?: Prisma.StringFilter<"Opportunity"> | string
   description?: Prisma.StringNullableFilter<"Opportunity"> | string | null
   priority?: Prisma.EnumOpportunityPriorityFilter<"Opportunity"> | $Enums.OpportunityPriority
   status?: Prisma.EnumOpportunityStatusFilter<"Opportunity"> | $Enums.OpportunityStatus
   estimatedValue?: Prisma.DecimalNullableFilter<"Opportunity"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.DateTimeNullableFilter<"Opportunity"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Opportunity"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Opportunity"> | Date | string
   auditRequest?: Prisma.XOR<Prisma.AuditRequestScalarRelationFilter, Prisma.AuditRequestWhereInput>
+  createdByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  assignedToUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  assignments?: Prisma.OpportunityAssignmentListRelationFilter
 }
 
 export type OpportunityOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   auditRequestId?: Prisma.SortOrder
+  createdByUserId?: Prisma.SortOrderInput | Prisma.SortOrder
+  assignedToUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   priority?: Prisma.SortOrder
   status?: Prisma.SortOrder
   estimatedValue?: Prisma.SortOrderInput | Prisma.SortOrder
+  closedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   auditRequest?: Prisma.AuditRequestOrderByWithRelationInput
+  createdByUser?: Prisma.UserOrderByWithRelationInput
+  assignedToUser?: Prisma.UserOrderByWithRelationInput
+  assignments?: Prisma.OpportunityAssignmentOrderByRelationAggregateInput
 }
 
 export type OpportunityWhereUniqueInput = Prisma.AtLeast<{
@@ -270,24 +303,33 @@ export type OpportunityWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.OpportunityWhereInput[]
   NOT?: Prisma.OpportunityWhereInput | Prisma.OpportunityWhereInput[]
   auditRequestId?: Prisma.StringFilter<"Opportunity"> | string
+  createdByUserId?: Prisma.StringNullableFilter<"Opportunity"> | string | null
+  assignedToUserId?: Prisma.StringNullableFilter<"Opportunity"> | string | null
   name?: Prisma.StringFilter<"Opportunity"> | string
   description?: Prisma.StringNullableFilter<"Opportunity"> | string | null
   priority?: Prisma.EnumOpportunityPriorityFilter<"Opportunity"> | $Enums.OpportunityPriority
   status?: Prisma.EnumOpportunityStatusFilter<"Opportunity"> | $Enums.OpportunityStatus
   estimatedValue?: Prisma.DecimalNullableFilter<"Opportunity"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.DateTimeNullableFilter<"Opportunity"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Opportunity"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Opportunity"> | Date | string
   auditRequest?: Prisma.XOR<Prisma.AuditRequestScalarRelationFilter, Prisma.AuditRequestWhereInput>
+  createdByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  assignedToUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  assignments?: Prisma.OpportunityAssignmentListRelationFilter
 }, "id">
 
 export type OpportunityOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   auditRequestId?: Prisma.SortOrder
+  createdByUserId?: Prisma.SortOrderInput | Prisma.SortOrder
+  assignedToUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   priority?: Prisma.SortOrder
   status?: Prisma.SortOrder
   estimatedValue?: Prisma.SortOrderInput | Prisma.SortOrder
+  closedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.OpportunityCountOrderByAggregateInput
@@ -303,11 +345,14 @@ export type OpportunityScalarWhereWithAggregatesInput = {
   NOT?: Prisma.OpportunityScalarWhereWithAggregatesInput | Prisma.OpportunityScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Opportunity"> | string
   auditRequestId?: Prisma.StringWithAggregatesFilter<"Opportunity"> | string
+  createdByUserId?: Prisma.StringNullableWithAggregatesFilter<"Opportunity"> | string | null
+  assignedToUserId?: Prisma.StringNullableWithAggregatesFilter<"Opportunity"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"Opportunity"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Opportunity"> | string | null
   priority?: Prisma.EnumOpportunityPriorityWithAggregatesFilter<"Opportunity"> | $Enums.OpportunityPriority
   status?: Prisma.EnumOpportunityStatusWithAggregatesFilter<"Opportunity"> | $Enums.OpportunityStatus
   estimatedValue?: Prisma.DecimalNullableWithAggregatesFilter<"Opportunity"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Opportunity"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Opportunity"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Opportunity"> | Date | string
 }
@@ -319,21 +364,29 @@ export type OpportunityCreateInput = {
   priority?: $Enums.OpportunityPriority
   status?: $Enums.OpportunityStatus
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   auditRequest: Prisma.AuditRequestCreateNestedOneWithoutOpportunitiesInput
+  createdByUser?: Prisma.UserCreateNestedOneWithoutCreatedOpportunitiesInput
+  assignedToUser?: Prisma.UserCreateNestedOneWithoutAssignedOpportunitiesInput
+  assignments?: Prisma.OpportunityAssignmentCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityUncheckedCreateInput = {
   id?: string
   auditRequestId: string
+  createdByUserId?: string | null
+  assignedToUserId?: string | null
   name: string
   description?: string | null
   priority?: $Enums.OpportunityPriority
   status?: $Enums.OpportunityStatus
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  assignments?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityUpdateInput = {
@@ -343,31 +396,42 @@ export type OpportunityUpdateInput = {
   priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
   status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   auditRequest?: Prisma.AuditRequestUpdateOneRequiredWithoutOpportunitiesNestedInput
+  createdByUser?: Prisma.UserUpdateOneWithoutCreatedOpportunitiesNestedInput
+  assignedToUser?: Prisma.UserUpdateOneWithoutAssignedOpportunitiesNestedInput
+  assignments?: Prisma.OpportunityAssignmentUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   auditRequestId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
   status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignments?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityCreateManyInput = {
   id?: string
   auditRequestId: string
+  createdByUserId?: string | null
+  assignedToUserId?: string | null
   name: string
   description?: string | null
   priority?: $Enums.OpportunityPriority
   status?: $Enums.OpportunityStatus
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -379,6 +443,7 @@ export type OpportunityUpdateManyMutationInput = {
   priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
   status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -386,11 +451,14 @@ export type OpportunityUpdateManyMutationInput = {
 export type OpportunityUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   auditRequestId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
   status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -408,11 +476,14 @@ export type OpportunityOrderByRelationAggregateInput = {
 export type OpportunityCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   auditRequestId?: Prisma.SortOrder
+  createdByUserId?: Prisma.SortOrder
+  assignedToUserId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   priority?: Prisma.SortOrder
   status?: Prisma.SortOrder
   estimatedValue?: Prisma.SortOrder
+  closedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -424,11 +495,14 @@ export type OpportunityAvgOrderByAggregateInput = {
 export type OpportunityMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   auditRequestId?: Prisma.SortOrder
+  createdByUserId?: Prisma.SortOrder
+  assignedToUserId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   priority?: Prisma.SortOrder
   status?: Prisma.SortOrder
   estimatedValue?: Prisma.SortOrder
+  closedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -436,17 +510,109 @@ export type OpportunityMaxOrderByAggregateInput = {
 export type OpportunityMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   auditRequestId?: Prisma.SortOrder
+  createdByUserId?: Prisma.SortOrder
+  assignedToUserId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   priority?: Prisma.SortOrder
   status?: Prisma.SortOrder
   estimatedValue?: Prisma.SortOrder
+  closedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type OpportunitySumOrderByAggregateInput = {
   estimatedValue?: Prisma.SortOrder
+}
+
+export type OpportunityScalarRelationFilter = {
+  is?: Prisma.OpportunityWhereInput
+  isNot?: Prisma.OpportunityWhereInput
+}
+
+export type OpportunityCreateNestedManyWithoutCreatedByUserInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutCreatedByUserInput, Prisma.OpportunityUncheckedCreateWithoutCreatedByUserInput> | Prisma.OpportunityCreateWithoutCreatedByUserInput[] | Prisma.OpportunityUncheckedCreateWithoutCreatedByUserInput[]
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutCreatedByUserInput | Prisma.OpportunityCreateOrConnectWithoutCreatedByUserInput[]
+  createMany?: Prisma.OpportunityCreateManyCreatedByUserInputEnvelope
+  connect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+}
+
+export type OpportunityCreateNestedManyWithoutAssignedToUserInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutAssignedToUserInput, Prisma.OpportunityUncheckedCreateWithoutAssignedToUserInput> | Prisma.OpportunityCreateWithoutAssignedToUserInput[] | Prisma.OpportunityUncheckedCreateWithoutAssignedToUserInput[]
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutAssignedToUserInput | Prisma.OpportunityCreateOrConnectWithoutAssignedToUserInput[]
+  createMany?: Prisma.OpportunityCreateManyAssignedToUserInputEnvelope
+  connect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+}
+
+export type OpportunityUncheckedCreateNestedManyWithoutCreatedByUserInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutCreatedByUserInput, Prisma.OpportunityUncheckedCreateWithoutCreatedByUserInput> | Prisma.OpportunityCreateWithoutCreatedByUserInput[] | Prisma.OpportunityUncheckedCreateWithoutCreatedByUserInput[]
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutCreatedByUserInput | Prisma.OpportunityCreateOrConnectWithoutCreatedByUserInput[]
+  createMany?: Prisma.OpportunityCreateManyCreatedByUserInputEnvelope
+  connect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+}
+
+export type OpportunityUncheckedCreateNestedManyWithoutAssignedToUserInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutAssignedToUserInput, Prisma.OpportunityUncheckedCreateWithoutAssignedToUserInput> | Prisma.OpportunityCreateWithoutAssignedToUserInput[] | Prisma.OpportunityUncheckedCreateWithoutAssignedToUserInput[]
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutAssignedToUserInput | Prisma.OpportunityCreateOrConnectWithoutAssignedToUserInput[]
+  createMany?: Prisma.OpportunityCreateManyAssignedToUserInputEnvelope
+  connect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+}
+
+export type OpportunityUpdateManyWithoutCreatedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutCreatedByUserInput, Prisma.OpportunityUncheckedCreateWithoutCreatedByUserInput> | Prisma.OpportunityCreateWithoutCreatedByUserInput[] | Prisma.OpportunityUncheckedCreateWithoutCreatedByUserInput[]
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutCreatedByUserInput | Prisma.OpportunityCreateOrConnectWithoutCreatedByUserInput[]
+  upsert?: Prisma.OpportunityUpsertWithWhereUniqueWithoutCreatedByUserInput | Prisma.OpportunityUpsertWithWhereUniqueWithoutCreatedByUserInput[]
+  createMany?: Prisma.OpportunityCreateManyCreatedByUserInputEnvelope
+  set?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  disconnect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  delete?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  connect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  update?: Prisma.OpportunityUpdateWithWhereUniqueWithoutCreatedByUserInput | Prisma.OpportunityUpdateWithWhereUniqueWithoutCreatedByUserInput[]
+  updateMany?: Prisma.OpportunityUpdateManyWithWhereWithoutCreatedByUserInput | Prisma.OpportunityUpdateManyWithWhereWithoutCreatedByUserInput[]
+  deleteMany?: Prisma.OpportunityScalarWhereInput | Prisma.OpportunityScalarWhereInput[]
+}
+
+export type OpportunityUpdateManyWithoutAssignedToUserNestedInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutAssignedToUserInput, Prisma.OpportunityUncheckedCreateWithoutAssignedToUserInput> | Prisma.OpportunityCreateWithoutAssignedToUserInput[] | Prisma.OpportunityUncheckedCreateWithoutAssignedToUserInput[]
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutAssignedToUserInput | Prisma.OpportunityCreateOrConnectWithoutAssignedToUserInput[]
+  upsert?: Prisma.OpportunityUpsertWithWhereUniqueWithoutAssignedToUserInput | Prisma.OpportunityUpsertWithWhereUniqueWithoutAssignedToUserInput[]
+  createMany?: Prisma.OpportunityCreateManyAssignedToUserInputEnvelope
+  set?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  disconnect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  delete?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  connect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  update?: Prisma.OpportunityUpdateWithWhereUniqueWithoutAssignedToUserInput | Prisma.OpportunityUpdateWithWhereUniqueWithoutAssignedToUserInput[]
+  updateMany?: Prisma.OpportunityUpdateManyWithWhereWithoutAssignedToUserInput | Prisma.OpportunityUpdateManyWithWhereWithoutAssignedToUserInput[]
+  deleteMany?: Prisma.OpportunityScalarWhereInput | Prisma.OpportunityScalarWhereInput[]
+}
+
+export type OpportunityUncheckedUpdateManyWithoutCreatedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutCreatedByUserInput, Prisma.OpportunityUncheckedCreateWithoutCreatedByUserInput> | Prisma.OpportunityCreateWithoutCreatedByUserInput[] | Prisma.OpportunityUncheckedCreateWithoutCreatedByUserInput[]
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutCreatedByUserInput | Prisma.OpportunityCreateOrConnectWithoutCreatedByUserInput[]
+  upsert?: Prisma.OpportunityUpsertWithWhereUniqueWithoutCreatedByUserInput | Prisma.OpportunityUpsertWithWhereUniqueWithoutCreatedByUserInput[]
+  createMany?: Prisma.OpportunityCreateManyCreatedByUserInputEnvelope
+  set?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  disconnect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  delete?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  connect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  update?: Prisma.OpportunityUpdateWithWhereUniqueWithoutCreatedByUserInput | Prisma.OpportunityUpdateWithWhereUniqueWithoutCreatedByUserInput[]
+  updateMany?: Prisma.OpportunityUpdateManyWithWhereWithoutCreatedByUserInput | Prisma.OpportunityUpdateManyWithWhereWithoutCreatedByUserInput[]
+  deleteMany?: Prisma.OpportunityScalarWhereInput | Prisma.OpportunityScalarWhereInput[]
+}
+
+export type OpportunityUncheckedUpdateManyWithoutAssignedToUserNestedInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutAssignedToUserInput, Prisma.OpportunityUncheckedCreateWithoutAssignedToUserInput> | Prisma.OpportunityCreateWithoutAssignedToUserInput[] | Prisma.OpportunityUncheckedCreateWithoutAssignedToUserInput[]
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutAssignedToUserInput | Prisma.OpportunityCreateOrConnectWithoutAssignedToUserInput[]
+  upsert?: Prisma.OpportunityUpsertWithWhereUniqueWithoutAssignedToUserInput | Prisma.OpportunityUpsertWithWhereUniqueWithoutAssignedToUserInput[]
+  createMany?: Prisma.OpportunityCreateManyAssignedToUserInputEnvelope
+  set?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  disconnect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  delete?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  connect?: Prisma.OpportunityWhereUniqueInput | Prisma.OpportunityWhereUniqueInput[]
+  update?: Prisma.OpportunityUpdateWithWhereUniqueWithoutAssignedToUserInput | Prisma.OpportunityUpdateWithWhereUniqueWithoutAssignedToUserInput[]
+  updateMany?: Prisma.OpportunityUpdateManyWithWhereWithoutAssignedToUserInput | Prisma.OpportunityUpdateManyWithWhereWithoutAssignedToUserInput[]
+  deleteMany?: Prisma.OpportunityScalarWhereInput | Prisma.OpportunityScalarWhereInput[]
 }
 
 export type OpportunityCreateNestedManyWithoutAuditRequestInput = {
@@ -499,6 +665,150 @@ export type EnumOpportunityStatusFieldUpdateOperationsInput = {
   set?: $Enums.OpportunityStatus
 }
 
+export type OpportunityCreateNestedOneWithoutAssignmentsInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutAssignmentsInput, Prisma.OpportunityUncheckedCreateWithoutAssignmentsInput>
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutAssignmentsInput
+  connect?: Prisma.OpportunityWhereUniqueInput
+}
+
+export type OpportunityUpdateOneRequiredWithoutAssignmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutAssignmentsInput, Prisma.OpportunityUncheckedCreateWithoutAssignmentsInput>
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutAssignmentsInput
+  upsert?: Prisma.OpportunityUpsertWithoutAssignmentsInput
+  connect?: Prisma.OpportunityWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OpportunityUpdateToOneWithWhereWithoutAssignmentsInput, Prisma.OpportunityUpdateWithoutAssignmentsInput>, Prisma.OpportunityUncheckedUpdateWithoutAssignmentsInput>
+}
+
+export type OpportunityCreateWithoutCreatedByUserInput = {
+  id?: string
+  name: string
+  description?: string | null
+  priority?: $Enums.OpportunityPriority
+  status?: $Enums.OpportunityStatus
+  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditRequest: Prisma.AuditRequestCreateNestedOneWithoutOpportunitiesInput
+  assignedToUser?: Prisma.UserCreateNestedOneWithoutAssignedOpportunitiesInput
+  assignments?: Prisma.OpportunityAssignmentCreateNestedManyWithoutOpportunityInput
+}
+
+export type OpportunityUncheckedCreateWithoutCreatedByUserInput = {
+  id?: string
+  auditRequestId: string
+  assignedToUserId?: string | null
+  name: string
+  description?: string | null
+  priority?: $Enums.OpportunityPriority
+  status?: $Enums.OpportunityStatus
+  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignments?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutOpportunityInput
+}
+
+export type OpportunityCreateOrConnectWithoutCreatedByUserInput = {
+  where: Prisma.OpportunityWhereUniqueInput
+  create: Prisma.XOR<Prisma.OpportunityCreateWithoutCreatedByUserInput, Prisma.OpportunityUncheckedCreateWithoutCreatedByUserInput>
+}
+
+export type OpportunityCreateManyCreatedByUserInputEnvelope = {
+  data: Prisma.OpportunityCreateManyCreatedByUserInput | Prisma.OpportunityCreateManyCreatedByUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type OpportunityCreateWithoutAssignedToUserInput = {
+  id?: string
+  name: string
+  description?: string | null
+  priority?: $Enums.OpportunityPriority
+  status?: $Enums.OpportunityStatus
+  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditRequest: Prisma.AuditRequestCreateNestedOneWithoutOpportunitiesInput
+  createdByUser?: Prisma.UserCreateNestedOneWithoutCreatedOpportunitiesInput
+  assignments?: Prisma.OpportunityAssignmentCreateNestedManyWithoutOpportunityInput
+}
+
+export type OpportunityUncheckedCreateWithoutAssignedToUserInput = {
+  id?: string
+  auditRequestId: string
+  createdByUserId?: string | null
+  name: string
+  description?: string | null
+  priority?: $Enums.OpportunityPriority
+  status?: $Enums.OpportunityStatus
+  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignments?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutOpportunityInput
+}
+
+export type OpportunityCreateOrConnectWithoutAssignedToUserInput = {
+  where: Prisma.OpportunityWhereUniqueInput
+  create: Prisma.XOR<Prisma.OpportunityCreateWithoutAssignedToUserInput, Prisma.OpportunityUncheckedCreateWithoutAssignedToUserInput>
+}
+
+export type OpportunityCreateManyAssignedToUserInputEnvelope = {
+  data: Prisma.OpportunityCreateManyAssignedToUserInput | Prisma.OpportunityCreateManyAssignedToUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type OpportunityUpsertWithWhereUniqueWithoutCreatedByUserInput = {
+  where: Prisma.OpportunityWhereUniqueInput
+  update: Prisma.XOR<Prisma.OpportunityUpdateWithoutCreatedByUserInput, Prisma.OpportunityUncheckedUpdateWithoutCreatedByUserInput>
+  create: Prisma.XOR<Prisma.OpportunityCreateWithoutCreatedByUserInput, Prisma.OpportunityUncheckedCreateWithoutCreatedByUserInput>
+}
+
+export type OpportunityUpdateWithWhereUniqueWithoutCreatedByUserInput = {
+  where: Prisma.OpportunityWhereUniqueInput
+  data: Prisma.XOR<Prisma.OpportunityUpdateWithoutCreatedByUserInput, Prisma.OpportunityUncheckedUpdateWithoutCreatedByUserInput>
+}
+
+export type OpportunityUpdateManyWithWhereWithoutCreatedByUserInput = {
+  where: Prisma.OpportunityScalarWhereInput
+  data: Prisma.XOR<Prisma.OpportunityUpdateManyMutationInput, Prisma.OpportunityUncheckedUpdateManyWithoutCreatedByUserInput>
+}
+
+export type OpportunityScalarWhereInput = {
+  AND?: Prisma.OpportunityScalarWhereInput | Prisma.OpportunityScalarWhereInput[]
+  OR?: Prisma.OpportunityScalarWhereInput[]
+  NOT?: Prisma.OpportunityScalarWhereInput | Prisma.OpportunityScalarWhereInput[]
+  id?: Prisma.StringFilter<"Opportunity"> | string
+  auditRequestId?: Prisma.StringFilter<"Opportunity"> | string
+  createdByUserId?: Prisma.StringNullableFilter<"Opportunity"> | string | null
+  assignedToUserId?: Prisma.StringNullableFilter<"Opportunity"> | string | null
+  name?: Prisma.StringFilter<"Opportunity"> | string
+  description?: Prisma.StringNullableFilter<"Opportunity"> | string | null
+  priority?: Prisma.EnumOpportunityPriorityFilter<"Opportunity"> | $Enums.OpportunityPriority
+  status?: Prisma.EnumOpportunityStatusFilter<"Opportunity"> | $Enums.OpportunityStatus
+  estimatedValue?: Prisma.DecimalNullableFilter<"Opportunity"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.DateTimeNullableFilter<"Opportunity"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"Opportunity"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Opportunity"> | Date | string
+}
+
+export type OpportunityUpsertWithWhereUniqueWithoutAssignedToUserInput = {
+  where: Prisma.OpportunityWhereUniqueInput
+  update: Prisma.XOR<Prisma.OpportunityUpdateWithoutAssignedToUserInput, Prisma.OpportunityUncheckedUpdateWithoutAssignedToUserInput>
+  create: Prisma.XOR<Prisma.OpportunityCreateWithoutAssignedToUserInput, Prisma.OpportunityUncheckedCreateWithoutAssignedToUserInput>
+}
+
+export type OpportunityUpdateWithWhereUniqueWithoutAssignedToUserInput = {
+  where: Prisma.OpportunityWhereUniqueInput
+  data: Prisma.XOR<Prisma.OpportunityUpdateWithoutAssignedToUserInput, Prisma.OpportunityUncheckedUpdateWithoutAssignedToUserInput>
+}
+
+export type OpportunityUpdateManyWithWhereWithoutAssignedToUserInput = {
+  where: Prisma.OpportunityScalarWhereInput
+  data: Prisma.XOR<Prisma.OpportunityUpdateManyMutationInput, Prisma.OpportunityUncheckedUpdateManyWithoutAssignedToUserInput>
+}
+
 export type OpportunityCreateWithoutAuditRequestInput = {
   id?: string
   name: string
@@ -506,19 +816,27 @@ export type OpportunityCreateWithoutAuditRequestInput = {
   priority?: $Enums.OpportunityPriority
   status?: $Enums.OpportunityStatus
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdByUser?: Prisma.UserCreateNestedOneWithoutCreatedOpportunitiesInput
+  assignedToUser?: Prisma.UserCreateNestedOneWithoutAssignedOpportunitiesInput
+  assignments?: Prisma.OpportunityAssignmentCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityUncheckedCreateWithoutAuditRequestInput = {
   id?: string
+  createdByUserId?: string | null
+  assignedToUserId?: string | null
   name: string
   description?: string | null
   priority?: $Enums.OpportunityPriority
   status?: $Enums.OpportunityStatus
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  assignments?: Prisma.OpportunityAssignmentUncheckedCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityCreateOrConnectWithoutAuditRequestInput = {
@@ -547,28 +865,208 @@ export type OpportunityUpdateManyWithWhereWithoutAuditRequestInput = {
   data: Prisma.XOR<Prisma.OpportunityUpdateManyMutationInput, Prisma.OpportunityUncheckedUpdateManyWithoutAuditRequestInput>
 }
 
-export type OpportunityScalarWhereInput = {
-  AND?: Prisma.OpportunityScalarWhereInput | Prisma.OpportunityScalarWhereInput[]
-  OR?: Prisma.OpportunityScalarWhereInput[]
-  NOT?: Prisma.OpportunityScalarWhereInput | Prisma.OpportunityScalarWhereInput[]
-  id?: Prisma.StringFilter<"Opportunity"> | string
-  auditRequestId?: Prisma.StringFilter<"Opportunity"> | string
-  name?: Prisma.StringFilter<"Opportunity"> | string
-  description?: Prisma.StringNullableFilter<"Opportunity"> | string | null
-  priority?: Prisma.EnumOpportunityPriorityFilter<"Opportunity"> | $Enums.OpportunityPriority
-  status?: Prisma.EnumOpportunityStatusFilter<"Opportunity"> | $Enums.OpportunityStatus
-  estimatedValue?: Prisma.DecimalNullableFilter<"Opportunity"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFilter<"Opportunity"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Opportunity"> | Date | string
-}
-
-export type OpportunityCreateManyAuditRequestInput = {
+export type OpportunityCreateWithoutAssignmentsInput = {
   id?: string
   name: string
   description?: string | null
   priority?: $Enums.OpportunityPriority
   status?: $Enums.OpportunityStatus
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditRequest: Prisma.AuditRequestCreateNestedOneWithoutOpportunitiesInput
+  createdByUser?: Prisma.UserCreateNestedOneWithoutCreatedOpportunitiesInput
+  assignedToUser?: Prisma.UserCreateNestedOneWithoutAssignedOpportunitiesInput
+}
+
+export type OpportunityUncheckedCreateWithoutAssignmentsInput = {
+  id?: string
+  auditRequestId: string
+  createdByUserId?: string | null
+  assignedToUserId?: string | null
+  name: string
+  description?: string | null
+  priority?: $Enums.OpportunityPriority
+  status?: $Enums.OpportunityStatus
+  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type OpportunityCreateOrConnectWithoutAssignmentsInput = {
+  where: Prisma.OpportunityWhereUniqueInput
+  create: Prisma.XOR<Prisma.OpportunityCreateWithoutAssignmentsInput, Prisma.OpportunityUncheckedCreateWithoutAssignmentsInput>
+}
+
+export type OpportunityUpsertWithoutAssignmentsInput = {
+  update: Prisma.XOR<Prisma.OpportunityUpdateWithoutAssignmentsInput, Prisma.OpportunityUncheckedUpdateWithoutAssignmentsInput>
+  create: Prisma.XOR<Prisma.OpportunityCreateWithoutAssignmentsInput, Prisma.OpportunityUncheckedCreateWithoutAssignmentsInput>
+  where?: Prisma.OpportunityWhereInput
+}
+
+export type OpportunityUpdateToOneWithWhereWithoutAssignmentsInput = {
+  where?: Prisma.OpportunityWhereInput
+  data: Prisma.XOR<Prisma.OpportunityUpdateWithoutAssignmentsInput, Prisma.OpportunityUncheckedUpdateWithoutAssignmentsInput>
+}
+
+export type OpportunityUpdateWithoutAssignmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
+  status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
+  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditRequest?: Prisma.AuditRequestUpdateOneRequiredWithoutOpportunitiesNestedInput
+  createdByUser?: Prisma.UserUpdateOneWithoutCreatedOpportunitiesNestedInput
+  assignedToUser?: Prisma.UserUpdateOneWithoutAssignedOpportunitiesNestedInput
+}
+
+export type OpportunityUncheckedUpdateWithoutAssignmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  auditRequestId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
+  status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
+  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type OpportunityCreateManyCreatedByUserInput = {
+  id?: string
+  auditRequestId: string
+  assignedToUserId?: string | null
+  name: string
+  description?: string | null
+  priority?: $Enums.OpportunityPriority
+  status?: $Enums.OpportunityStatus
+  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type OpportunityCreateManyAssignedToUserInput = {
+  id?: string
+  auditRequestId: string
+  createdByUserId?: string | null
+  name: string
+  description?: string | null
+  priority?: $Enums.OpportunityPriority
+  status?: $Enums.OpportunityStatus
+  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type OpportunityUpdateWithoutCreatedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
+  status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
+  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditRequest?: Prisma.AuditRequestUpdateOneRequiredWithoutOpportunitiesNestedInput
+  assignedToUser?: Prisma.UserUpdateOneWithoutAssignedOpportunitiesNestedInput
+  assignments?: Prisma.OpportunityAssignmentUpdateManyWithoutOpportunityNestedInput
+}
+
+export type OpportunityUncheckedUpdateWithoutCreatedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  auditRequestId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
+  status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
+  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignments?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutOpportunityNestedInput
+}
+
+export type OpportunityUncheckedUpdateManyWithoutCreatedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  auditRequestId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
+  status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
+  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type OpportunityUpdateWithoutAssignedToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
+  status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
+  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditRequest?: Prisma.AuditRequestUpdateOneRequiredWithoutOpportunitiesNestedInput
+  createdByUser?: Prisma.UserUpdateOneWithoutCreatedOpportunitiesNestedInput
+  assignments?: Prisma.OpportunityAssignmentUpdateManyWithoutOpportunityNestedInput
+}
+
+export type OpportunityUncheckedUpdateWithoutAssignedToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  auditRequestId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
+  status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
+  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignments?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutOpportunityNestedInput
+}
+
+export type OpportunityUncheckedUpdateManyWithoutAssignedToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  auditRequestId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
+  status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
+  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type OpportunityCreateManyAuditRequestInput = {
+  id?: string
+  createdByUserId?: string | null
+  assignedToUserId?: string | null
+  name: string
+  description?: string | null
+  priority?: $Enums.OpportunityPriority
+  status?: $Enums.OpportunityStatus
+  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -580,109 +1078,183 @@ export type OpportunityUpdateWithoutAuditRequestInput = {
   priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
   status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdByUser?: Prisma.UserUpdateOneWithoutCreatedOpportunitiesNestedInput
+  assignedToUser?: Prisma.UserUpdateOneWithoutAssignedOpportunitiesNestedInput
+  assignments?: Prisma.OpportunityAssignmentUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateWithoutAuditRequestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
   status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignments?: Prisma.OpportunityAssignmentUncheckedUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateManyWithoutAuditRequestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumOpportunityPriorityFieldUpdateOperationsInput | $Enums.OpportunityPriority
   status?: Prisma.EnumOpportunityStatusFieldUpdateOperationsInput | $Enums.OpportunityStatus
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type OpportunityCountOutputType
+ */
+
+export type OpportunityCountOutputType = {
+  assignments: number
+}
+
+export type OpportunityCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  assignments?: boolean | OpportunityCountOutputTypeCountAssignmentsArgs
+}
+
+/**
+ * OpportunityCountOutputType without action
+ */
+export type OpportunityCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OpportunityCountOutputType
+   */
+  select?: Prisma.OpportunityCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * OpportunityCountOutputType without action
+ */
+export type OpportunityCountOutputTypeCountAssignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpportunityAssignmentWhereInput
+}
 
 
 export type OpportunitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   auditRequestId?: boolean
+  createdByUserId?: boolean
+  assignedToUserId?: boolean
   name?: boolean
   description?: boolean
   priority?: boolean
   status?: boolean
   estimatedValue?: boolean
+  closedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   auditRequest?: boolean | Prisma.AuditRequestDefaultArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Opportunity$createdByUserArgs<ExtArgs>
+  assignedToUser?: boolean | Prisma.Opportunity$assignedToUserArgs<ExtArgs>
+  assignments?: boolean | Prisma.Opportunity$assignmentsArgs<ExtArgs>
+  _count?: boolean | Prisma.OpportunityCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["opportunity"]>
 
 export type OpportunitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   auditRequestId?: boolean
+  createdByUserId?: boolean
+  assignedToUserId?: boolean
   name?: boolean
   description?: boolean
   priority?: boolean
   status?: boolean
   estimatedValue?: boolean
+  closedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   auditRequest?: boolean | Prisma.AuditRequestDefaultArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Opportunity$createdByUserArgs<ExtArgs>
+  assignedToUser?: boolean | Prisma.Opportunity$assignedToUserArgs<ExtArgs>
 }, ExtArgs["result"]["opportunity"]>
 
 export type OpportunitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   auditRequestId?: boolean
+  createdByUserId?: boolean
+  assignedToUserId?: boolean
   name?: boolean
   description?: boolean
   priority?: boolean
   status?: boolean
   estimatedValue?: boolean
+  closedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   auditRequest?: boolean | Prisma.AuditRequestDefaultArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Opportunity$createdByUserArgs<ExtArgs>
+  assignedToUser?: boolean | Prisma.Opportunity$assignedToUserArgs<ExtArgs>
 }, ExtArgs["result"]["opportunity"]>
 
 export type OpportunitySelectScalar = {
   id?: boolean
   auditRequestId?: boolean
+  createdByUserId?: boolean
+  assignedToUserId?: boolean
   name?: boolean
   description?: boolean
   priority?: boolean
   status?: boolean
   estimatedValue?: boolean
+  closedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type OpportunityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "auditRequestId" | "name" | "description" | "priority" | "status" | "estimatedValue" | "createdAt" | "updatedAt", ExtArgs["result"]["opportunity"]>
+export type OpportunityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "auditRequestId" | "createdByUserId" | "assignedToUserId" | "name" | "description" | "priority" | "status" | "estimatedValue" | "closedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["opportunity"]>
 export type OpportunityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   auditRequest?: boolean | Prisma.AuditRequestDefaultArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Opportunity$createdByUserArgs<ExtArgs>
+  assignedToUser?: boolean | Prisma.Opportunity$assignedToUserArgs<ExtArgs>
+  assignments?: boolean | Prisma.Opportunity$assignmentsArgs<ExtArgs>
+  _count?: boolean | Prisma.OpportunityCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OpportunityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   auditRequest?: boolean | Prisma.AuditRequestDefaultArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Opportunity$createdByUserArgs<ExtArgs>
+  assignedToUser?: boolean | Prisma.Opportunity$assignedToUserArgs<ExtArgs>
 }
 export type OpportunityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   auditRequest?: boolean | Prisma.AuditRequestDefaultArgs<ExtArgs>
+  createdByUser?: boolean | Prisma.Opportunity$createdByUserArgs<ExtArgs>
+  assignedToUser?: boolean | Prisma.Opportunity$assignedToUserArgs<ExtArgs>
 }
 
 export type $OpportunityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Opportunity"
   objects: {
     auditRequest: Prisma.$AuditRequestPayload<ExtArgs>
+    createdByUser: Prisma.$UserPayload<ExtArgs> | null
+    assignedToUser: Prisma.$UserPayload<ExtArgs> | null
+    assignments: Prisma.$OpportunityAssignmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     auditRequestId: string
+    createdByUserId: string | null
+    assignedToUserId: string | null
     name: string
     description: string | null
     priority: $Enums.OpportunityPriority
     status: $Enums.OpportunityStatus
     estimatedValue: runtime.Decimal | null
+    closedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["opportunity"]>
@@ -1080,6 +1652,9 @@ readonly fields: OpportunityFieldRefs;
 export interface Prisma__OpportunityClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   auditRequest<T extends Prisma.AuditRequestDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AuditRequestDefaultArgs<ExtArgs>>): Prisma.Prisma__AuditRequestClient<runtime.Types.Result.GetResult<Prisma.$AuditRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  createdByUser<T extends Prisma.Opportunity$createdByUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Opportunity$createdByUserArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  assignedToUser<T extends Prisma.Opportunity$assignedToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Opportunity$assignedToUserArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  assignments<T extends Prisma.Opportunity$assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Opportunity$assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1111,11 +1686,14 @@ export interface Prisma__OpportunityClient<T, Null = never, ExtArgs extends runt
 export interface OpportunityFieldRefs {
   readonly id: Prisma.FieldRef<"Opportunity", 'String'>
   readonly auditRequestId: Prisma.FieldRef<"Opportunity", 'String'>
+  readonly createdByUserId: Prisma.FieldRef<"Opportunity", 'String'>
+  readonly assignedToUserId: Prisma.FieldRef<"Opportunity", 'String'>
   readonly name: Prisma.FieldRef<"Opportunity", 'String'>
   readonly description: Prisma.FieldRef<"Opportunity", 'String'>
   readonly priority: Prisma.FieldRef<"Opportunity", 'OpportunityPriority'>
   readonly status: Prisma.FieldRef<"Opportunity", 'OpportunityStatus'>
   readonly estimatedValue: Prisma.FieldRef<"Opportunity", 'Decimal'>
+  readonly closedAt: Prisma.FieldRef<"Opportunity", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Opportunity", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Opportunity", 'DateTime'>
 }
@@ -1516,6 +2094,68 @@ export type OpportunityDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many Opportunities to delete.
    */
   limit?: number
+}
+
+/**
+ * Opportunity.createdByUser
+ */
+export type Opportunity$createdByUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * Opportunity.assignedToUser
+ */
+export type Opportunity$assignedToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * Opportunity.assignments
+ */
+export type Opportunity$assignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OpportunityAssignment
+   */
+  select?: Prisma.OpportunityAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OpportunityAssignment
+   */
+  omit?: Prisma.OpportunityAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpportunityAssignmentInclude<ExtArgs> | null
+  where?: Prisma.OpportunityAssignmentWhereInput
+  orderBy?: Prisma.OpportunityAssignmentOrderByWithRelationInput | Prisma.OpportunityAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.OpportunityAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpportunityAssignmentScalarFieldEnum | Prisma.OpportunityAssignmentScalarFieldEnum[]
 }
 
 /**

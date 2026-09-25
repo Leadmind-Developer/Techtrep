@@ -148,6 +148,21 @@ export async function getOpportunityById(id: string) {
       id,
     },
     include: {
+      createdByUser: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+      assignedToUser: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          active: true,
+        },
+      },
       auditRequest: {
         include: {
           organization: {
