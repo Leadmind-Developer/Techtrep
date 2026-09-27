@@ -38,6 +38,13 @@ const solutions = [
   },
   {
     number: "06",
+    title: "Networking & Infrastructure",
+    description:
+      "Connect your business from ISP and last-mile connectivity through LAN, Wi-Fi, cabling and endpoint installation.",
+    href: "/solutions/networking-infrastructure",
+  },
+  {
+    number: "07",
     title: "Managed Technology",
     description:
       "Keep your technology maintained, monitored, secure and improving after implementation.",
@@ -143,7 +150,7 @@ export default function HomePage() {
                 Connect
               </p>
               <p className="mt-1 text-sm text-slate-500">
-                Make your systems work together.
+                Make your systems, networks and devices work together.
               </p>
             </div>
           </div>
@@ -440,11 +447,31 @@ export default function HomePage() {
 
           <div className="mt-14 grid gap-8 md:grid-cols-5">
             {[
-              ["01", "Audit", "Understand your business and technology environment."],
-              ["02", "Discover", "Identify the highest-value opportunities."],
-              ["03", "Design", "Define a practical solution and roadmap."],
-              ["04", "Implement", "Build, integrate, test and deploy."],
-              ["05", "Improve", "Support, monitor and continuously improve."],
+              [
+                "01",
+                "Audit",
+                "Understand your business and technology environment.",
+              ],
+              [
+                "02",
+                "Discover",
+                "Identify the highest-value opportunities.",
+              ],
+              [
+                "03",
+                "Design",
+                "Define a practical solution and roadmap.",
+              ],
+              [
+                "04",
+                "Implement",
+                "Build, integrate, test and deploy.",
+              ],
+              [
+                "05",
+                "Improve",
+                "Support, monitor and continuously improve.",
+              ],
             ].map(([number, title, description]) => (
               <div key={number}>
                 <span className="text-sm font-semibold text-[#39358C]">

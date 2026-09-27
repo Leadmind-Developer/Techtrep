@@ -1,15 +1,33 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
+import MobileNav from "@/components/layout/MobileNav";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://business.thetechtrep.com"),
+
   title: {
     default: "Techtrep Business Solutions | Technology, Automation & AI",
     template: "%s | Techtrep Business Solutions",
   },
+  
+
   description:
     "Techtrep Business Solutions helps growing businesses digitize operations, automate repetitive work, connect systems and apply AI where it creates practical value.",
+  
+  alternates: {
+    canonical: "https://business.thetechtrep.com",
+  },
+
+  category: "Business Technology",
+
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/icon.svg",
+  },
+
   keywords: [
     "business automation",
     "AI solutions",
@@ -18,8 +36,14 @@ export const metadata: Metadata = {
     "business technology",
     "software integration",
     "workflow automation",
-    "Nigeria",
+    "business technology Nigeria",
+    "technology consulting Nigeria",
   ],
+
+  authors: [{ name: "Techtrep" }],
+  creator: "Techtrep",
+  publisher: "Techtrep",
+
   openGraph: {
     title: "Techtrep Business Solutions",
     description:
@@ -27,17 +51,47 @@ export const metadata: Metadata = {
     url: "https://business.thetechtrep.com",
     siteName: "Techtrep Business Solutions",
     type: "website",
+    locale: "en_NG",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Techtrep Business Solutions",
+    description:
+      "Technology, Automation & AI for Growing Businesses.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
+const navLinks = [
+  { href: "/solutions", label: "Solutions" },
+  { href: "/industries", label: "Industries" },
+  { href: "/how-we-work", label: "How We Work" },
+  { href: "/case-studies", label: "Case Studies" },
+  { href: "/about", label: "About" },
+];
+
 function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#39358C] text-sm font-bold text-white">
-            T
-          </div>
+        <Link
+          href="/"
+          className="flex shrink-0 items-center gap-3"
+          aria-label="Techtrep Business Solutions home"
+        >
+          <Image
+            src="/icon.svg"
+            alt="Techtrep"
+            width={42}
+            height={42}
+            className="h-10 w-10 rounded-lg object-contain"
+            priority
+          />          
 
           <div>
             <div className="text-sm font-bold tracking-tight text-slate-950">
@@ -50,56 +104,32 @@ function Header() {
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex">
-          <Link
-            href="/solutions"
-            className="text-sm font-medium text-slate-600 transition hover:text-slate-950"
-          >
-            Solutions
-          </Link>
-
-          <Link
-            href="/industries"
-            className="text-sm font-medium text-slate-600 transition hover:text-slate-950"
-          >
-            Industries
-          </Link>
-
-          <Link
-            href="/how-we-work"
-            className="text-sm font-medium text-slate-600 transition hover:text-slate-950"
-          >
-            How We Work
-          </Link>
-
-          <Link
-            href="/case-studies"
-            className="text-sm font-medium text-slate-600 transition hover:text-slate-950"
-          >
-            Case Studies
-          </Link>
-
-          <Link
-            href="/about"
-            className="text-sm font-medium text-slate-600 transition hover:text-slate-950"
-          >
-            About
-          </Link>
+        {/* Desktop navigation */}
+        <nav
+          className="hidden items-center gap-7 lg:flex"
+          aria-label="Primary navigation"
+        >
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
+        {/* Desktop CTA */}
         <Link
           href="/free-technology-audit"
-          className="hidden rounded-lg bg-[#39358C] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#2f2b76] sm:inline-flex"
+          className="hidden rounded-lg bg-[#39358C] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#2f2b76] lg:inline-flex"
         >
           Free Technology Audit
         </Link>
 
-        <Link
-          href="/free-technology-audit"
-          className="inline-flex rounded-lg bg-[#39358C] px-3 py-2 text-xs font-semibold text-white sm:hidden"
-        >
-          Free Audit
-        </Link>
+        {/* Mobile navigation */}
+        <MobileNav />
       </div>
     </header>
   );
@@ -110,78 +140,169 @@ function Footer() {
     <footer className="border-t border-slate-200 bg-slate-950 text-white">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+          {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="text-lg font-bold">TECHTREP</div>
+            <Link
+              href="/"
+              className="inline-block"
+              aria-label="Techtrep Business Solutions home"
+            >
+              <div className="text-lg font-bold">TECHTREP</div>
 
-            <div className="mt-1 text-xs tracking-wide text-slate-400">
-              BUSINESS SOLUTIONS
-            </div>
+              <div className="mt-1 text-xs tracking-wide text-slate-400">
+                BUSINESS SOLUTIONS
+              </div>
+            </Link>
 
             <p className="mt-6 max-w-md text-sm leading-7 text-slate-400">
               Technology, Automation & AI for Growing Businesses.
             </p>
 
-            <p className="mt-4 text-sm text-slate-400">
-              Tell us what your staff are doing manually every day. We'll show
-              you what can be automated.
+            <p className="mt-4 max-w-md text-sm leading-7 text-slate-400">
+              Tell us what your staff are doing manually every day. We&apos;ll
+              show you what can be automated.
             </p>
+
+            <Link
+              href="/free-technology-audit"
+              className="mt-7 inline-flex rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-slate-200"
+            >
+              Start with a Free Audit
+            </Link>
           </div>
 
+          {/* Solutions */}
           <div>
             <h3 className="text-sm font-semibold">Solutions</h3>
 
             <div className="mt-5 space-y-3 text-sm text-slate-400">
-              <Link className="block hover:text-white" href="/solutions/digital-foundation">
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/solutions"
+              >
+                All Solutions
+              </Link>
+
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/solutions/digital-foundation"
+              >
                 Digital Foundation
               </Link>
 
-              <Link className="block hover:text-white" href="/solutions/business-automation">
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/solutions/business-automation"
+              >
                 Business Automation
               </Link>
 
-              <Link className="block hover:text-white" href="/solutions/ai-business-solutions">
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/solutions/ai-business-solutions"
+              >
                 AI Business Solutions
               </Link>
 
-              <Link className="block hover:text-white" href="/solutions/custom-technology">
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/solutions/dashboards-analytics"
+              >
+                Dashboards & Analytics
+              </Link>
+
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/solutions/custom-technology"
+              >
                 Custom Technology
               </Link>
 
-              <Link className="block hover:text-white" href="/solutions/managed-technology">
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/solutions/networking-infrastructure"
+              >
+                Networking & Infrastructure
+              </Link>
+
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/solutions/managed-technology"
+              >
                 Managed Technology
               </Link>
             </div>
           </div>
 
+          {/* Company */}
           <div>
             <h3 className="text-sm font-semibold">Company</h3>
 
             <div className="mt-5 space-y-3 text-sm text-slate-400">
-              <Link className="block hover:text-white" href="/industries">
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/industries"
+              >
                 Industries
               </Link>
 
-              <Link className="block hover:text-white" href="/how-we-work">
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/how-we-work"
+              >
                 How We Work
               </Link>
 
-              <Link className="block hover:text-white" href="/case-studies">
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/case-studies"
+              >
                 Case Studies
               </Link>
 
-              <Link className="block hover:text-white" href="/about">
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/about"
+              >
                 About Techtrep
               </Link>
 
-              <Link className="block hover:text-white" href="/contact">
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/contact"
+              >
                 Contact
+              </Link>
+
+              <Link
+                className="block transition-colors hover:text-white"
+                href="/free-technology-audit"
+              >
+                Free Technology Audit
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col justify-between gap-4 border-t border-white/10 pt-7 text-xs text-slate-500 sm:flex-row">
-          <p>© {new Date().getFullYear()} Techtrep. All rights reserved.</p>
+        {/* Bottom footer */}
+        <div className="mt-14 flex flex-col justify-between gap-5 border-t border-white/10 pt-7 text-xs text-slate-500 sm:flex-row sm:items-center">
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            <p>© {new Date().getFullYear()} Techtrep. All rights reserved.</p>
+
+            <Link
+              href="/privacy-policy"
+              className="transition-colors hover:text-slate-300"
+            >
+              Privacy Policy
+            </Link>
+
+            <Link
+              href="/terms"
+              className="transition-colors hover:text-slate-300"
+            >
+              Terms
+            </Link>
+          </div>
 
           <p>Technology, Automation & AI for Growing Businesses.</p>
         </div>
