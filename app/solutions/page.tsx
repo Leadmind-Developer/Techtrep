@@ -81,15 +81,15 @@ const solutions = [
   },
   {
     number: "07",
-    title: "Managed Technology",
+    title: "Device & endpoint installation",
     description:
-      "Keep your technology reliable after implementation with ongoing maintenance, monitoring, support and continuous improvement.",
-    href: "/solutions/managed-technology",
+      "Computers, network equipment, security-camera cabling, connected devices and other endpoints that support daily operations.",
+    href: "/solutions/networking-infrastructure",
     points: [
-      "Technology maintenance",
-      "Monitoring and support",
-      "Security and reliability",
-      "Continuous improvement",
+      "Device maintenance",
+      "Device Monitoring and support",
+      "Device Security and reliability",
+      "Device Continuous improvement",
     ],
   },{
     number: "08",
