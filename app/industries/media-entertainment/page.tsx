@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Technology Solutions for Media & Entertainment",
   description:
-    "Techtrep helps media and entertainment businesses improve content operations, audience engagement, advertising workflows, events, payments, reporting, connectivity and repetitive work with practical technology, automation and AI solutions.",
-};
+    "Technology solutions for media and entertainment organizations including digital platforms, audience workflows, automation, analytics, connectivity and custom systems.",
+  path: "/industries/media-entertainment",
+});
 
 const challenges = [
   {

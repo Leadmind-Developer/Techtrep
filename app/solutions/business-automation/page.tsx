@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
+import ServiceSchema from "@/components/ServiceSchema";
 
 const automationAreas = [
   {
@@ -157,15 +159,23 @@ const faqs = [
   },
 ];
 
-export const metadata = {
-  title: "Business Automation",
+export const metadata = createPageMetadata({
+  title: "Business Automation Solutions",
   description:
-    "Automate repetitive business processes, workflows, approvals, notifications and system integrations with Techtrep Business Solutions.",
-};
+    "Automate repetitive business processes, enquiries, approvals, notifications and system workflows with practical automation solutions from Techtrep.",
+  path: "/solutions/business-automation",
+});
 
 export default function BusinessAutomationPage() {
   return (
-    <main>
+    <>
+     <ServiceSchema
+        name="Business Automation Solutions"
+        description="Techtrep Business Solutions helps organizations automate repetitive workflows, reduce manual work, connect business systems and improve operational efficiency."
+        path="/solutions/business-automation"
+        serviceType="Business Process Automation"
+       />
+    <main>       
       {/* Hero */}
       <section className="border-b border-slate-200 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-28">
@@ -669,5 +679,6 @@ export default function BusinessAutomationPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

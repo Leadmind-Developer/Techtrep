@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
+import ServiceSchema from "@/components/ServiceSchema";
 
 const solutionAreas = [
   {
@@ -185,15 +187,23 @@ const faqs = [
   },
 ];
 
-export const metadata = {
+export const metadata = createPageMetadata({
   title: "AI Business Solutions",
   description:
-    "Practical AI business solutions including AI assistants, customer support, document automation, knowledge systems and AI-powered workflows from Techtrep.",
-};
+    "Leverage artificial intelligence to transform your business operations, enhance customer experiences, and drive innovation with our comprehensive AI solutions.",
+  path: "/solutions/ai-business-solutions",
+});
 
 export default function AIBusinessSolutionsPage() {
   return (
-    <main>
+   <>
+    <ServiceSchema
+        name="AI Business Solutions"
+        description="Techtrep Business Solutions helps organizations apply artificial intelligence to customer service, business knowledge, documents, reporting and operations."
+        path="/solutions/ai-business-solutions"
+        serviceType="Artificial Intelligence Services"
+       />
+    <main>        
       {/* Hero */}
       <section className="border-b border-slate-200 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-28">
@@ -679,5 +689,6 @@ export default function AIBusinessSolutionsPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

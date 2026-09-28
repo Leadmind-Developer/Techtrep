@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Technology Solutions for Churches & Faith Organizations",
+export const metadata = createPageMetadata({
+  title: "Technology Solutions for Churches",
   description:
-    "Techtrep helps churches and faith organizations improve administration, communication, events, membership workflows, reporting, connectivity and repetitive tasks with practical technology, automation and AI solutions.",
-};
+    "Technology solutions for churches and faith organizations covering communication, digital workflows, events, reporting, connectivity and operational automation.",
+  path: "/industries/churches",
+});
 
 const challenges = [
   {

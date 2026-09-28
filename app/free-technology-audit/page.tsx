@@ -1,5 +1,13 @@
 import Link from "next/link";
 import AuditForm from "@/components/audit/AuditForm";
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata({
+  title: "Free Business Technology Audit",
+  description:
+    "Request a free 30–45 minute business technology audit from Techtrep and identify opportunities to improve operations, automation, systems, connectivity and technology.",
+  path: "/free-technology-audit",
+});
 
 const auditAreas = [
   {

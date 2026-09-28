@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
+import ServiceSchema from "@/components/ServiceSchema";
 
 const solutions = [
   {
@@ -81,15 +83,15 @@ const solutions = [
   },
   {
     number: "07",
-    title: "Managed Technology",
+    title: "Device & endpoint installation",
     description:
-      "Keep your technology reliable after implementation with ongoing maintenance, monitoring, support and continuous improvement.",
-    href: "/solutions/managed-technology",
+      "Computers, network equipment, security-camera cabling, connected devices and other endpoints that support daily operations.",
+    href: "/solutions/networking-infrastructure",
     points: [
-      "Technology maintenance",
-      "Monitoring and support",
-      "Security and reliability",
-      "Continuous improvement",
+      "Device maintenance",
+      "Device Monitoring and support",
+      "Device Security and reliability",
+      "Device Continuous improvement",
     ],
   },{
     number: "08",
@@ -129,14 +131,22 @@ const principles = [
   },
 ];
 
-export const metadata = {
+export const metadata = createPageMetadata({
   title: "Business Technology Solutions",
   description:
-    "Explore Techtrep Business Solutions for digital foundations, business automation, AI solutions, dashboards, custom technology, networking and managed technology.",
-};
+    "Explore Techtrep Business Solutions for digital foundations, business automation, AI, dashboards, custom software, networking infrastructure and managed technology.",
+  path: "/solutions",
+});
 
 export default function SolutionsPage() {
   return (
+     <>
+             <ServiceSchema
+                name="Networking & Infrastructure Solutions"
+                description="Techtrep Business Solutions provides connectivity, LAN, Wi-Fi, structured cabling, security-camera cabling, solar cabling, device installation and network infrastructure support."
+                path="/solutions/networking-infrastructure"
+                serviceType="Network and IT Infrastructure Services"
+               />
     <main>
       {/* Hero */}
       <section className="border-b border-slate-200 bg-slate-50">
@@ -433,5 +443,6 @@ export default function SolutionsPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

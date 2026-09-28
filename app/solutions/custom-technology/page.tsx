@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
+import ServiceSchema from "@/components/ServiceSchema";
 
-export const metadata: Metadata = {
-  title: "Custom Technology",
+export const metadata = createPageMetadata({
+  title: "Custom Technology Solutions",
   description:
-    "Build custom software and technology around your business requirements. Techtrep designs, develops and integrates practical custom technology solutions for growing businesses.",
-};
+    "Build custom business applications, portals, APIs, integrations and workflow platforms around the way your organization actually operates.",
+  path: "/solutions/custom-technology",
+});
 
 const solutionAreas = [
   {
@@ -117,6 +119,13 @@ const faqs = [
 
 export default function CustomTechnologyPage() {
   return (
+     <>
+         <ServiceSchema
+            name="Custom Technology Solutions"
+            description="Techtrep Business Solutions designs and builds custom software, business platforms and technology solutions around the specific requirements of an organization."
+            path="/solutions/custom-technology"
+            serviceType="Custom Software Development"
+           />
     <main>
       {/* Hero */}
       <section className="border-b border-slate-200 bg-slate-50">
@@ -641,5 +650,6 @@ export default function CustomTechnologyPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

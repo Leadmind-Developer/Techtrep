@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
+import ServiceSchema from "@/components/ServiceSchema";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Dashboards & Analytics",
   description:
-    "Turn business data into clear dashboards, reports and actionable insights. Techtrep helps growing businesses improve visibility across sales, finance, operations and performance.",
-};
+    "Turn operational data into useful business information with management dashboards, KPI tracking, reporting and data visualization.",
+   path: "/solutions/dashboards-analytics",
+});
 
 const useCases = [
   {
@@ -109,6 +111,13 @@ const faqs = [
 
 export default function DashboardsAnalyticsPage() {
   return (
+     <>
+         <ServiceSchema
+            name="Business Dashboards & Analytics"
+            description="Techtrep Business Solutions helps organizations turn operational data into useful dashboards, reports and analytics for better visibility and business decision-making."
+            path="/solutions/dashboards-analytics"
+            serviceType="Business Intelligence and Analytics"
+           />
     <main>
       {/* Hero */}
       <section className="border-b border-slate-200 bg-slate-50">
@@ -646,5 +655,6 @@ export default function DashboardsAnalyticsPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 import MobileNav from "@/components/layout/MobileNav";
+import OrganizationSchema from "@/components/OrganizationSchema";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://business.thetechtrep.com"),
@@ -322,6 +323,8 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <OrganizationSchema />
+        {children}
       </body>
     </html>
   );

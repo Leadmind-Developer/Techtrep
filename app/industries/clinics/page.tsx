@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Technology Solutions for Clinics & Healthcare",
+export const metadata = createPageMetadata({
+  title: "Technology Solutions for Clinics",
   description:
-    "Techtrep helps clinics and healthcare organizations improve patient enquiries, appointments, communication, administration, reporting, connectivity and repetitive workflows with practical technology, automation and AI solutions.",
-};
+    "Practical technology solutions for clinics including digital workflows, communication, reporting, infrastructure, connectivity and business automation.",
+  path: "/industries/clinics",
+});
 
 const challenges = [
   {

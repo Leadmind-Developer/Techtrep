@@ -3,7 +3,16 @@ import Link from "next/link";
 export const metadata = {
   title: "Contact Techtrep Business Solutions",
   description:
-    "Contact Techtrep Business Solutions about business automation, AI, software, networking, infrastructure, digital transformation and managed technology.",
+    "Contact Techtrep Business Solutions about business automation, AI, custom software, networking, infrastructure, digital transformation and managed technology.",
+  alternates: {
+    canonical: "/contact",
+  },
+  openGraph: {
+    title: "Contact Techtrep Business Solutions",
+    description:
+      "Talk to Techtrep about business automation, AI, software, networking, infrastructure and technology solutions.",
+    url: "/contact",
+  },
 };
 
 const topics = [
@@ -16,6 +25,11 @@ const topics = [
   "Managed technology",
   "Technology audit",
 ];
+
+const phoneNumber = "0817 945 8159";
+const phoneHref = "tel:+2348179458159";
+const whatsappHref =
+  "https://wa.me/2348179458159?text=Hello%20Techtrep%2C%20I%20would%20like%20to%20discuss%20a%20technology%20solution%20for%20my%20business.";
 
 export default function ContactPage() {
   return (
@@ -59,35 +73,70 @@ export default function ContactPage() {
                 requirements.
               </p>
 
-              <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-6">
-                <p className="text-sm font-semibold text-slate-950">
-                  Email
-                </p>
+              {/* Direct contact options */}
+              <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                  <p className="text-sm font-semibold text-slate-950">
+                    Email
+                  </p>
 
-                <a
-                  href="mailto:email@thetechtrep.com"
-                  className="mt-2 inline-block text-[#39358C] hover:underline"
-                >
-                  email@thetechtrep.com
-                </a>
-              </div>
+                  <a
+                    href="mailto:email@thetechtrep.com"
+                    className="mt-2 inline-block text-[#39358C] hover:underline"
+                  >
+                    email@thetechtrep.com
+                  </a>
+                </div>
 
-              <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-6">
-                <p className="text-sm font-semibold text-slate-950">
-                  Free Technology Audit
-                </p>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                  <p className="text-sm font-semibold text-slate-950">
+                    Call or WhatsApp
+                  </p>
 
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  If you want to understand where technology could improve your
-                  operations, start with our free 30–45 minute technology audit.
-                </p>
+                  <a
+                    href={phoneHref}
+                    className="mt-2 block text-lg font-semibold text-slate-950 hover:text-[#39358C]"
+                  >
+                    {phoneNumber}
+                  </a>
 
-                <Link
-                  href="/free-technology-audit"
-                  className="mt-4 inline-flex text-sm font-semibold text-[#39358C] hover:underline"
-                >
-                  Request the audit →
-                </Link>
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <a
+                      href={phoneHref}
+                      className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:border-[#39358C] hover:text-[#39358C]"
+                    >
+                      Call us
+                    </a>
+
+                    <a
+                      href={whatsappHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-lg bg-[#39358C] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#2f2b76]"
+                    >
+                      WhatsApp us
+                    </a>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                  <p className="text-sm font-semibold text-slate-950">
+                    Free Technology Audit
+                  </p>
+
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    If you want to understand where technology could improve
+                    your operations, start with our free 30–45 minute
+                    technology audit.
+                  </p>
+
+                  <Link
+                    href="/free-technology-audit"
+                    className="mt-4 inline-flex text-sm font-semibold text-[#39358C] hover:underline"
+                  >
+                    Request the audit →
+                  </Link>
+                </div>
               </div>
             </div>
 
@@ -119,15 +168,26 @@ export default function ContactPage() {
                 <p className="text-sm leading-6 text-slate-600">
                   For the fastest route to a structured discussion, use the
                   Free Technology Audit. For a specific project or general
-                  enquiry, email us directly.
+                  enquiry, call, WhatsApp or email us directly.
                 </p>
 
-                <a
-                  href="mailto:email@thetechtrep.com"
-                  className="mt-5 inline-flex items-center justify-center rounded-lg bg-[#39358C] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#2f2b76]"
-                >
-                  Email Techtrep
-                </a>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <a
+                    href={phoneHref}
+                    className="inline-flex items-center justify-center rounded-lg border border-slate-300 px-6 py-3.5 text-sm font-semibold text-slate-800 transition-colors hover:border-[#39358C] hover:text-[#39358C]"
+                  >
+                    Call {phoneNumber}
+                  </a>
+
+                  <a
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center rounded-lg bg-[#39358C] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#2f2b76]"
+                  >
+                    WhatsApp Techtrep
+                  </a>
+                </div>
               </div>
             </div>
           </div>

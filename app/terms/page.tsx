@@ -1,8 +1,11 @@
-export const metadata = {
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata({
   title: "Terms of Use",
   description:
-    "Terms of Use for the Techtrep Business Solutions website and information provided through the website.",
-};
+    "Read the terms governing use of the Techtrep Business Solutions website, technology audit requests and related website services.",
+  path: "/terms",
+});
 
 const sections = [
   {

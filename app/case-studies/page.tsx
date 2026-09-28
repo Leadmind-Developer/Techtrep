@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
   title: "Case Studies & Technology Projects",
   description:
-    "Explore selected technology projects built and operated by Techtrep, including payment platforms, document processing tools, digital media platforms and cloud modernization work.",
-};
+    "Explore selected technology products and platforms developed or operated by Techtrep, including Nexa, PDFImageTools and Techtrep Media.",
+  path: "/case-studies",
+});
 
 const projects = [
   {

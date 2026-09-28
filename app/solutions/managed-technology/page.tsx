@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
+import ServiceSchema from "@/components/ServiceSchema";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Managed Technology",
   description:
-    "Keep your business technology supported, maintained and improving. Techtrep provides ongoing technology support, monitoring, maintenance, security guidance and improvements for growing businesses.",
-};
+    "Keep your business technology reliable with ongoing maintenance, monitoring, support, security and continuous technology improvement.",
+  path: "/solutions/managed-technology",
+});
 
 const supportAreas = [
   {
@@ -161,6 +163,13 @@ const faqs = [
 
 export default function ManagedTechnologyPage() {
   return (
+     <>
+         <ServiceSchema
+            name="Managed Technology Services"
+            description="Techtrep Business Solutions provides ongoing technology support, maintenance, monitoring and improvement to help organizations keep their systems, infrastructure and devices reliable."
+            path="/solutions/managed-technology"
+            serviceType="Managed IT Services"
+           />
     <main>
       {/* Hero */}
       <section className="border-b border-slate-200 bg-slate-50">
@@ -675,5 +684,6 @@ export default function ManagedTechnologyPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

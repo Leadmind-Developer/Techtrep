@@ -1,8 +1,11 @@
-export const metadata = {
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata({
   title: "Privacy Policy",
   description:
-    "Privacy Policy for Techtrep Business Solutions covering information submitted through the website, its use, security and data subject rights.",
-};
+    "Read the Techtrep Business Solutions privacy policy covering information collected through our website, enquiries, technology audits and communications.",
+  path: "/privacy-policy",
+});
 
 const sections = [
   {

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
+import ServiceSchema from "@/components/ServiceSchema";
 
 const foundationAreas = [
   {
@@ -159,14 +161,22 @@ const faqs = [
   },
 ];
 
-export const metadata = {
-  title: "Digital Foundation",
+export const metadata = createPageMetadata({
+  title: "Digital Foundation Solutions",
   description:
-    "Build a stronger digital foundation for your business with websites, digital platforms, forms, workflows, integrations and customer-facing systems from Techtrep Business Solutions.",
-};
+    "Build the digital systems your business needs to operate professionally, communicate with customers and capture opportunities.",
+  path: "/solutions/digital-foundation",
+});
 
 export default function DigitalFoundationPage() {
   return (
+     <>
+         <ServiceSchema
+            name="Digital Foundation Solutions"
+            description="Build the digital foundation your organization needs with business websites, digital platforms, forms, portals, lead capture and operational workflows."
+            path="/solutions/digital-foundation"
+            serviceType="Digital Transformation"
+           />
     <main>
       {/* Hero */}
       <section className="border-b border-slate-200 bg-slate-50">
@@ -547,5 +557,6 @@ export default function DigitalFoundationPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

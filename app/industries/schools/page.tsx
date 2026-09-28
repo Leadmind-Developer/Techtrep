@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Technology Solutions for Schools & Education",
+export const metadata = createPageMetadata({
+  title: "Technology Solutions for Schools",
   description:
-    "Techtrep helps schools and education organizations improve admissions, communication, administration, reporting and operations with practical technology, automation and AI solutions.",
-};
+    "Technology solutions for schools including digital platforms, workflow automation, communication, reporting, networking, infrastructure and custom systems.",
+  path: "/industries/schools",
+});
 
 const challenges = [
   {

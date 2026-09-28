@@ -1,4 +1,12 @@
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata({
+  title: "Business Technology, Automation & AI",
+  description:
+    "Techtrep Business Solutions helps growing businesses digitize operations, automate repetitive work, connect systems, apply AI and build practical technology solutions.",
+  path: "/",
+});
 
 const solutions = [
   {

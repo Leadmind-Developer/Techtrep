@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
   title: "About Techtrep Business Solutions",
   description:
-    "Learn about Techtrep Business Solutions and our practical approach to technology, automation, AI, software, networking and infrastructure for growing businesses.",
-};
+    "Learn about Techtrep Business Solutions and our approach to practical business technology, automation, AI, custom software, networking and infrastructure.",
+  path: "/about",
+});
 
 const principles = [
   {

@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Industries We Serve",
   description:
-    "Techtrep helps schools, hotels, clinics, churches, media organizations and businesses across other industries improve operations with technology, automation, AI, analytics and infrastructure solutions.",
-};
+    "Explore how Techtrep Business Solutions helps schools, hotels, clinics, churches, media organizations and other businesses improve their technology and operations.",
+  path: "/industries",
+});
 
 const industries = [
   {

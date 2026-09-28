@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Technology Solutions for Hotels & Hospitality",
+export const metadata = createPageMetadata({
+  title: "Technology Solutions for Hotels",
   description:
-    "Techtrep helps hotels and hospitality businesses improve guest enquiries, reservations, communication, operations, reporting, connectivity and repetitive workflows with practical technology, automation and AI solutions.",
-};
+    "Technology solutions for hotels and hospitality businesses covering digital operations, automation, connectivity, networking, reporting and customer workflows.",
+  path: "/industries/hotels",
+});
 
 const challenges = [
   {

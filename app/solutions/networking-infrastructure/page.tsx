@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
+import ServiceSchema from "@/components/ServiceSchema";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Networking & Infrastructure Solutions",
   description:
-    "Techtrep provides networking and infrastructure services including ISP connectivity, last-mile connectivity, LAN, Wi-Fi, structured cabling, security-camera cabling, solar cabling, device installation and endpoint connectivity.",
-};
+    "Techtrep provides ISP, last-mile, LAN, Wi-Fi, structured cabling, security-camera cabling, solar cabling and device installation services.",
+  path: "/solutions/networking-infrastructure",
+});
 
 const services = [
   {
@@ -233,6 +235,13 @@ const faqs = [
 
 export default function NetworkingInfrastructurePage() {
   return (
+     <>
+         <ServiceSchema
+            name="Networking & Infrastructure Solutions"
+            description="Techtrep Business Solutions provides connectivity, LAN, Wi-Fi, structured cabling, security-camera cabling, solar cabling, device installation and network infrastructure support."
+            path="/solutions/networking-infrastructure"
+            serviceType="Network and IT Infrastructure Services"
+           />
     <main>
       {/* Hero */}
       <section className="border-b border-slate-200 bg-slate-50">
@@ -644,5 +653,6 @@ export default function NetworkingInfrastructurePage() {
         </div>
       </section>
     </main>
+    </>
   );
 }
