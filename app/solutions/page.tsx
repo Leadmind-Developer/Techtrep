@@ -83,18 +83,6 @@ const solutions = [
   },
   {
     number: "07",
-    title: "Device & endpoint installation",
-    description:
-      "Computers, network equipment, security-camera cabling, connected devices and other endpoints that support daily operations.",
-    href: "/solutions/networking-infrastructure",
-    points: [
-      "Device maintenance",
-      "Device Monitoring and support",
-      "Device Security and reliability",
-      "Device Continuous improvement",
-    ],
-  },{
-    number: "08",
     title: "Managed Technology",
     description:
       "Keep your technology reliable after implementation with ongoing maintenance, monitoring, support and continuous improvement.",

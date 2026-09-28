@@ -233,7 +233,7 @@ export default function HomePage() {
               ["02", "Automate"],
               ["03", "Connect"],
               ["04", "Understand"],
-              ["05", "Intelligentize"],
+              ["05", "Apply AI"],
               ["06", "Manage"],
             ].map(([number, title]) => (
               <div key={number} className="bg-white p-6">

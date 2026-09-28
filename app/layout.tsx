@@ -323,8 +323,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        <OrganizationSchema />
-        {children}
+        <OrganizationSchema />        
       </body>
     </html>
   );
