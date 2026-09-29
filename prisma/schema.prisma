@@ -1,10 +1,257 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider        = "prisma-client"
+  output          = "../generated/prisma"
+  previewFeatures = ["partialIndexes"]
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model User {
+  id                             String                  @id @default(cuid())
+  name                           String?
+  email                          String                  @unique
+  passwordHash                   String
+  role                           UserRole                @default(STAFF)
+  active                         Boolean                 @default(true)
+  lastLoginAt                    DateTime?
+  createdAt                      DateTime                @default(now())
+  updatedAt                      DateTime                @updatedAt
+  createdActivities              Activity[]              @relation("ActivityCreatedBy")
+  auditLogs                      AuditLog[]
+  leadAssignmentsCreated         LeadAssignment[]        @relation("LeadAssignmentAssignedBy")
+  leadAssignmentsReceived        LeadAssignment[]        @relation("LeadAssignmentAssignedTo")
+  assignedLeads                  Lead[]                  @relation("LeadAssignedTo")
+  createdLeads                   Lead[]                  @relation("LeadCreatedBy")
+  assignedOpportunities          Opportunity[]           @relation("OpportunityAssignedTo")
+  createdOpportunities           Opportunity[]           @relation("OpportunityCreatedBy")
+  opportunityAssignmentsCreated  OpportunityAssignment[] @relation("OpportunityAssignmentAssignedBy")
+  opportunityAssignmentsReceived OpportunityAssignment[] @relation("OpportunityAssignmentAssignedTo")
+  sessions                       Session[]
+
+  @@index([role])
+  @@index([active])
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model Organization {
+  id          String         @id @default(cuid())
+  name        String
+  website     String?
+  industry    String?
+  companySize String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  activities  Activity[]
+  audits      AuditRequest[]
+  contacts    Contact[]
+  leads       Lead[]
+
+  @@index([name])
+  @@index([industry])
+  @@map("organizations")
+}
+
+model Contact {
+  id             String         @id @default(cuid())
+  organizationId String
+  name           String
+  email          String
+  phone          String?
+  role           String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  audits         AuditRequest[]
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  leads          Lead[]
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("contacts")
+}
+
+model Lead {
+  id               String          @id @default(cuid())
+  organizationId   String
+  contactId        String?
+  status           LeadStatus      @default(NEW)
+  source           LeadSource      @default(WEBSITE)
+  notes            String?
+  estimatedValue   Decimal?        @db.Decimal(15, 2)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  assignedToUserId String?
+  createdByUserId  String?
+  activities       Activity[]
+  auditRequests    AuditRequest[]
+  assignments      LeadAssignment?
+  assignedToUser   User?           @relation("LeadAssignedTo", fields: [assignedToUserId], references: [id])
+  contact          Contact?        @relation(fields: [contactId], references: [id])
+  createdByUser    User?           @relation("LeadCreatedBy", fields: [createdByUserId], references: [id])
+  organization     Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([contactId])
+  @@index([createdByUserId])
+  @@index([assignedToUserId])
+  @@index([status])
+  @@index([source])
+  @@index([createdAt])
+  @@map("leads")
+}
+
+model LeadAssignment {
+  id               String    @id @default(cuid())
+  leadId           String    @unique(map: "lead_assignments_one_active", where: raw("(\"unassignedAt\" IS NULL)"))
+  assignedToUserId String
+  assignedByUserId String?
+  assignedAt       DateTime  @default(now())
+  unassignedAt     DateTime?
+  createdAt        DateTime  @default(now())
+  assignedByUser   User?     @relation("LeadAssignmentAssignedBy", fields: [assignedByUserId], references: [id])
+  assignedToUser   User      @relation("LeadAssignmentAssignedTo", fields: [assignedToUserId], references: [id])
+  lead             Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([assignedToUserId])
+  @@index([assignedByUserId])
+  @@index([assignedAt])
+  @@index([unassignedAt])
+  @@map("lead_assignments")
+}
+
+model AuditRequest {
+  id                    String        @id @default(cuid())
+  organizationId        String
+  contactId             String
+  leadId                String?
+  improvements          String[]
+  manualWork            String
+  existingSystems       String?
+  additionalInformation String?
+  status                AuditStatus   @default(REQUESTED)
+  source                LeadSource    @default(AUDIT)
+  scheduledAt           DateTime?
+  completedAt           DateTime?
+  reportSentAt          DateTime?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  activities            Activity[]
+  contact               Contact       @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  lead                  Lead?         @relation(fields: [leadId], references: [id])
+  organization          Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  opportunities         Opportunity[]
+
+  @@index([organizationId])
+  @@index([contactId])
+  @@index([leadId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("audit_requests")
+}
+
+model Opportunity {
+  id               String                 @id @default(cuid())
+  auditRequestId   String
+  name             String
+  description      String?
+  priority         OpportunityPriority    @default(MEDIUM)
+  status           OpportunityStatus      @default(IDENTIFIED)
+  estimatedValue   Decimal?               @db.Decimal(15, 2)
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  assignedToUserId String?
+  closedAt         DateTime?
+  createdByUserId  String?
+  assignedToUser   User?                  @relation("OpportunityAssignedTo", fields: [assignedToUserId], references: [id])
+  auditRequest     AuditRequest           @relation(fields: [auditRequestId], references: [id], onDelete: Cascade)
+  createdByUser    User?                  @relation("OpportunityCreatedBy", fields: [createdByUserId], references: [id])
+  assignments      OpportunityAssignment?
+
+  @@index([auditRequestId])
+  @@index([createdByUserId])
+  @@index([assignedToUserId])
+  @@index([priority])
+  @@index([status])
+  @@index([createdAt])
+  @@index([closedAt])
+  @@map("opportunities")
+}
+
+model OpportunityAssignment {
+  id               String      @id @default(cuid())
+  opportunityId    String      @unique(map: "opportunity_assignments_one_active", where: raw("(\"unassignedAt\" IS NULL)"))
+  assignedToUserId String
+  assignedByUserId String?
+  assignedAt       DateTime    @default(now())
+  unassignedAt     DateTime?
+  createdAt        DateTime    @default(now())
+  assignedByUser   User?       @relation("OpportunityAssignmentAssignedBy", fields: [assignedByUserId], references: [id])
+  assignedToUser   User        @relation("OpportunityAssignmentAssignedTo", fields: [assignedToUserId], references: [id])
+  opportunity      Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([opportunityId])
+  @@index([assignedToUserId])
+  @@index([assignedByUserId])
+  @@index([assignedAt])
+  @@index([unassignedAt])
+  @@map("opportunity_assignments")
+}
+
+model Activity {
+  id              String        @id @default(cuid())
+  organizationId  String
+  leadId          String?
+  auditRequestId  String?
+  type            ActivityType
+  description     String
+  metadata        Json?
+  createdAt       DateTime      @default(now())
+  createdByUserId String?
+  auditRequest    AuditRequest? @relation(fields: [auditRequestId], references: [id])
+  createdByUser   User?         @relation("ActivityCreatedBy", fields: [createdByUserId], references: [id])
+  lead            Lead?         @relation(fields: [leadId], references: [id])
+  organization    Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([leadId])
+  @@index([auditRequestId])
+  @@index([createdByUserId])
+  @@index([type])
+  @@index([createdAt])
+  @@map("activities")
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  userId    String?
+  action    AuditAction
+  requestId String?
+  ipAddress String?
+  userAgent String?
+  metadata  Json?
+  createdAt DateTime    @default(now())
+  user      User?       @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@index([requestId])
+  @@map("audit_logs")
 }
 
 enum LeadStatus {
@@ -91,300 +338,4 @@ enum AuditAction {
   USER_ENABLED
   PASSWORD_CHANGED
   PASSWORD_RESET
-}
-
-model User {
-  id           String    @id @default(cuid())
-  name         String?
-  email        String    @unique
-  passwordHash String
-  role         UserRole  @default(STAFF)
-  active       Boolean   @default(true)
-  lastLoginAt  DateTime?
-
-  sessions  Session[]
-  auditLogs AuditLog[]
-
-  createdLeads          Lead[]        @relation("LeadCreatedBy")
-  assignedLeads         Lead[]        @relation("LeadAssignedTo")
-  createdOpportunities  Opportunity[] @relation("OpportunityCreatedBy")
-  assignedOpportunities Opportunity[] @relation("OpportunityAssignedTo")
-  createdActivities     Activity[]    @relation("ActivityCreatedBy")
-
-  leadAssignmentsCreated         LeadAssignment[]        @relation("LeadAssignmentAssignedBy")
-  leadAssignmentsReceived        LeadAssignment[]        @relation("LeadAssignmentAssignedTo")
-  opportunityAssignmentsCreated  OpportunityAssignment[] @relation("OpportunityAssignmentAssignedBy")
-  opportunityAssignmentsReceived OpportunityAssignment[] @relation("OpportunityAssignmentAssignedTo")
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([role])
-  @@index([active])
-  @@map("users")
-}
-
-model Session {
-  id        String   @id @default(cuid())
-  tokenHash String   @unique
-  userId    String
-  expiresAt DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([expiresAt])
-  @@map("sessions")
-}
-
-model Organization {
-  id          String  @id @default(cuid())
-  name        String
-  website     String?
-  industry    String?
-  companySize String?
-
-  contacts   Contact[]
-  leads      Lead[]
-  audits     AuditRequest[]
-  activities Activity[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([name])
-  @@index([industry])
-  @@map("organizations")
-}
-
-model Contact {
-  id             String @id @default(cuid())
-  organizationId String
-
-  name  String
-  email String
-  phone String?
-  role  String?
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
-  leads  Lead[]
-  audits AuditRequest[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([organizationId])
-  @@index([email])
-  @@map("contacts")
-}
-
-model Lead {
-  id             String  @id @default(cuid())
-  organizationId String
-  contactId      String?
-
-  createdByUserId  String?
-  assignedToUserId String?
-
-  status LeadStatus @default(NEW)
-  source LeadSource @default(WEBSITE)
-
-  notes          String?
-  estimatedValue Decimal? @db.Decimal(15, 2)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  contact      Contact?     @relation(fields: [contactId], references: [id], onDelete: SetNull)
-
-  createdByUser  User? @relation("LeadCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
-  assignedToUser User? @relation("LeadAssignedTo", fields: [assignedToUserId], references: [id], onDelete: SetNull)
-
-  auditRequests AuditRequest[]
-  activities    Activity[]
-  assignments   LeadAssignment[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([organizationId])
-  @@index([contactId])
-  @@index([createdByUserId])
-  @@index([assignedToUserId])
-  @@index([status])
-  @@index([source])
-  @@index([createdAt])
-  @@map("leads")
-}
-
-model LeadAssignment {
-  id String @id @default(cuid())
-
-  leadId           String
-  assignedToUserId String
-  assignedByUserId String?
-
-  assignedAt   DateTime  @default(now())
-  unassignedAt DateTime?
-
-  lead           Lead  @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  assignedToUser User  @relation("LeadAssignmentAssignedTo", fields: [assignedToUserId], references: [id], onDelete: Restrict)
-  assignedByUser User? @relation("LeadAssignmentAssignedBy", fields: [assignedByUserId], references: [id], onDelete: SetNull)
-
-  createdAt DateTime @default(now())
-
-  @@index([leadId])
-  @@index([assignedToUserId])
-  @@index([assignedByUserId])
-  @@index([assignedAt])
-  @@index([unassignedAt])
-  @@map("lead_assignments")
-}
-
-model AuditRequest {
-  id String @id @default(cuid())
-
-  organizationId String
-  contactId      String
-  leadId         String?
-
-  improvements          String[]
-  manualWork            String
-  existingSystems       String?
-  additionalInformation String?
-
-  status AuditStatus @default(REQUESTED)
-  source LeadSource  @default(AUDIT)
-
-  scheduledAt  DateTime?
-  completedAt  DateTime?
-  reportSentAt DateTime?
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  contact      Contact      @relation(fields: [contactId], references: [id], onDelete: Cascade)
-  lead         Lead?        @relation(fields: [leadId], references: [id], onDelete: SetNull)
-
-  opportunities Opportunity[]
-  activities    Activity[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([organizationId])
-  @@index([contactId])
-  @@index([leadId])
-  @@index([status])
-  @@index([createdAt])
-  @@map("audit_requests")
-}
-
-model Opportunity {
-  id             String @id @default(cuid())
-  auditRequestId String
-
-  createdByUserId  String?
-  assignedToUserId String?
-
-  name           String
-  description    String?
-  priority       OpportunityPriority @default(MEDIUM)
-  status         OpportunityStatus   @default(IDENTIFIED)
-  estimatedValue Decimal?            @db.Decimal(15, 2)
-
-  closedAt DateTime?
-
-  auditRequest AuditRequest @relation(fields: [auditRequestId], references: [id], onDelete: Cascade)
-
-  createdByUser  User? @relation("OpportunityCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
-  assignedToUser User? @relation("OpportunityAssignedTo", fields: [assignedToUserId], references: [id], onDelete: SetNull)
-
-  assignments OpportunityAssignment[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([auditRequestId])
-  @@index([createdByUserId])
-  @@index([assignedToUserId])
-  @@index([priority])
-  @@index([status])
-  @@index([createdAt])
-  @@index([closedAt])
-  @@map("opportunities")
-}
-
-model OpportunityAssignment {
-  id String @id @default(cuid())
-
-  opportunityId    String
-  assignedToUserId String
-  assignedByUserId String?
-
-  assignedAt   DateTime  @default(now())
-  unassignedAt DateTime?
-
-  opportunity    Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
-  assignedToUser User        @relation("OpportunityAssignmentAssignedTo", fields: [assignedToUserId], references: [id], onDelete: Restrict)
-  assignedByUser User?       @relation("OpportunityAssignmentAssignedBy", fields: [assignedByUserId], references: [id], onDelete: SetNull)
-
-  createdAt DateTime @default(now())
-
-  @@index([opportunityId])
-  @@index([assignedToUserId])
-  @@index([assignedByUserId])
-  @@index([assignedAt])
-  @@index([unassignedAt])
-  @@map("opportunity_assignments")
-}
-
-model Activity {
-  id             String  @id @default(cuid())
-  organizationId String
-  leadId         String?
-  auditRequestId String?
-
-  createdByUserId String?
-
-  type        ActivityType
-  description String
-  metadata    Json?
-
-  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  lead         Lead?         @relation(fields: [leadId], references: [id], onDelete: SetNull)
-  auditRequest AuditRequest? @relation(fields: [auditRequestId], references: [id], onDelete: SetNull)
-
-  createdByUser User? @relation("ActivityCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
-
-  createdAt DateTime @default(now())
-
-  @@index([organizationId])
-  @@index([leadId])
-  @@index([auditRequestId])
-  @@index([createdByUserId])
-  @@index([type])
-  @@index([createdAt])
-  @@map("activities")
-}
-
-model AuditLog {
-  id        String      @id @default(cuid())
-  userId    String?
-  action    AuditAction
-  requestId String?
-
-  ipAddress String?
-  userAgent String?
-
-  metadata Json?
-
-  createdAt DateTime @default(now())
-
-  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-
-  @@index([userId])
-  @@index([action])
-  @@index([createdAt])
-  @@index([requestId])
-  @@map("audit_logs")
 }

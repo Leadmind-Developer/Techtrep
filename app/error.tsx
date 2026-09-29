@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Error({
@@ -17,8 +18,14 @@ export default function Error({
   return (
     <main className="flex min-h-[70vh] items-center">
       <div className="mx-auto w-full max-w-3xl px-6 py-20 text-center lg:px-8">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#39358C] text-xl font-bold text-white">
-          T
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#39358C] p-3">
+          <Image
+             src="/icon.svg"
+             alt="Techtrep"
+             width={40}
+             height={40}
+             className="h-10 w-10 object-contain"
+           />
         </div>
 
         <p className="mt-8 text-sm font-semibold uppercase tracking-[0.18em] text-[#39358C]">

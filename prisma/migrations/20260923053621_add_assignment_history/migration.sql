@@ -71,11 +71,3 @@ ALTER TABLE "opportunity_assignments" ADD CONSTRAINT "opportunity_assignments_as
 
 -- AddForeignKey
 ALTER TABLE "opportunity_assignments" ADD CONSTRAINT "opportunity_assignments_assignedByUserId_fkey" FOREIGN KEY ("assignedByUserId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
-CREATE UNIQUE INDEX "lead_assignments_one_active"
-ON "lead_assignments" ("leadId")
-WHERE "unassignedAt" IS NULL;
-
-CREATE UNIQUE INDEX "opportunity_assignments_one_active"
-ON "opportunity_assignments" ("opportunityId")
-WHERE "unassignedAt" IS NULL;

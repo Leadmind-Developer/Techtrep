@@ -42,7 +42,7 @@ const projects = [
       "Automated temporary-file handling",
       "Infrastructure optimization for variable workloads",
     ],
-    href: "https://pdfimagetools.app",
+    href: "https://pdfimagetools-vercel-9c3h.vercel.app/",
     linkLabel: "Visit PDFImageTools",
   },
   {
