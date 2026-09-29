@@ -85,24 +85,24 @@ model Contact {
 }
 
 model Lead {
-  id               String          @id @default(cuid())
+  id               String           @id @default(cuid())
   organizationId   String
   contactId        String?
-  status           LeadStatus      @default(NEW)
-  source           LeadSource      @default(WEBSITE)
+  status           LeadStatus       @default(NEW)
+  source           LeadSource       @default(WEBSITE)
   notes            String?
-  estimatedValue   Decimal?        @db.Decimal(15, 2)
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  estimatedValue   Decimal?         @db.Decimal(15, 2)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
   assignedToUserId String?
   createdByUserId  String?
   activities       Activity[]
   auditRequests    AuditRequest[]
-  assignments      LeadAssignment?
-  assignedToUser   User?           @relation("LeadAssignedTo", fields: [assignedToUserId], references: [id])
-  contact          Contact?        @relation(fields: [contactId], references: [id])
-  createdByUser    User?           @relation("LeadCreatedBy", fields: [createdByUserId], references: [id])
-  organization     Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  assignments      LeadAssignment[]
+  assignedToUser   User?            @relation("LeadAssignedTo", fields: [assignedToUserId], references: [id])
+  contact          Contact?         @relation(fields: [contactId], references: [id])
+  createdByUser    User?            @relation("LeadCreatedBy", fields: [createdByUserId], references: [id])
+  organization     Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@index([organizationId])
   @@index([contactId])
@@ -165,22 +165,22 @@ model AuditRequest {
 }
 
 model Opportunity {
-  id               String                 @id @default(cuid())
+  id               String                  @id @default(cuid())
   auditRequestId   String
   name             String
   description      String?
-  priority         OpportunityPriority    @default(MEDIUM)
-  status           OpportunityStatus      @default(IDENTIFIED)
-  estimatedValue   Decimal?               @db.Decimal(15, 2)
-  createdAt        DateTime               @default(now())
-  updatedAt        DateTime               @updatedAt
+  priority         OpportunityPriority     @default(MEDIUM)
+  status           OpportunityStatus       @default(IDENTIFIED)
+  estimatedValue   Decimal?                @db.Decimal(15, 2)
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
   assignedToUserId String?
   closedAt         DateTime?
   createdByUserId  String?
-  assignedToUser   User?                  @relation("OpportunityAssignedTo", fields: [assignedToUserId], references: [id])
-  auditRequest     AuditRequest           @relation(fields: [auditRequestId], references: [id], onDelete: Cascade)
-  createdByUser    User?                  @relation("OpportunityCreatedBy", fields: [createdByUserId], references: [id])
-  assignments      OpportunityAssignment?
+  assignedToUser   User?                   @relation("OpportunityAssignedTo", fields: [assignedToUserId], references: [id])
+  auditRequest     AuditRequest            @relation(fields: [auditRequestId], references: [id], onDelete: Cascade)
+  createdByUser    User?                   @relation("OpportunityCreatedBy", fields: [createdByUserId], references: [id])
+  assignments      OpportunityAssignment[]
 
   @@index([auditRequestId])
   @@index([createdByUserId])
