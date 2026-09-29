@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ProposalManagement from "./ProposalManagement";
 
 import { getProposalById } from "@/lib/proposals";
 
@@ -239,6 +240,21 @@ export default async function ProposalDetailPage({
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         {/* Main */}
         <div className="space-y-6">
+          <ProposalManagement
+            proposal={{
+              id: proposal.id,
+              proposalNumber: proposal.proposalNumber,
+              title: proposal.title,
+              description: proposal.description,
+              amount: proposal.amount,
+              currency: proposal.currency,
+              status: proposal.status,
+              validUntil: proposal.validUntil
+                ? proposal.validUntil.toISOString()
+                : null,
+              notes: proposal.notes,
+             }}
+           />
           {/* Proposal Details */}
           <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
             <div className="border-b border-slate-200 px-5 py-4 sm:px-6">

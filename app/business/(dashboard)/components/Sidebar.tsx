@@ -38,6 +38,10 @@ const navigation = [
     href: "/business/proposals",
   },
   {
+    label: "Projects",
+    href: "/business/projects",
+  },
+  {
     label: "Activities",
     href: "/business/activities",
   },
