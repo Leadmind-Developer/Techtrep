@@ -28,6 +28,9 @@ model User {
   createdOpportunities           Opportunity[]           @relation("OpportunityCreatedBy")
   opportunityAssignmentsCreated  OpportunityAssignment[] @relation("OpportunityAssignmentAssignedBy")
   opportunityAssignmentsReceived OpportunityAssignment[] @relation("OpportunityAssignmentAssignedTo")
+  createdProposals               Proposal[]              @relation("ProposalCreatedBy")
+  projectManagerProjects         Project[]               @relation("ProjectManager")
+  createdProjects                Project[]               @relation("ProjectCreatedBy")
   sessions                       Session[]
 
   @@index([role])
@@ -181,6 +184,7 @@ model Opportunity {
   auditRequest     AuditRequest            @relation(fields: [auditRequestId], references: [id], onDelete: Cascade)
   createdByUser    User?                   @relation("OpportunityCreatedBy", fields: [createdByUserId], references: [id])
   assignments      OpportunityAssignment[]
+  proposals        Proposal[]
 
   @@index([auditRequestId])
   @@index([createdByUserId])
@@ -210,6 +214,80 @@ model OpportunityAssignment {
   @@index([assignedAt])
   @@index([unassignedAt])
   @@map("opportunity_assignments")
+}
+
+model Proposal {
+  id              String  @id @default(cuid())
+  opportunityId   String
+  createdByUserId String?
+
+  proposalNumber String  @unique
+  title          String
+  description    String?
+
+  amount   Decimal?       @db.Decimal(15, 2)
+  currency String         @default("NGN")
+  status   ProposalStatus @default(DRAFT)
+
+  validUntil DateTime?
+
+  sentAt     DateTime?
+  acceptedAt DateTime?
+  rejectedAt DateTime?
+
+  notes String?
+
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  createdByUser User?       @relation("ProposalCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  project   Project?
+
+  @@index([opportunityId])
+  @@index([createdByUserId])
+  @@index([status])
+  @@index([validUntil])
+  @@index([createdAt])
+  @@map("proposals")
+}
+
+model Project {
+  id         String @id @default(cuid())
+  proposalId String @unique
+
+  projectNumber String  @unique
+  name          String
+  description   String?
+
+  status   ProjectStatus       @default(PLANNING)
+  priority OpportunityPriority @default(MEDIUM)
+
+  contractValue Decimal? @db.Decimal(15, 2)
+  currency      String   @default("NGN")
+
+  startDate     DateTime?
+  targetEndDate DateTime?
+  completedAt   DateTime?
+
+  projectManagerId String?
+  createdByUserId  String?
+
+  proposal       Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  projectManager User?    @relation("ProjectManager", fields: [projectManagerId], references: [id], onDelete: SetNull)
+  createdByUser  User?    @relation("ProjectCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectManagerId])
+  @@index([createdByUserId])
+  @@index([status])
+  @@index([priority])
+  @@index([startDate])
+  @@index([targetEndDate])
+  @@index([createdAt])
+  @@map("projects")
 }
 
 model Activity {
@@ -338,4 +416,21 @@ enum AuditAction {
   USER_ENABLED
   PASSWORD_CHANGED
   PASSWORD_RESET
+}
+
+enum ProposalStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+  EXPIRED
+  WITHDRAWN
+}
+
+enum ProjectStatus {
+  PLANNING
+  IN_PROGRESS
+  ON_HOLD
+  COMPLETED
+  CANCELLED
 }
