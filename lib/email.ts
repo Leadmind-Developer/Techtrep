@@ -477,3 +477,164 @@ Techtrep Business Solutions
   });
 }
 
+export interface ProposalAcceptanceNotificationData {
+  proposalId: string;
+  proposalNumber: string;
+  title: string;
+  amount?: string | null;
+  currency: string;
+  acceptedAt: string;
+  organizationName: string;
+  contactName: string;
+  contactEmail: string;
+  proposalUrl: string;
+}
+
+export async function sendProposalAcceptanceNotification(
+  data: ProposalAcceptanceNotificationData,
+): Promise<void> {
+  const subject = `Proposal Accepted — ${data.proposalNumber}`;
+
+  const amountHtml = data.amount
+    ? `
+        <tr>
+          <td style="padding:8px 0; font-weight:bold; width:180px;">
+            Proposal Amount
+          </td>
+          <td style="padding:8px 0;">
+            ${escapeHtml(data.currency)} ${escapeHtml(data.amount)}
+          </td>
+        </tr>
+      `
+    : "";
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <body style="margin:0; padding:0; background:#f8fafc; font-family:Arial,Helvetica,sans-serif; color:#0f172a;">
+        <div style="max-width:640px; margin:0 auto; padding:32px 20px;">
+          <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
+            
+            <div style="background:#39358c; padding:24px;">
+              <h1 style="margin:0; color:#ffffff; font-size:22px;">
+                Proposal Accepted
+              </h1>
+              <p style="margin:8px 0 0; color:#e0e7ff; font-size:14px;">
+                Techtrep Business Solutions
+              </p>
+            </div>
+
+            <div style="padding:28px;">
+              <p style="font-size:16px; line-height:1.6;">
+                A client has accepted a proposal through the public proposal portal.
+              </p>
+
+              <table style="width:100%; border-collapse:collapse; margin:24px 0; font-size:14px;">
+                <tr>
+                  <td style="padding:8px 0; font-weight:bold; width:180px;">
+                    Proposal Number
+                  </td>
+                  <td style="padding:8px 0;">
+                    ${escapeHtml(data.proposalNumber)}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding:8px 0; font-weight:bold;">
+                    Proposal Title
+                  </td>
+                  <td style="padding:8px 0;">
+                    ${escapeHtml(data.title)}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding:8px 0; font-weight:bold;">
+                    Client / Organization
+                  </td>
+                  <td style="padding:8px 0;">
+                    ${escapeHtml(data.organizationName)}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding:8px 0; font-weight:bold;">
+                    Contact
+                  </td>
+                  <td style="padding:8px 0;">
+                    ${escapeHtml(data.contactName)}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding:8px 0; font-weight:bold;">
+                    Contact Email
+                  </td>
+                  <td style="padding:8px 0;">
+                    ${escapeHtml(data.contactEmail)}
+                  </td>
+                </tr>
+
+                ${amountHtml}
+
+                <tr>
+                  <td style="padding:8px 0; font-weight:bold;">
+                    Accepted At
+                  </td>
+                  <td style="padding:8px 0;">
+                    ${escapeHtml(data.acceptedAt)}
+                  </td>
+                </tr>
+              </table>
+
+              <div style="margin-top:28px;">
+                <a
+                  href="${escapeHtml(data.proposalUrl)}"
+                  style="display:inline-block; background:#39358c; color:#ffffff; text-decoration:none; padding:12px 20px; border-radius:8px; font-size:14px; font-weight:bold;"
+                >
+                  View Proposal
+                </a>
+              </div>
+
+              <p style="margin-top:28px; color:#64748b; font-size:13px; line-height:1.6;">
+                The proposal status has already been updated to ACCEPTED in the CRM.
+              </p>
+            </div>
+
+            <div style="border-top:1px solid #e2e8f0; padding:18px 28px; color:#94a3b8; font-size:12px;">
+              Techtrep Business Solutions<br />
+              Technology, Automation &amp; AI for Growing Businesses
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+
+  const amountText = data.amount
+    ? `Proposal Amount: ${data.currency} ${data.amount}`
+    : "";
+
+  await transporter.sendMail({
+    from: emailFrom,
+    to: emailTo,
+    subject,
+    html,
+    text: `
+A proposal has been accepted by a client.
+
+Proposal Number: ${data.proposalNumber}
+Proposal Title: ${data.title}
+Organization: ${data.organizationName}
+Contact: ${data.contactName}
+Contact Email: ${data.contactEmail}
+${amountText}
+Accepted At: ${data.acceptedAt}
+
+View Proposal:
+${data.proposalUrl}
+
+The proposal status has been updated to ACCEPTED in the CRM.
+    `.trim(),
+  });
+}
