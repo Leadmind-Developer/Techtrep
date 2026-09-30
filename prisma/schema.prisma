@@ -237,6 +237,9 @@ model Proposal {
 
   notes String?
 
+  publicToken          String?   @unique
+  publicTokenCreatedAt DateTime?
+
   opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
   createdByUser User?       @relation("ProposalCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
 

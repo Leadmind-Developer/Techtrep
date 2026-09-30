@@ -297,3 +297,183 @@ Techtrep Business Solutions
   });
 }
 
+export interface ProposalEmailData {
+  proposalNumber: string;
+  title: string;
+  description?: string | null;
+  amount?: string | null;
+  currency: string;
+  validUntil?: string | null;
+  recipientName: string;
+  recipientEmail: string;
+  organizationName: string;
+  proposalUrl: string;
+}
+
+export async function sendProposalEmail(
+  data: ProposalEmailData,
+): Promise<void> {
+  const subject = `${data.proposalNumber} — ${data.title}`;
+
+  const amountHtml = data.amount
+    ? `
+        <tr>
+          <td style="padding:8px 0; font-weight:bold; width:180px;">
+            Proposal Amount
+          </td>
+          <td style="padding:8px 0;">
+            ${escapeHtml(data.currency)} ${escapeHtml(data.amount)}
+          </td>
+        </tr>
+      `
+    : "";
+
+  const validUntilHtml = data.validUntil
+    ? `
+        <tr>
+          <td style="padding:8px 0; font-weight:bold;">
+            Valid Until
+          </td>
+          <td style="padding:8px 0;">
+            ${escapeHtml(data.validUntil)}
+          </td>
+        </tr>
+      `
+    : "";
+
+  const descriptionHtml = data.description
+    ? `
+        <div style="margin:24px 0;">
+          <h2 style="font-size:18px; margin-bottom:10px;">
+            Proposal
+          </h2>
+          <p style="white-space:pre-wrap; line-height:1.6;">
+            ${escapeHtml(data.description)}
+          </p>
+        </div>
+      `
+    : "";
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <body style="margin:0; padding:0; background:#f5f7fb; font-family:Arial,Helvetica,sans-serif; color:#172033;">
+        <div style="max-width:700px; margin:0 auto; padding:32px 20px;">
+
+          <div style="background:#39358C; padding:24px 28px; border-radius:14px 14px 0 0; color:#ffffff;">
+            <h1 style="margin:0; font-size:24px;">
+              Techtrep Business Solutions
+            </h1>
+            <p style="margin:8px 0 0; opacity:.9;">
+              Technology, Automation &amp; AI for Growing Businesses
+            </p>
+          </div>
+
+          <div style="background:#ffffff; padding:30px; border:1px solid #e5e7eb; border-top:0; border-radius:0 0 14px 14px;">
+
+            <p>
+              Hi ${escapeHtml(data.recipientName)},
+            </p>
+
+            <p>
+              Thank you for the opportunity to work with
+              <strong>${escapeHtml(data.organizationName)}</strong>.
+            </p>
+
+            <p>
+              Please find your proposal from
+              <strong>Techtrep Business Solutions</strong> below.
+            </p>
+
+            <div style="margin:24px 0; padding:20px; background:#f5f7fb; border-radius:10px;">
+              <table style="width:100%; border-collapse:collapse;">
+                <tr>
+                  <td style="padding:8px 0; font-weight:bold; width:180px;">
+                    Proposal Number
+                  </td>
+                  <td style="padding:8px 0;">
+                    ${escapeHtml(data.proposalNumber)}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding:8px 0; font-weight:bold;">
+                    Title
+                  </td>
+                  <td style="padding:8px 0;">
+                    ${escapeHtml(data.title)}
+                  </td>
+                </tr>
+
+                ${amountHtml}
+                ${validUntilHtml}
+              </table>
+            </div>
+
+            ${descriptionHtml}
+
+            <div style="text-align:center; margin:32px 0;">
+              <a
+                href="${escapeHtml(data.proposalUrl)}"
+                style="display:inline-block; padding:14px 24px; background:#39358C; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:bold;"
+              >
+                View Proposal
+              </a>
+            </div>
+
+            <p>
+              You can review the full proposal and respond securely using
+              the button above.
+            </p>
+
+            <p style="margin-bottom:0;">
+              Regards,<br />
+              <strong>Techtrep Business Solutions</strong>
+            </p>
+          </div>
+
+          <p style="text-align:center; color:#6b7280; font-size:12px; margin-top:20px;">
+            This proposal was sent by Techtrep Business Solutions.
+          </p>
+        </div>
+      </body>
+    </html>
+  `;
+
+  const amountText = data.amount
+    ? `Proposal Amount: ${data.currency} ${data.amount}`
+    : "";
+
+  const validUntilText = data.validUntil
+    ? `Valid Until: ${data.validUntil}`
+    : "";
+
+  await transporter.sendMail({
+    from: emailFrom,
+    to: data.recipientEmail,
+    replyTo: emailTo,
+    subject,
+    html,
+    text: `
+Hi ${data.recipientName},
+
+Thank you for the opportunity to work with ${data.organizationName}.
+
+Please find your proposal from Techtrep Business Solutions below.
+
+Proposal Number: ${data.proposalNumber}
+Title: ${data.title}
+${amountText}
+${validUntilText}
+
+View Proposal:
+${data.proposalUrl}
+
+You can review the full proposal and respond securely using the link above.
+
+Regards,
+Techtrep Business Solutions
+    `.trim(),
+  });
+}
+

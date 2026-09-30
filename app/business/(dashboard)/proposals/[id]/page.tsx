@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProposalManagement from "./ProposalManagement";
+import SendProposalButton from "./SendProposalButton";
 
 import { getProposalById } from "@/lib/proposals";
 
@@ -172,6 +173,13 @@ export default async function ProposalDetailPage({
           </div>
 
           <div className="shrink-0">
+            <div className="flex shrink-0 flex-col items-end gap-3 sm:flex-row sm:items-start">
+              {proposal.status === "DRAFT" && (
+                <SendProposalButton
+                proposalId={proposal.id}
+              />
+            )}
+            
             <div className="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
               <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
                 Proposal Amount
@@ -183,6 +191,7 @@ export default async function ProposalDetailPage({
                   proposal.currency,
                 )}
               </p>
+              </div>
             </div>
           </div>
         </div>

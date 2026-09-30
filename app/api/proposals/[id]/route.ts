@@ -337,6 +337,22 @@ export async function PATCH(
 
     const body = await request.json();
 
+    if (body.proposalNumber !== undefined) {
+  return NextResponse.json(
+    {
+      success: false,
+      message:
+        "Proposal numbers are generated automatically and cannot be changed.",
+    },
+    {
+      status: 400,
+      headers: {
+        "x-request-id": requestId,
+      },
+    },
+  );
+}
+
     const data: Prisma.ProposalUpdateInput = {};
 
     const changes: Record<
@@ -345,94 +361,7 @@ export async function PATCH(
         previous: Prisma.InputJsonValue | null;
         next: Prisma.InputJsonValue | null;
       }
-    > = {};
-
-    if (body.proposalNumber !== undefined) {
-      if (typeof body.proposalNumber !== "string") {
-        return NextResponse.json(
-          {
-            success: false,
-            message: "Proposal number must be text.",
-          },
-          {
-            status: 400,
-            headers: {
-              "x-request-id": requestId,
-            },
-          },
-        );
-      }
-
-      const proposalNumber = body.proposalNumber.trim();
-
-      if (!proposalNumber) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: "Proposal number is required.",
-          },
-          {
-            status: 400,
-            headers: {
-              "x-request-id": requestId,
-            },
-          },
-        );
-      }
-
-      if (proposalNumber.length > 100) {
-        return NextResponse.json(
-          {
-            success: false,
-            message:
-              "Proposal number must be 100 characters or fewer.",
-          },
-          {
-            status: 400,
-            headers: {
-              "x-request-id": requestId,
-            },
-          },
-        );
-      }
-
-      if (proposalNumber !== existing.proposalNumber) {
-        const duplicate =
-          await prisma.proposal.findFirst({
-            where: {
-              proposalNumber,
-              NOT: {
-                id,
-              },
-            },
-            select: {
-              id: true,
-            },
-          });
-
-        if (duplicate) {
-          return NextResponse.json(
-            {
-              success: false,
-              message: "Proposal number already exists.",
-            },
-            {
-              status: 409,
-              headers: {
-                "x-request-id": requestId,
-              },
-            },
-          );
-        }
-
-        data.proposalNumber = proposalNumber;
-
-        changes.proposalNumber = {
-          previous: existing.proposalNumber,
-          next: proposalNumber,
-        };
-      }
-    }
+    > = {};    
 
     if (body.title !== undefined) {
       if (typeof body.title !== "string") {

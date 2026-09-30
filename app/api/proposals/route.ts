@@ -319,11 +319,6 @@ export async function POST(request: Request) {
         ? body.opportunityId.trim()
         : "";
 
-    const proposalNumber =
-      typeof body.proposalNumber === "string"
-        ? body.proposalNumber.trim()
-        : "";
-
     const title =
       typeof body.title === "string"
         ? body.title.trim()
@@ -344,8 +339,6 @@ export async function POST(request: Request) {
         ? body.notes.trim()
         : "";
 
-    const status = body.status ?? "DRAFT";
-
     if (!opportunityId) {
       return NextResponse.json(
         {
@@ -361,42 +354,11 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!proposalNumber) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Proposal number is required.",
-        },
-        {
-          status: 400,
-          headers: {
-            "x-request-id": requestId,
-          },
-        },
-      );
-    }
-
     if (!title) {
       return NextResponse.json(
         {
           success: false,
           message: "Proposal title is required.",
-        },
-        {
-          status: 400,
-          headers: {
-            "x-request-id": requestId,
-          },
-        },
-      );
-    }
-
-    if (proposalNumber.length > 100) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "Proposal number must be 100 characters or fewer.",
         },
         {
           status: 400,
@@ -423,26 +385,12 @@ export async function POST(request: Request) {
       );
     }
 
-    if (currency.length !== 3) {
+    if (!/^[A-Z]{3}$/.test(currency)) {
       return NextResponse.json(
         {
           success: false,
-          message: "Currency must be a 3-letter currency code.",
-        },
-        {
-          status: 400,
-          headers: {
-            "x-request-id": requestId,
-          },
-        },
-      );
-    }
-
-    if (!isValidStatus(status)) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Invalid proposal status.",
+          message:
+            "Currency must be a 3-letter currency code.",
         },
         {
           status: 400,
@@ -530,33 +478,43 @@ export async function POST(request: Request) {
       );
     }
 
-    const existingProposal =
-      await prisma.proposal.findUnique({
-        where: {
-          proposalNumber,
-        },
-        select: {
-          id: true,
-        },
-      });
-
-    if (existingProposal) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Proposal number already exists.",
-        },
-        {
-          status: 409,
-          headers: {
-            "x-request-id": requestId,
-          },
-        },
-      );
-    }
+    const year = new Date().getFullYear();
 
     const proposal =
       await prisma.$transaction(async (tx) => {
+        /*
+         * Serialize proposal-number generation for the
+         * current year. This prevents two simultaneous
+         * proposal creations from receiving the same number.
+         */
+        await tx.$executeRaw`
+          SELECT pg_advisory_xact_lock(
+            hashtext(${`techtrep:proposal-number:${year}`})
+          )
+        `;
+
+        const result =
+          await tx.$queryRaw<
+            Array<{ max_number: number | null }>
+          >`
+            SELECT MAX(
+              CAST(
+                SUBSTRING(
+                  "proposalNumber"
+                  FROM ${`^PROP-${year}-([0-9]+)$`}
+                ) AS INTEGER
+              )
+            ) AS max_number
+            FROM "proposals"
+            WHERE "proposalNumber" ~ ${`^PROP-${year}-[0-9]{4}$`}
+          `;
+
+        const nextNumber =
+          Number(result[0]?.max_number ?? 0) + 1;
+
+        const proposalNumber =
+          `PROP-${year}-${String(nextNumber).padStart(4, "0")}`;
+
         const created = await tx.proposal.create({
           data: {
             opportunityId,
@@ -566,7 +524,7 @@ export async function POST(request: Request) {
             description: description || null,
             amount,
             currency,
-            status,
+            status: "DRAFT",
             validUntil,
             notes: notes || null,
           },

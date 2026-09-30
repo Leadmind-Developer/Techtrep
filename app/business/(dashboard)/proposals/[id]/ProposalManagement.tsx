@@ -20,10 +20,7 @@ type Props = {
 export default function ProposalManagement({
   proposal,
 }: Props) {
-  const router = useRouter();
-
-  const [proposalNumber, setProposalNumber] =
-    useState(proposal.proposalNumber);
+  const router = useRouter();  
 
   const [title, setTitle] =
     useState(proposal.title);
@@ -41,8 +38,7 @@ export default function ProposalManagement({
   const [currency, setCurrency] =
     useState(proposal.currency);
 
-  const [status, setStatus] =
-    useState(proposal.status);
+  const status = proposal.status;
 
   const [validUntil, setValidUntil] =
     useState(
@@ -64,12 +60,7 @@ export default function ProposalManagement({
     event.preventDefault();
 
     setError("");
-    setSuccess("");
-
-    if (!proposalNumber.trim()) {
-      setError("Proposal number is required.");
-      return;
-    }
+    setSuccess("");    
 
     if (!title.trim()) {
       setError("Proposal title is required.");
@@ -110,17 +101,14 @@ export default function ProposalManagement({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            proposalNumber:
-              proposalNumber.trim(),
+          body: JSON.stringify({            
             title: title.trim(),
             description:
               description.trim() || null,
             amount:
               amount.trim() || null,
             currency:
-              currency.trim().toUpperCase(),
-            status,
+              currency.trim().toUpperCase(),            
             validUntil:
               validUntil || null,
             notes:
@@ -179,18 +167,12 @@ export default function ProposalManagement({
               Proposal Number
             </label>
 
-            <input
+            <div
               id="proposal-number"
-              type="text"
-              value={proposalNumber}
-              onChange={(event) =>
-                setProposalNumber(
-                  event.target.value,
-                )
-              }
-              maxLength={100}
-              className="mt-2 block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
-            />
+              className="mt-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-700"
+            >
+                {proposal.proposalNumber}
+            </div>
           </div>
 
           <div>
@@ -282,35 +264,17 @@ export default function ProposalManagement({
             >
               Status
             </label>
-
-            <select
+            <div
               id="proposal-status"
-              value={status}
-              onChange={(event) =>
-                setStatus(event.target.value)
-              }
-              className="mt-2 block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+              className="mt-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-700"
             >
-              <option value="DRAFT">
-                Draft
-              </option>
-              <option value="SENT">
-                Sent
-              </option>
-              <option value="ACCEPTED">
-                Accepted
-              </option>
-              <option value="REJECTED">
-                Rejected
-              </option>
-              <option value="EXPIRED">
-                Expired
-              </option>
-              <option value="WITHDRAWN">
-                Withdrawn
-              </option>
-            </select>
-          </div>
+                {status}
+            </div>
+
+            <p className="mt-1.5 text-xs text-slate-400">
+                Proposal status is updated by the proposal workflow.
+            </p>
+            </div>
 
           <div>
             <label

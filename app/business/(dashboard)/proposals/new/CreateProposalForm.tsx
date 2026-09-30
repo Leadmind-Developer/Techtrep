@@ -25,10 +25,7 @@ export default function CreateProposalForm({
   const router = useRouter();
 
   const [opportunityId, setOpportunityId] =
-    useState("");
-
-  const [proposalNumber, setProposalNumber] =
-    useState("");
+    useState("");  
 
   const [title, setTitle] = useState("");
 
@@ -69,12 +66,7 @@ export default function CreateProposalForm({
     if (!opportunityId) {
       setError("Please select an opportunity.");
       return;
-    }
-
-    if (!proposalNumber.trim()) {
-      setError("Proposal number is required.");
-      return;
-    }
+    }    
 
     if (!title.trim()) {
       setError("Proposal title is required.");
@@ -106,15 +98,12 @@ export default function CreateProposalForm({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            opportunityId,
-            proposalNumber:
-              proposalNumber.trim(),
+            opportunityId,              
             title: title.trim(),
             description:
               description.trim() || null,
             amount: amount.trim() || null,
-            currency: currency.trim().toUpperCase(),
-            status,
+            currency: currency.trim().toUpperCase(),            
             validUntil:
               validUntil.trim() || null,
             notes: notes.trim() || null,
@@ -216,22 +205,7 @@ export default function CreateProposalForm({
                 className="block text-sm font-medium text-slate-700"
               >
                 Proposal Number
-              </label>
-
-              <input
-                id="proposalNumber"
-                type="text"
-                value={proposalNumber}
-                onChange={(event) =>
-                  setProposalNumber(
-                    event.target.value,
-                  )
-                }
-                maxLength={100}
-                placeholder="e.g. TBS-2026-001"
-                className="mt-2 block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
-                required
-              />
+              </label>              
             </div>
 
             <div>
