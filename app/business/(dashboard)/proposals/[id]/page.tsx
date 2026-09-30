@@ -255,7 +255,10 @@ export default async function ProposalDetailPage({
               proposalNumber: proposal.proposalNumber,
               title: proposal.title,
               description: proposal.description,
-              amount: proposal.amount,
+              amount:
+               proposal.amount !== null
+                 ? proposal.amount.toString()
+                 : null,
               currency: proposal.currency,
               status: proposal.status,
               validUntil: proposal.validUntil
