@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
+import ProjectManagement from "./ProjectManagement";
 
 import type {
 OpportunityPriority,
@@ -118,72 +119,89 @@ params,
 }: PageProps) {
 const { id } = await params;
 
-const project = await prisma.project.findUnique({
-where: { id },
-include: {
-projectManager: {
-select: {
-id: true,
-name: true,
-email: true,
-active: true,
-},
-},
+const [project, projectManagers] =
+  await Promise.all([
+    prisma.project.findUnique({
+      where: { id },
+      include: {
+        projectManager: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            active: true,
+          },
+        },
 
-  createdByUser: {
-    select: {
-      id: true,
-      name: true,
-      email: true,
-    },
-  },
+        createdByUser: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
 
-  proposal: {
-    include: {
-      opportunity: {
-        include: {
-          auditRequest: {
-            include: {
-              organization: {
-                select: {
-                  id: true,
-                  name: true,
-                  website: true,
-                  industry: true,
-                  companySize: true,
-                },
-              },
+        proposal: {
+          include: {
+            opportunity: {
+              include: {
+                auditRequest: {
+                  include: {
+                    organization: {
+                      select: {
+                        id: true,
+                        name: true,
+                        website: true,
+                        industry: true,
+                        companySize: true,
+                      },
+                    },
 
-              contact: {
-                select: {
-                  id: true,
-                  name: true,
-                  email: true,
-                  phone: true,
-                  role: true,
-                },
-              },
+                    contact: {
+                      select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        phone: true,
+                        role: true,
+                      },
+                    },
 
-              lead: {
-                select: {
-                  id: true,
-                  status: true,
-                  source: true,
-                  estimatedValue: true,
+                    lead: {
+                      select: {
+                        id: true,
+                        status: true,
+                        source: true,
+                        estimatedValue: true,
+                      },
+                    },
+                  },
                 },
               },
             },
           },
         },
       },
-    },
-  },
-},
+    }),
 
-});
+    prisma.user.findMany({
+      where: {
+        active: true,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        active: true,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    }),
+  ]);
 
 if (!project) {
-notFound();
+  notFound();
 }
 
 const organization =
@@ -425,6 +443,28 @@ Projects </Link>
           )}
         </div>
       </section>
+
+      <ProjectManagement
+        project={{
+         id: project.id,
+         projectNumber: project.projectNumber,
+         name: project.name,
+         description: project.description,
+         status: project.status,
+         priority: project.priority,
+         contractValue: project.contractValue,
+         currency: project.currency,
+         startDate: project.startDate
+           ? project.startDate.toISOString()
+           : null,
+         targetEndDate: project.targetEndDate
+           ? project.targetEndDate.toISOString()
+           : null,
+         projectManagerId:
+         project.projectManagerId,
+       }}
+       projectManagers={projectManagers}
+      />
 
       {/* Client information */}
       <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
