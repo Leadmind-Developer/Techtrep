@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { proposalTemplates } from "@/lib/proposal-templates";
 import { useRouter } from "next/navigation";
 
 type OpportunityOption = {
@@ -31,6 +32,9 @@ export default function CreateProposalForm({
 
   const [description, setDescription] =
     useState("");
+  
+  const [templateId, setTemplateId] =
+    useState("");  
 
   const [amount, setAmount] = useState("");
 
@@ -232,26 +236,87 @@ export default function CreateProposalForm({
           </div>
 
           <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-slate-700"
-            >
-              Description
-            </label>
+  <label
+    htmlFor="proposalTemplate"
+    className="block text-sm font-medium text-slate-700"
+  >
+    Proposal Template
+  </label>
 
-            <textarea
-              id="description"
-              value={description}
-              onChange={(event) =>
-                setDescription(
-                  event.target.value,
-                )
-              }
-              rows={5}
-              placeholder="Describe the proposed solution, scope, and expected business outcome..."
-              className="mt-2 block w-full resize-y rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
-            />
-          </div>
+  <select
+    id="proposalTemplate"
+    value={templateId}
+    onChange={(event) => {
+      const nextTemplateId =
+        event.target.value;
+
+      setTemplateId(nextTemplateId);
+
+      if (!nextTemplateId) {
+        return;
+      }
+
+      const template =
+        proposalTemplates.find(
+          (item) =>
+            item.id === nextTemplateId,
+        );
+
+      if (!template) {
+        return;
+      }
+        setDescription(
+          template.description,
+        );
+
+        if (!title.trim()) {
+          setTitle(template.suggestedTitle);        
+      }
+    }}
+    className="mt-2 block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+  >
+    <option value="">
+      Start with a template
+    </option>
+
+    {proposalTemplates.map((template) => (
+      <option
+        key={template.id}
+        value={template.id}
+      >
+        {template.name}
+      </option>
+    ))}
+  </select>
+
+  <p className="mt-1.5 text-xs text-slate-400">
+    Selecting a template loads standard proposal
+    wording into the description. You can edit it
+    before saving.
+  </p>
+</div>
+
+<div>
+  <label
+    htmlFor="description"
+    className="block text-sm font-medium text-slate-700"
+  >
+    Description
+  </label>
+
+  <textarea
+    id="description"
+    value={description}
+    onChange={(event) =>
+      setDescription(
+        event.target.value,
+      )
+    }
+    rows={20}
+    placeholder="Describe the proposed solution, scope, and expected business outcome..."
+    className="mt-2 block w-full resize-y rounded-lg border border-slate-300 px-3 py-2.5 text-sm leading-6 text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+  />
+</div>
 
           <div className="grid gap-5 sm:grid-cols-3">
             <div>
