@@ -243,9 +243,10 @@ model Proposal {
   opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
   createdByUser User?       @relation("ProposalCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   project   Project?
+  contract  Contract?
 
   @@index([opportunityId])
   @@index([createdByUserId])
@@ -253,6 +254,40 @@ model Proposal {
   @@index([validUntil])
   @@index([createdAt])
   @@map("proposals")
+}
+
+enum ContractStatus {
+  DRAFT
+  SENT
+  SIGNED
+  ACTIVE
+  EXPIRED
+  TERMINATED
+}
+
+model Contract {
+  id             String         @id @default(cuid())
+  proposalId     String         @unique
+  contractNumber String         @unique
+  title          String
+  description    String?
+  status         ContractStatus @default(DRAFT)
+  amount         Decimal?       @db.Decimal(15, 2)
+  currency       String         @default("NGN")
+  startDate      DateTime?
+  endDate        DateTime?
+  signedAt       DateTime?
+  notes          String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  proposal Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([startDate])
+  @@index([endDate])
+  @@index([createdAt])
+  @@map("contracts")
 }
 
 model Project {
