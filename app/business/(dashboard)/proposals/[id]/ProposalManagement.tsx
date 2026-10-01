@@ -141,6 +141,14 @@ export default function ProposalManagement({
     }
   }
 
+  function handleDownloadPdf() {
+    window.open(
+        `/api/proposals/${proposal.id}/pdf`,
+        "_blank",
+        "noopener,noreferrer",
+    );
+   }  
+
   return (
     <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="border-b border-slate-200 px-5 py-4">
@@ -210,8 +218,8 @@ export default function ProposalManagement({
             onChange={(event) =>
               setDescription(event.target.value)
             }
-            rows={5}
-            className="mt-2 block w-full resize-y rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+            rows={20}
+            className="mt-2 block w-full resize-y rounded-lg border border-slate-300 px-3 py-2.5 text-sm leading-6 text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
           />
         </div>
 
@@ -330,6 +338,13 @@ export default function ProposalManagement({
         )}
 
         <div className="flex justify-end">
+           <button
+          type="button"
+          onClick={handleDownloadPdf}
+          className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300"
+        >
+            Download PDF
+        </button>
           <button
             type="submit"
             disabled={saving}
@@ -338,7 +353,7 @@ export default function ProposalManagement({
             {saving
               ? "Saving..."
               : "Save Changes"}
-          </button>
+          </button>         
         </div>
       </form>
     </section>

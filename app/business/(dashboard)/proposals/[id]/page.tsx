@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ProposalDescription from "./ProposalDescription";
 import ProposalManagement from "./ProposalManagement";
 import SendProposalButton from "./SendProposalButton";
 
@@ -183,7 +184,7 @@ export default async function ProposalDetailPage({
             {proposal.status === "ACCEPTED" && (
               proposal.project ? (
               <Link
-              href={`/business/projects/new?proposalId=${proposal.id}`}
+              href={`/business/projects/${proposal.project.id}`}
               className="inline-flex items-center justify-center rounded-lg bg-[#39358c] px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-[#2f2b73] focus:outline-none focus:ring-2 focus:ring-[#39358c]/30"
             >
               View Project
@@ -198,8 +199,7 @@ export default async function ProposalDetailPage({
             )
           )}
 
-              <div className="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm"></div>
-            
+                          
             <div className="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
               <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
                 Proposal Amount
@@ -315,9 +315,10 @@ export default async function ProposalDetailPage({
                   Description
                 </p>
 
-                <div className="mt-2 whitespace-pre-wrap rounded-lg bg-slate-50 p-4 text-sm leading-6 text-slate-700">
-                  {proposal.description ||
-                    "No description has been provided."}
+                <div className="mt-2 rounded-lg bg-slate-50 p-5">
+                  <ProposalDescription
+                    content={proposal.description}
+                  />
                 </div>
               </div>
 
