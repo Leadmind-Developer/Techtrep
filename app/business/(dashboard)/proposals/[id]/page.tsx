@@ -179,6 +179,26 @@ export default async function ProposalDetailPage({
                 proposalId={proposal.id}
               />
             )}
+
+            {proposal.status === "ACCEPTED" && (
+              proposal.project ? (
+              <Link
+              href={`/business/projects/new?proposalId=${proposal.id}`}
+              className="inline-flex items-center justify-center rounded-lg bg-[#39358c] px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-[#2f2b73] focus:outline-none focus:ring-2 focus:ring-[#39358c]/30"
+            >
+              View Project
+              </Link>
+              ) : (
+                <Link
+                href={`/business/projects/new?proposalId=${proposal.id}`}
+                className="inline-flex items-center justify-center rounded-lg bg-[#39358c] px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-[#2f2b73] focus:outline-none focus:ring-2 focus:ring-[#39358c]/30"
+            >
+              Create Project
+              </Link>
+            )
+          )}
+
+              <div className="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm"></div>
             
             <div className="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
               <p className="text-xs font-medium uppercase tracking-wide text-slate-500">

@@ -638,3 +638,144 @@ The proposal status has been updated to ACCEPTED in the CRM.
     `.trim(),
   });
 }
+
+export interface ProposalAcceptanceConfirmationData {
+  proposalNumber: string;
+  title: string;
+  amount?: string | null;
+  currency: string;
+  acceptedAt: string;
+  recipientName: string;
+  recipientEmail: string;
+  organizationName: string;
+}
+
+export async function sendProposalAcceptanceConfirmation(
+  data: ProposalAcceptanceConfirmationData,
+): Promise<void> {
+  const subject = `Proposal Accepted — ${data.proposalNumber}`;
+
+  const amountHtml = data.amount
+    ? `
+        <tr>
+          <td style="padding:8px 0; font-weight:bold; width:180px;">
+            Proposal Amount
+          </td>
+          <td style="padding:8px 0;">
+            ${escapeHtml(data.currency)} ${escapeHtml(data.amount)}
+          </td>
+        </tr>
+      `
+    : "";
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <body style="margin:0; padding:0; background:#f8fafc; font-family:Arial,Helvetica,sans-serif; color:#0f172a;">
+        <div style="max-width:640px; margin:0 auto; padding:32px 20px;">
+          <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
+
+            <div style="background:#39358c; padding:24px;">
+              <h1 style="margin:0; color:#ffffff; font-size:22px;">
+                Proposal Accepted
+              </h1>
+
+              <p style="margin:8px 0 0; color:#e0e7ff; font-size:14px;">
+                Techtrep Business Solutions
+              </p>
+            </div>
+
+            <div style="padding:28px;">
+              <p style="font-size:16px; line-height:1.6;">
+                Hi ${escapeHtml(data.recipientName)},
+              </p>
+
+              <p style="font-size:15px; line-height:1.6;">
+                Thank you for accepting our proposal on behalf of
+                ${escapeHtml(data.organizationName)}.
+              </p>
+
+              <p style="font-size:15px; line-height:1.6;">
+                We have successfully recorded your acceptance.
+                Our team will review the next steps and contact you
+                regarding project onboarding.
+              </p>
+
+              <table style="width:100%; border-collapse:collapse; margin:24px 0; font-size:14px;">
+                <tr>
+                  <td style="padding:8px 0; font-weight:bold; width:180px;">
+                    Proposal Number
+                  </td>
+                  <td style="padding:8px 0;">
+                    ${escapeHtml(data.proposalNumber)}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding:8px 0; font-weight:bold;">
+                    Proposal Title
+                  </td>
+                  <td style="padding:8px 0;">
+                    ${escapeHtml(data.title)}
+                  </td>
+                </tr>
+
+                ${amountHtml}
+
+                <tr>
+                  <td style="padding:8px 0; font-weight:bold;">
+                    Accepted At
+                  </td>
+                  <td style="padding:8px 0;">
+                    ${escapeHtml(data.acceptedAt)}
+                  </td>
+                </tr>
+              </table>
+
+              <p style="font-size:15px; line-height:1.6;">
+                Thank you for choosing Techtrep Business Solutions.
+                We look forward to working with you.
+              </p>
+            </div>
+
+            <div style="border-top:1px solid #e2e8f0; padding:18px 28px; color:#94a3b8; font-size:12px;">
+              Techtrep Business Solutions<br />
+              Technology, Automation &amp; AI for Growing Businesses
+            </div>
+
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+
+  const amountText = data.amount
+    ? `Proposal Amount: ${data.currency} ${data.amount}`
+    : "";
+
+  await transporter.sendMail({
+    from: emailFrom,
+    to: data.recipientEmail,
+    subject,
+    html,
+    text: `
+Hi ${data.recipientName},
+
+Thank you for accepting our proposal on behalf of ${data.organizationName}.
+
+Your acceptance has been successfully recorded by Techtrep Business Solutions.
+
+Proposal Number: ${data.proposalNumber}
+Proposal Title: ${data.title}
+${amountText}
+Accepted At: ${data.acceptedAt}
+
+Our team will review the next steps and contact you regarding project onboarding.
+
+Thank you for choosing Techtrep Business Solutions.
+
+Regards,
+Techtrep Business Solutions
+    `.trim(),
+  });
+}

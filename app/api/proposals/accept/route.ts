@@ -3,7 +3,10 @@ import { NextResponse } from "next/server";
 import { getRequestId } from "@/lib/api/request";
 import { logger } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
-import { sendProposalAcceptanceNotification } from "@/lib/email";
+import {
+    sendProposalAcceptanceConfirmation,
+    sendProposalAcceptanceNotification,
+} from "@/lib/email";
 
 export async function POST(
   request: Request,
@@ -286,135 +289,181 @@ export async function POST(
      * If SMTP is temporarily unavailable, the proposal remains
      * ACCEPTED and the failure is logged.
      */
-    const appUrl =
-      process.env.NEXT_PUBLIC_APP_URL ??
-      process.env.APP_URL;
+    
+const appUrl =
+  process.env.NEXT_PUBLIC_APP_URL ??
+  process.env.APP_URL;
 
-    if (!appUrl) {
-      logger.error(
-        "Proposal acceptance notification skipped: app URL is not configured",
-        {
-          requestId,
-          proposalId:
-            proposal.id,
-          proposalNumber:
-            proposal.proposalNumber,
-        },
-      );
-    } else {
-      const proposalUrl =
-        `${appUrl.replace(/\/$/, "")}/business/proposals/${proposal.id}`;
+const formattedAcceptedAt =
+  new Intl.DateTimeFormat(
+    "en-NG",
+    {
+      dateStyle: "full",
+      timeStyle: "medium",
+    },
+  ).format(acceptedAt);
 
-      const notificationAmount =
-        proposal.amount !== null
-          ? proposal.amount.toString()
-          : null;
+const notificationAmount =
+  proposal.amount !== null
+    ? proposal.amount.toString()
+    : null;
 
-      const formattedAcceptedAt =
-        new Intl.DateTimeFormat(
-          "en-NG",
-          {
-            dateStyle: "full",
-            timeStyle: "medium",
-          },
-        ).format(acceptedAt);
+/*
+ * The acceptance has already been committed.
+ * Email delivery is deliberately handled afterward so
+ * an SMTP failure cannot undo the client's acceptance.
+ */
 
-      try {
-        await sendProposalAcceptanceNotification(
-          {
-            proposalId:
-              proposal.id,
-            proposalNumber:
-              proposal.proposalNumber,
-            title:
-              proposal.title,
-            amount:
-              notificationAmount,
-            currency:
-              proposal.currency,
-            acceptedAt:
-              formattedAcceptedAt,
-            organizationName:
-              proposal.opportunity
-                .auditRequest
-                .organization
-                .name,
-            contactName:
-              proposal.opportunity
-                .auditRequest
-                .contact
-                .name,
-            contactEmail:
-              proposal.opportunity
-                .auditRequest
-                .contact
-                .email,
-            proposalUrl,
-          },
-        );
+if (!appUrl) {
+  logger.error(
+    "Proposal acceptance notification skipped: app URL is not configured",
+    {
+      requestId,
+      proposalId: proposal.id,
+      proposalNumber:
+        proposal.proposalNumber,
+    },
+  );
+} else {
+  const proposalUrl =
+    `${appUrl.replace(/\/$/, "")}/proposal/${token}`;
 
-        logger.info(
-          "Proposal acceptance notification sent",
-          {
-            requestId,
-            proposalId:
-              proposal.id,
-            proposalNumber:
-              proposal.proposalNumber,
-          },
-        );
-      } catch (error) {
-        logger.error(
-          "Failed to send proposal acceptance notification",
-          {
-            requestId,
-            proposalId:
-              proposal.id,
-            proposalNumber:
-              proposal.proposalNumber,
-            error:
-              error instanceof Error
-                ? error.message
-                : "Unknown error",
-          },
-        );
-      }
-    }
+  /*
+   * Internal Techtrep notification
+   */
+  try {
+    await sendProposalAcceptanceNotification({
+      proposalId: proposal.id,
+      proposalNumber:
+        proposal.proposalNumber,
+      title: proposal.title,
+      amount: notificationAmount,
+      currency: proposal.currency,
+      acceptedAt:
+        formattedAcceptedAt,
+      organizationName:
+        proposal.opportunity
+          .auditRequest
+          .organization
+          .name,
+      contactName:
+        proposal.opportunity
+          .auditRequest
+          .contact
+          .name,
+      contactEmail:
+        proposal.opportunity
+          .auditRequest
+          .contact
+          .email,
+      proposalUrl,
+    });
 
     logger.info(
-      "Proposal accepted",
+      "Proposal acceptance notification sent",
       {
         requestId,
-        proposalId:
-          proposal.id,
+        proposalId: proposal.id,
         proposalNumber:
           proposal.proposalNumber,
-        acceptanceSource:
-          "PUBLIC_PROPOSAL",
+        notificationType:
+          "INTERNAL",
       },
     );
+  } catch (error) {
+    logger.error(
+      "Failed to send internal proposal acceptance notification",
+      {
+        requestId,
+        proposalId: proposal.id,
+        proposalNumber:
+          proposal.proposalNumber,
+        notificationType:
+          "INTERNAL",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Unknown error",
+      },
+    );
+  }
 
-    return NextResponse.json(
+  /*
+   * Customer acceptance confirmation
+   */
+  try {
+    await sendProposalAcceptanceConfirmation({
+      proposalNumber:
+        proposal.proposalNumber,
+      title: proposal.title,
+      amount: notificationAmount,
+      currency: proposal.currency,
+      acceptedAt:
+        formattedAcceptedAt,
+      recipientName:
+        proposal.opportunity
+          .auditRequest
+          .contact
+          .name,
+      recipientEmail:
+        proposal.opportunity
+          .auditRequest
+          .contact
+          .email,
+      organizationName:
+        proposal.opportunity
+          .auditRequest
+          .organization
+          .name,
+    });
+
+    logger.info(
+      "Proposal acceptance confirmation sent",
       {
-        success: true,
-        message:
-          "Proposal accepted successfully.",
-        proposal: {
-          id: proposal.id,
-          proposalNumber:
-            proposal.proposalNumber,
-          status: "ACCEPTED",
-          acceptedAt,
-        },
-      },
-      {
-        status: 200,
-        headers: {
-          "x-request-id":
-            requestId,
-        },
+        requestId,
+        proposalId: proposal.id,
+        proposalNumber:
+          proposal.proposalNumber,
+        recipientEmail:
+          proposal.opportunity
+            .auditRequest
+            .contact
+            .email,
+        notificationType:
+          "CUSTOMER",
       },
     );
+  } catch (error) {
+    logger.error(
+      "Failed to send customer proposal acceptance confirmation",
+      {
+        requestId,
+        proposalId: proposal.id,
+        proposalNumber:
+          proposal.proposalNumber,
+        notificationType:
+          "CUSTOMER",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Unknown error",
+      },
+    );
+  }
+}
+
+logger.info(
+  "Proposal accepted",
+  {
+    requestId,
+    proposalId:
+      proposal.id,
+    proposalNumber:
+      proposal.proposalNumber,
+    acceptanceSource:
+      "PUBLIC_PROPOSAL",
+  },
+);
   } catch (error) {
     logger.error(
       "Failed to accept proposal",

@@ -154,16 +154,12 @@ export async function POST(request: Request) {
     if (response) {
       return response;
     }
+
     const body = await request.json();
 
     const proposalId =
       typeof body.proposalId === "string"
         ? body.proposalId.trim()
-        : "";
-
-    const projectNumber =
-      typeof body.projectNumber === "string"
-        ? body.projectNumber.trim()
         : "";
 
     const name =
@@ -204,28 +200,12 @@ export async function POST(request: Request) {
         ? null
         : Number(body.contractValue);
 
-    if (!proposalId || !projectNumber || !name) {
+    if (!proposalId || !name) {
       return NextResponse.json(
         {
           success: false,
           message:
-            "Proposal, project number, and project name are required.",
-        },
-        {
-          status: 400,
-          headers: {
-            "x-request-id": requestId,
-          },
-        },
-      );
-    }
-
-    if (projectNumber.length > 100) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "Project number must be 100 characters or fewer.",
+            "Proposal and project name are required.",
         },
         {
           status: 400,
@@ -471,6 +451,57 @@ export async function POST(request: Request) {
 
     const project = await prisma.$transaction(
       async (tx) => {
+        const year = new Date().getFullYear();
+        const prefix = `PROJ-${year}-`;
+
+        /*
+         * Serialize project-number generation for this year.
+         *
+         * This prevents two simultaneous project creations
+         * from receiving the same project number.
+         */
+        await tx.$executeRaw`
+          SELECT pg_advisory_xact_lock(
+            hashtext(${`techtrep:project-number:${year}`})
+          )
+        `;
+
+        const latestProject =
+          await tx.project.findFirst({
+            where: {
+              projectNumber: {
+                startsWith: prefix,
+              },
+            },
+            orderBy: {
+              projectNumber: "desc",
+            },
+            select: {
+              projectNumber: true,
+            },
+          });
+
+        const lastNumber = latestProject
+          ? Number(
+              latestProject.projectNumber.slice(
+                prefix.length,
+              ),
+            )
+          : 0;
+
+        if (
+          !Number.isInteger(lastNumber) ||
+          lastNumber < 0 ||
+          lastNumber >= 9999
+        ) {
+          throw new Error(
+            `Project number sequence exhausted for ${year}.`,
+          );
+        }
+
+        const projectNumber =
+          `${prefix}${String(lastNumber + 1).padStart(4, "0")}`;
+
         const createdProject =
           await tx.project.create({
             data: {
