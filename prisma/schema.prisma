@@ -281,13 +281,45 @@ model Contract {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
-  proposal Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  proposal Proposal  @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  invoices Invoice[]
 
   @@index([status])
   @@index([startDate])
   @@index([endDate])
   @@index([createdAt])
   @@map("contracts")
+}
+
+model Invoice {
+  id            String @id @default(cuid())
+  contractId    String
+  invoiceNumber String @unique
+
+  title       String
+  description String?
+
+  amount   Decimal @db.Decimal(15, 2)
+  currency String  @default("NGN")
+
+  status InvoiceStatus @default(DRAFT)
+
+  issuedAt DateTime  @default(now())
+  dueDate  DateTime?
+
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  contract Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  @@index([contractId])
+  @@index([status])
+  @@index([issuedAt])
+  @@index([dueDate])
+  @@index([createdAt])
+  @@map("invoices")
 }
 
 model Project {
@@ -463,6 +495,15 @@ enum ProposalStatus {
   REJECTED
   EXPIRED
   WITHDRAWN
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  VOID
 }
 
 enum ProjectStatus {
