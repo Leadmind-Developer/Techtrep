@@ -1,4 +1,6 @@
 import Link from "next/link";
+import TrackedLink from "@/components/analytics/TrackedLink";
+import AuditStartLink from "@/components/analytics/AuditStartLink";
 
 export const metadata = {
   title: "Contact Techtrep Business Solutions",
@@ -75,50 +77,70 @@ export default function ContactPage() {
 
               {/* Direct contact options */}
               <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                {/* Email */}
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
                   <p className="text-sm font-semibold text-slate-950">
                     Email
                   </p>
 
-                  <a
+                  <TrackedLink
                     href="mailto:email@thetechtrep.com"
+                    event="email_click"
+                    params={{ location: "contact_page" }}
                     className="mt-2 inline-block text-[#39358C] hover:underline"
                   >
                     email@thetechtrep.com
-                  </a>
+                  </TrackedLink>
                 </div>
 
+                {/* Phone / WhatsApp */}
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
                   <p className="text-sm font-semibold text-slate-950">
                     Call or WhatsApp
                   </p>
 
-                  <a
+                  <TrackedLink
                     href={phoneHref}
+                    event="phone_click"
+                    params={{
+                      location: "contact_page",
+                      element: "phone_number",
+                    }}
                     className="mt-2 block text-lg font-semibold text-slate-950 hover:text-[#39358C]"
                   >
                     {phoneNumber}
-                  </a>
+                  </TrackedLink>
 
                   <div className="mt-4 flex flex-wrap gap-3">
-                    <a
+                    <TrackedLink
                       href={phoneHref}
+                      event="phone_click"
+                      params={{
+                        location: "contact_page",
+                        element: "call_button",
+                      }}
                       className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:border-[#39358C] hover:text-[#39358C]"
                     >
                       Call us
-                    </a>
+                    </TrackedLink>
 
-                    <a
+                    <TrackedLink
                       href={whatsappHref}
                       target="_blank"
                       rel="noopener noreferrer"
+                      event="whatsapp_click"
+                      params={{
+                        location: "contact_page",
+                        element: "top_whatsapp_button",
+                      }}
                       className="inline-flex items-center justify-center rounded-lg bg-[#39358C] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#2f2b76]"
                     >
                       WhatsApp us
-                    </a>
+                    </TrackedLink>
                   </div>
                 </div>
 
+                {/* Free Technology Audit */}
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
                   <p className="text-sm font-semibold text-slate-950">
                     Free Technology Audit
@@ -130,16 +152,17 @@ export default function ContactPage() {
                     technology audit.
                   </p>
 
-                  <Link
-                    href="/free-technology-audit"
+                  <AuditStartLink
+                    location="contact_page"
                     className="mt-4 inline-flex text-sm font-semibold text-[#39358C] hover:underline"
                   >
                     Request the audit →
-                  </Link>
+                  </AuditStartLink>
                 </div>
               </div>
             </div>
 
+            {/* Contact topics */}
             <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
               <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#39358C]">
                 What can we help with?
@@ -159,6 +182,7 @@ export default function ContactPage() {
                       className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#39358C]"
                       aria-hidden="true"
                     />
+
                     <span className="text-sm text-slate-700">{topic}</span>
                   </div>
                 ))}
@@ -172,21 +196,31 @@ export default function ContactPage() {
                 </p>
 
                 <div className="mt-5 flex flex-wrap gap-3">
-                  <a
+                  <TrackedLink
                     href={phoneHref}
+                    event="phone_click"
+                    params={{
+                      location: "contact_page",
+                      element: "bottom_call_button",
+                    }}
                     className="inline-flex items-center justify-center rounded-lg border border-slate-300 px-6 py-3.5 text-sm font-semibold text-slate-800 transition-colors hover:border-[#39358C] hover:text-[#39358C]"
                   >
                     Call {phoneNumber}
-                  </a>
+                  </TrackedLink>
 
-                  <a
+                  <TrackedLink
                     href={whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
+                    event="whatsapp_click"
+                    params={{
+                      location: "contact_page",
+                      element: "bottom_whatsapp_button",
+                    }}
                     className="inline-flex items-center justify-center rounded-lg bg-[#39358C] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#2f2b76]"
                   >
                     WhatsApp Techtrep
-                  </a>
+                  </TrackedLink>
                 </div>
               </div>
             </div>
@@ -194,6 +228,7 @@ export default function ContactPage() {
         </div>
       </section>
 
+      {/* Related pages */}
       <section className="border-y border-slate-200 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
           <div className="grid gap-5 md:grid-cols-3">
@@ -204,9 +239,11 @@ export default function ContactPage() {
               <p className="text-sm font-semibold text-[#39358C]">
                 Solutions
               </p>
+
               <h3 className="mt-2 font-bold text-slate-950">
                 Explore our services
               </h3>
+
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 See the technology capabilities available to your organization.
               </p>
@@ -219,9 +256,11 @@ export default function ContactPage() {
               <p className="text-sm font-semibold text-[#39358C]">
                 Industries
               </p>
+
               <h3 className="mt-2 font-bold text-slate-950">
                 See where we can help
               </h3>
+
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 Explore common technology needs across different industries.
               </p>
@@ -234,9 +273,11 @@ export default function ContactPage() {
               <p className="text-sm font-semibold text-[#39358C]">
                 How We Work
               </p>
+
               <h3 className="mt-2 font-bold text-slate-950">
                 Understand our approach
               </h3>
+
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 See how we move from business problem to working solution.
               </p>

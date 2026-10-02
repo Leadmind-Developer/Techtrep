@@ -4,6 +4,7 @@ import Link from "next/link";
 import "./globals.css";
 import MobileNav from "@/components/layout/MobileNav";
 import OrganizationSchema from "@/components/OrganizationSchema";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://business.thetechtrep.com"),
@@ -323,7 +324,11 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        <OrganizationSchema />        
+        <OrganizationSchema />
+
+        <GoogleAnalytics
+           gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!}
+        />        
       </body>
     </html>
   );

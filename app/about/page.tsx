@@ -64,7 +64,7 @@ export default function AboutPage() {
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/free-technology-audit"
+                href="/free-technology-audit"               
                 className="inline-flex items-center justify-center rounded-lg bg-[#39358C] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#2f2b76]"
               >
                 Start a Free Technology Audit
@@ -259,7 +259,7 @@ export default function AboutPage() {
               </div>
 
               <Link
-                href="/free-technology-audit"
+                href="/free-technology-audit"            
                 className="inline-flex items-center justify-center rounded-lg bg-white px-6 py-3.5 text-sm font-semibold text-[#39358C] transition-colors hover:bg-slate-100"
               >
                 Request a Free Audit

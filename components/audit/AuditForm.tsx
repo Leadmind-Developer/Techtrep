@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 const improvementOptions = [
   "Customer enquiries",
@@ -64,6 +65,11 @@ export default function AuditForm() {
           data.message || "Unable to submit your audit request."
         );
       }
+
+      trackEvent("free_audit_submit", {
+        industry: payload.industry,
+        company_size: payload.companySize,
+      });
 
       setSuccess(true);
       setMessage(
