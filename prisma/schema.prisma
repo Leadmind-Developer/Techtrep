@@ -31,6 +31,7 @@ model User {
   createdProposals               Proposal[]              @relation("ProposalCreatedBy")
   projectManagerProjects         Project[]               @relation("ProjectManager")
   createdProjects                Project[]               @relation("ProjectCreatedBy")
+  createdPayments                Payment[]               @relation("PaymentCreatedBy")
   sessions                       Session[]
 
   @@index([role])
@@ -256,15 +257,6 @@ model Proposal {
   @@map("proposals")
 }
 
-enum ContractStatus {
-  DRAFT
-  SENT
-  SIGNED
-  ACTIVE
-  EXPIRED
-  TERMINATED
-}
-
 model Contract {
   id             String         @id @default(cuid())
   proposalId     String         @unique
@@ -312,7 +304,8 @@ model Invoice {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  contract Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  contract Contract  @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  payments Payment[]
 
   @@index([contractId])
   @@index([status])
@@ -320,6 +313,58 @@ model Invoice {
   @@index([dueDate])
   @@index([createdAt])
   @@map("invoices")
+}
+
+model Payment {
+  id            String @id @default(cuid())
+  invoiceId     String
+  paymentNumber String @unique
+
+  amount   Decimal @db.Decimal(15, 2)
+  currency String  @default("NGN")
+
+  method PaymentMethod
+  status PaymentStatus @default(COMPLETED)
+
+  paidAt DateTime @default(now())
+
+  reference String?
+  notes     String?
+
+  createdByUserId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  invoice       Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  createdByUser User?    @relation("PaymentCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  receipt       Receipt?
+
+  @@index([invoiceId])
+  @@index([status])
+  @@index([paidAt])
+  @@index([reference])
+  @@index([createdByUserId])
+  @@index([createdAt])
+  @@map("payments")
+}
+
+model Receipt {
+  id            String @id @default(cuid())
+  paymentId     String @unique
+  receiptNumber String @unique
+
+  issuedAt DateTime @default(now())
+
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([issuedAt])
+  @@map("receipts")
 }
 
 model Project {
@@ -497,6 +542,15 @@ enum ProposalStatus {
   WITHDRAWN
 }
 
+enum ContractStatus {
+  DRAFT
+  SENT
+  SIGNED
+  ACTIVE
+  EXPIRED
+  TERMINATED
+}
+
 enum InvoiceStatus {
   DRAFT
   SENT
@@ -512,4 +566,21 @@ enum ProjectStatus {
   ON_HOLD
   COMPLETED
   CANCELLED
+}
+
+enum PaymentMethod {
+  BANK_TRANSFER
+  CASH
+  CARD
+  POS
+  USSD
+  MOBILE_MONEY
+  CHEQUE
+  OTHER
+}
+
+enum PaymentStatus {
+  COMPLETED
+  VOID
+  REFUNDED
 }
