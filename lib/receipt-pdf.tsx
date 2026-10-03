@@ -361,9 +361,7 @@ export default function ReceiptPdf({
           </Text>
 
           <Text style={styles.amount}>
-            {formatMoney(paymentAmount, currency)}
-              // The PDF API will pass the individual
-              // payment amount through totalPaid here.              
+            {formatMoney(paymentAmount, currency)}                          
           </Text>
         </View>
 

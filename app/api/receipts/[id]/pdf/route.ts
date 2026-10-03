@@ -1,4 +1,3 @@
-import React from "react";
 import { NextResponse } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { Prisma } from "@/generated/prisma/client";

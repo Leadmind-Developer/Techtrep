@@ -96,10 +96,24 @@ export default function ReceiptControl({
           )}
         </div>
 
-        <div className="mt-4 rounded-lg bg-gray-50 p-3 text-xs text-gray-500">
-          Receipt PDF actions will be available here
-          once receipt PDF generation is added.
-        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+  <a
+    href={`/api/receipts/${receipt.id}/pdf`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center justify-center rounded-lg border border-[#39358c] px-4 py-2.5 text-sm font-medium text-[#39358c] transition hover:bg-[#f5f4ff]"
+  >
+    View Receipt
+  </a>
+
+  <a
+    href={`/api/receipts/${paymentId}/pdf`}
+    download={`${receipt.receiptNumber}.pdf`}
+    className="inline-flex items-center justify-center rounded-lg bg-[#39358c] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#302d78]"
+  >
+    Download Receipt
+  </a>
+</div>
       </div>
     );
   }
