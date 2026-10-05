@@ -4,7 +4,10 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from "@react-pdf/renderer";
+import fs from "fs";
+import path from "path";
 
 type ReceiptPdfProps = {
   receiptNumber: string;
@@ -29,6 +32,16 @@ type ReceiptPdfProps = {
   notes: string | null;
 };
 
+const logoPath = path.join(
+  process.cwd(),
+  "public",
+  "logo.png",
+);
+
+const logoData = `data:image/png;base64,${fs
+    .readFileSync(logoPath)
+    .toString("base64")}`;
+
 const styles = StyleSheet.create({
   page: {
     padding: 48,
@@ -41,8 +54,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    paddingBottom: 24,
+    paddingBottom: 18,
     borderBottom: "1 solid #e5e7eb",
+  },
+
+  headerContent: {
+    flex: 1,
+    justifyContent: "center",
   },
 
   brand: {
@@ -70,6 +88,14 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#39358c",
     fontFamily: "Helvetica-Bold",
+  },
+
+  logo: {
+    width: 32,
+    height: 32,
+    objectFit: "contain",
+    marginBottom: 8,
+    borderRadius: 8,
   },
 
   section: {
@@ -159,11 +185,16 @@ const styles = StyleSheet.create({
 
   footer: {
     position: "absolute",
-    bottom: 32,
+    bottom: 28,
     left: 48,
     right: 48,
+    alignItems: "center",
     paddingTop: 10,
-    borderTop: "1 solid #e5e7eb",
+    borderTop: "1 solid #e5e7eb",    
+  },
+
+  footerText: {
+    marginTop: 4,
     textAlign: "center",
     fontSize: 8,
     color: "#9ca3af",
@@ -223,7 +254,7 @@ export default function ReceiptPdf({
     >
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          <View>
+          <View style={styles.headerContent}>          
             <Text style={styles.brand}>
               Techtrep Business Solutions
             </Text>
@@ -417,10 +448,17 @@ export default function ReceiptPdf({
           </View>
         )}
 
-        <Text style={styles.footer}>
+        <View style={styles.footer}>
+          <Image
+            src={logoData}
+            style={styles.logo}
+          />
+
+          <Text style={styles.footerText}>
           Techtrep Business Solutions • Technology,
           Automation & AI for Growing Businesses
         </Text>
+      </View>
       </Page>
     </Document>
   );
