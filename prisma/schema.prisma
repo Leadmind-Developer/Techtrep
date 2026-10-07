@@ -289,9 +289,10 @@ model Contract {
 }
 
 model Invoice {
-  id            String @id @default(cuid())
-  contractId    String
-  invoiceNumber String @unique
+  id               String  @id @default(cuid())
+  contractId       String
+  managedServiceId String?
+  invoiceNumber    String  @unique
 
   title       String
   description String?
@@ -304,18 +305,26 @@ model Invoice {
   issuedAt DateTime  @default(now())
   dueDate  DateTime?
 
+  billingPeriodStart DateTime?
+  billingPeriodEnd   DateTime?
+
   notes String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  contract Contract  @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  contract       Contract        @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  managedService ManagedService? @relation(fields: [managedServiceId], references: [id], onDelete: SetNull)
+
   payments Payment[]
 
+  @@unique([managedServiceId, billingPeriodStart])
   @@index([contractId])
+  @@index([managedServiceId])
   @@index([status])
   @@index([issuedAt])
   @@index([dueDate])
+  @@index([billingPeriodStart])
   @@index([createdAt])
   @@map("invoices")
 }
@@ -445,6 +454,7 @@ model ManagedService {
   serviceManager User?        @relation("ManagedServiceManager", fields: [serviceManagerId], references: [id], onDelete: SetNull)
 
   serviceRequests ServiceRequest[]
+  invoices        Invoice[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
