@@ -260,6 +260,16 @@ export async function POST(request: Request) {
         ? body.billingFrequency.trim()
         : "MONTHLY";
 
+    const billingEnabled =
+       body.billingEnabled === true;
+
+    const nextBillingDate =
+      body.nextBillingDate === null ||
+      body.nextBillingDate === undefined ||
+      body.nextBillingDate === ""
+        ? null
+        : body.nextBillingDate;
+
     const startDate =
       body.startDate === null ||
       body.startDate === undefined ||
@@ -399,6 +409,21 @@ export async function POST(request: Request) {
         {
           success: false,
           message: "Invalid end date.",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+    
+    if (
+      nextBillingDate !== null &&
+      !isValidDate(nextBillingDate)
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid next billing date.",
         },
         {
           status: 400,
@@ -605,6 +630,11 @@ export async function POST(request: Request) {
               billingFrequency:
                 billingFrequency as
                   (typeof billingFrequencies)[number],
+              billingEnabled,
+              nextBillingDate:
+                nextBillingDate !== null
+                  ? new Date(nextBillingDate)
+                  : null,
               startDate:
                 startDate !== null
                   ? new Date(startDate)

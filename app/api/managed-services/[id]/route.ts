@@ -263,6 +263,8 @@ const existing =
       recurringFee: true,
       currency: true,
       billingFrequency: true,
+      billingEnabled: true,
+      nextBillingDate: true,
       startDate: true,
       endDate: true,
       serviceManagerId: true,
@@ -331,6 +333,8 @@ const data: {
     | "MONTHLY"
     | "QUARTERLY"
     | "ANNUALLY";
+  billingEnabled?: boolean;
+  nextBillingDate?: Date | null;
   startDate?: Date | null;
   endDate?: Date | null;
   serviceManagerId?: string | null;
@@ -532,6 +536,71 @@ if (
       | "MONTHLY"
       | "QUARTERLY"
       | "ANNUALLY";
+}
+
+if (body.billingEnabled !== undefined) {
+  if (typeof body.billingEnabled !== "boolean") {
+    return NextResponse.json(
+      {
+        success: false,
+        message: 
+           "Invalid billing enabled value.",
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  data.billingEnabled = body.billingEnabled;
+}
+
+if (body.nextBillingDate !== undefined) {
+  if (
+    body.nextBillingDate === null ||
+    body.nextBillingDate === ""
+  ) {
+    data.nextBillingDate = null;
+  } else if (
+    !isValidDate(body.nextBillingDate)
+  ) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Invalid next billing date.",
+      },
+      {
+        status: 400,
+      },
+    );
+  } else {
+    data.nextBillingDate = new Date(
+      body.nextBillingDate
+    );
+  }
+}
+
+if (body.nextBillingDate !== undefined) {
+  if (
+    body.nextBillingDate === null ||
+    body.nextBillingDate === ""
+  ) {
+    data.nextBillingDate = null;
+  } else if (
+    !isValidDate(body.nextBillingDate)
+  ) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Invalid next billing date.",
+      },
+      {
+        status: 400,
+      },
+    );
+  } else {
+    data.nextBillingDate = new Date(body.nextBillingDate);
+  }
 }
 
 if (body.startDate !== undefined) {

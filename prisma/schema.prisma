@@ -430,6 +430,8 @@ model ManagedService {
   currency     String   @default("NGN")
 
   billingFrequency ManagedServiceBillingFrequency @default(MONTHLY)
+  billingEnabled   Boolean                        @default(false)
+  nextBillingDate  DateTime?
 
   startDate DateTime?
   endDate   DateTime?
@@ -456,6 +458,7 @@ model ManagedService {
   @@index([startDate])
   @@index([endDate])
   @@index([createdAt])
+  @@index([nextBillingDate])
   @@map("managed_services")
 }
 

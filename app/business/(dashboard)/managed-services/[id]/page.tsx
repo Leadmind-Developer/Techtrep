@@ -15,6 +15,8 @@ sla: string;
 recurringFee: string | number | null;
 currency: string;
 billingFrequency: string;
+billingEnabled: boolean;
+nextBillingDate: string | null;
 startDate: string | null;
 endDate: string | null;
 notes: string | null;
@@ -270,6 +272,8 @@ sla: "STANDARD",
 recurringFee: "",
 currency: "NGN",
 billingFrequency: "MONTHLY",
+billingEnabled: false,
+nextBillingDate: "",
 startDate: "",
 endDate: "",
 serviceManagerId: "",
@@ -345,6 +349,10 @@ try {
     currency: data.currency ?? "NGN",
     billingFrequency:
       data.billingFrequency ?? "MONTHLY",
+    billingEnabled: data.billingEnabled ?? false,
+      nextBillingDate: data.nextBillingDate
+        ? data.nextBillingDate.slice(0, 10)
+        : "",
     startDate: data.startDate
       ? data.startDate.slice(0, 10)
       : "",
@@ -403,6 +411,11 @@ try {
           form.recurringFee.trim() || null,
         currency: form.currency.trim() || "NGN",
         billingFrequency: form.billingFrequency,
+        billingEnabled: form.billingEnabled,
+        nextBillingDate:
+          form.billingEnabled && form.nextBillingDate          
+            ? form.nextBillingDate
+            : null,
         startDate: form.startDate || null,
         endDate: form.endDate || null,
         serviceManagerId:
@@ -523,8 +536,11 @@ setForm({
       ? ""
       : String(service.recurringFee),
   currency: service.currency ?? "NGN",
-  billingFrequency:
-    service.billingFrequency ?? "MONTHLY",
+  billingFrequency: service.billingFrequency ?? "MONTHLY",
+  billingEnabled: service.billingEnabled ?? false,
+  nextBillingDate: service.nextBillingDate
+    ? service.nextBillingDate.slice(0, 10)
+    : "",
   startDate: service.startDate
     ? service.startDate.slice(0, 10)
     : "",
@@ -859,6 +875,61 @@ return ( <div className="space-y-6"> <div className="flex flex-col gap-4 lg:flex
           </select>
         </div>
 
+        <div className="md:col-span-2">
+  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+    <label className="flex cursor-pointer items-start gap-3">
+      <input
+        id="billing-enabled"
+        type="checkbox"
+        checked={form.billingEnabled}
+        onChange={(event) =>
+          setForm((current) => ({
+            ...current,
+            billingEnabled: event.target.checked,
+          }))
+        }
+        className="mt-1 h-4 w-4 rounded border-slate-300 text-[#39358c] focus:ring-[#39358c]"
+      />
+
+      <span>
+        <span className="block text-sm font-medium text-slate-800">
+          Enable recurring billing
+        </span>
+        <span className="mt-1 block text-xs text-slate-500">
+          Enable this service for recurring billing according to its billing frequency.
+        </span>
+      </span>
+    </label>
+  </div>
+</div>
+
+<div>
+  <label
+    htmlFor="next-billing-date"
+    className="mb-1.5 block text-sm font-medium text-slate-700"
+  >
+    Next Billing Date
+  </label>
+
+  <input
+    id="next-billing-date"
+    type="date"
+    value={form.nextBillingDate}
+    disabled={!form.billingEnabled}
+    onChange={(event) =>
+      setForm((current) => ({
+        ...current,
+        nextBillingDate: event.target.value,
+      }))
+    }
+    className={`${inputClassName} disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400`}
+  />
+
+  <p className="mt-1 text-xs text-slate-500">
+    The next date scheduled for recurring billing.
+  </p>
+</div>
+
         <div>
           <label
             htmlFor="start-date"
@@ -1002,6 +1073,26 @@ return ( <div className="space-y-6"> <div className="flex flex-col gap-4 lg:flex
                 ] ?? service.billingFrequency
               }
             />
+
+            <DetailItem
+  label="Recurring Billing"
+  value={
+    service.billingEnabled ? (
+      <span className="font-medium text-green-700">
+        Enabled
+      </span>
+    ) : (
+      <span className="text-slate-500">
+        Disabled
+      </span>
+    )
+  }
+/>
+
+<DetailItem
+  label="Next Billing Date"
+  value={formatDate(service.nextBillingDate)}
+/>
 
             <DetailItem
               label="Start Date"
