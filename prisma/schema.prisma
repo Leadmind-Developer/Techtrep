@@ -475,11 +475,13 @@ model ServiceRequest {
 
   assignedToId String?
 
-  openedAt   DateTime  @default(now())
-  assignedAt DateTime?
-  startedAt  DateTime?
-  resolvedAt DateTime?
-  closedAt   DateTime?
+  openedAt           DateTime  @default(now())
+  firstResponseDueAt DateTime?
+  resolutionDueAt    DateTime?
+  assignedAt         DateTime?
+  startedAt          DateTime?
+  resolvedAt         DateTime?
+  closedAt           DateTime?
 
   resolution String?
   notes      String?

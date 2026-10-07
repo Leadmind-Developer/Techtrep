@@ -27,6 +27,8 @@ type ServiceRequest = {
   status: ServiceRequestStatus;
   priority: ServiceRequestPriority;
   openedAt: string;
+  firstResponseDueAt: string | null;
+  resolutionDueAt: string | null;
   assignedAt: string | null;
   startedAt: string | null;
   resolvedAt: string | null;
@@ -187,6 +189,88 @@ function priorityClass(
     case "URGENT":
       return "bg-red-50 text-red-700";
   }
+}
+
+function getSlaStatus(
+  serviceRequest: ServiceRequest,
+) {
+  if (
+    serviceRequest.status === "RESOLVED" ||
+    serviceRequest.status === "CLOSED"
+  ) {
+    if (!serviceRequest.resolutionDueAt) {
+      return {
+        label: "No SLA Deadline",
+        className:
+          "bg-slate-100 text-slate-700",
+      };
+    }
+
+    const resolvedAt = serviceRequest.resolvedAt
+      ? new Date(serviceRequest.resolvedAt)
+      : null;
+
+    const resolutionDueAt = new Date(
+      serviceRequest.resolutionDueAt,
+    );
+
+    if (
+      resolvedAt &&
+      resolvedAt.getTime() <=
+        resolutionDueAt.getTime()
+    ) {
+      return {
+        label: "Resolved Within SLA",
+        className:
+          "bg-emerald-50 text-emerald-700",
+      };
+    }
+
+    return {
+      label: "Resolution SLA Breached",
+      className: "bg-red-50 text-red-700",
+    };
+  }
+
+  if (!serviceRequest.resolutionDueAt) {
+    return {
+      label: "No SLA Deadline",
+      className:
+        "bg-slate-100 text-slate-700",
+    };
+  }
+
+  const now = Date.now();
+  const deadline = new Date(
+    serviceRequest.resolutionDueAt,
+  ).getTime();
+
+  if (now >= deadline) {
+    return {
+      label: "SLA Breached",
+      className: "bg-red-50 text-red-700",
+    };
+  }
+
+  const remaining =
+    deadline - now;
+
+  const totalHours =
+    remaining / (1000 * 60 * 60);
+
+  if (totalHours <= 4) {
+    return {
+      label: "Approaching SLA",
+      className:
+        "bg-amber-50 text-amber-700",
+    };
+  }
+
+  return {
+    label: "Within SLA",
+    className:
+      "bg-emerald-50 text-emerald-700",
+  };
 }
 
 function statusButtonClass(
@@ -351,6 +435,10 @@ export default function ServiceRequestDetailPage() {
         serviceRequest.status
       ];
     }, [serviceRequest]);
+
+    const slaStatus = serviceRequest
+       ? getSlaStatus(serviceRequest)
+       : null;
 
   async function saveChanges() {
     if (!serviceRequest) {
@@ -1064,6 +1152,75 @@ export default function ServiceRequestDetailPage() {
                   }
                 </p>
               </div>
+            </div>
+          </div>
+
+                    <div className="rounded-xl border border-slate-200 bg-white p-6">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-base font-semibold text-slate-900">
+                SLA
+              </h2>
+
+              {slaStatus && (
+                <span
+                  className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${slaStatus.className}`}
+                >
+                  {slaStatus.label}
+                </span>
+              )}
+            </div>
+
+            <div className="mt-4 space-y-4">
+              <div>
+                <p className="text-xs text-slate-500">
+                  SLA Level
+                </p>
+
+                <p className="mt-1 text-sm font-medium text-slate-700">
+                  {
+                    serviceRequest.managedService
+                      .sla
+                  }
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs text-slate-500">
+                  First Response Due
+                </p>
+
+                <p className="mt-1 text-sm text-slate-700">
+                  {formatDate(
+                    serviceRequest.firstResponseDueAt,
+                  )}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs text-slate-500">
+                  Resolution Due
+                </p>
+
+                <p className="mt-1 text-sm text-slate-700">
+                  {formatDate(
+                    serviceRequest.resolutionDueAt,
+                  )}
+                </p>
+              </div>
+
+              {serviceRequest.resolvedAt && (
+                <div>
+                  <p className="text-xs text-slate-500">
+                    Resolved
+                  </p>
+
+                  <p className="mt-1 text-sm text-slate-700">
+                    {formatDate(
+                      serviceRequest.resolvedAt,
+                    )}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 

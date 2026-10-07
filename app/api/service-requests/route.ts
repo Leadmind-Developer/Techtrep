@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 
 import { requireApiUser } from "@/lib/auth/api";
 import { prisma } from "@/lib/prisma";
+import {
+  calculateSlaDeadline,
+  getSlaTarget,
+} from "@/lib/managed-services/sla";
 
 function getCurrentYear(): number {
   return new Date().getFullYear();
@@ -378,6 +382,36 @@ export async function POST(request: Request) {
             `SR-${year}-${String(
               nextNumber,
             ).padStart(4, "0")}`;
+          
+          const managedServiceSla =
+            await tx.managedService.findUnique({
+              where: {
+                id: managedService.id,
+              },
+              select: {
+                sla: true,
+              },
+            });
+
+          if (!managedServiceSla) {
+            throw new Error(
+              "Managed service disappeared during request creation.",
+            );
+          }
+
+          const slaTarget = getSlaTarget(managedServiceSla.sla);
+
+          const openedAt = new Date();
+
+          const firstResponseDueAt = calculateSlaDeadline(
+          openedAt,
+          slaTarget.firstResponseHours,
+          );
+
+          const resolutionDueAt = calculateSlaDeadline(
+            openedAt,
+            slaTarget.resolutionHours,
+          );
 
           const created =
             await tx.serviceRequest.create({
@@ -396,6 +430,9 @@ export async function POST(request: Request) {
                   ? new Date()
                   : null,
                 notes,
+                openedAt,
+                firstResponseDueAt,
+                resolutionDueAt,
               },
               include: {
                 managedService: {
