@@ -37,6 +37,34 @@ const navigation = [
     href: "/business/opportunities",
   },
   {
+    label: "Proposals",
+    href: "/business/proposals",
+  },
+  {
+    label: "Contracts",
+    href: "/business/contracts",
+  },
+  {
+    label: "Invoices",
+    href: "/business/invoices",
+  },
+  {
+    label: "Payments",
+    href: "/business/payments",
+  },
+  {
+    label: "Projects",
+    href: "/business/projects",
+  },
+  {
+    label: "Managed Services",
+    href: "/business/managed-services",
+  },
+  {
+    label: "Service Requests",
+    href: "/business/service-requests",
+  },
+  {
     label: "Activities",
     href: "/business/activities",
   },

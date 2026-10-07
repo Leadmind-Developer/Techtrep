@@ -32,6 +32,8 @@ model User {
   projectManagerProjects         Project[]               @relation("ProjectManager")
   createdProjects                Project[]               @relation("ProjectCreatedBy")
   createdPayments                Payment[]               @relation("PaymentCreatedBy")
+  managedServices                ManagedService[]        @relation("ManagedServiceManager")
+  serviceRequestsAssigned        ServiceRequest[]        @relation("ServiceRequestAssignee")
   sessions                       Session[]
 
   @@index([role])
@@ -53,17 +55,19 @@ model Session {
 }
 
 model Organization {
-  id          String         @id @default(cuid())
-  name        String
-  website     String?
-  industry    String?
-  companySize String?
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  activities  Activity[]
-  audits      AuditRequest[]
-  contacts    Contact[]
-  leads       Lead[]
+  id              String           @id @default(cuid())
+  name            String
+  website         String?
+  industry        String?
+  companySize     String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  activities      Activity[]
+  audits          AuditRequest[]
+  contacts        Contact[]
+  leads           Lead[]
+  managedServices ManagedService[]
+  serviceRequests ServiceRequest[]
 
   @@index([name])
   @@index([industry])
@@ -273,8 +277,9 @@ model Contract {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
-  proposal Proposal  @relation(fields: [proposalId], references: [id], onDelete: Cascade)
-  invoices Invoice[]
+  proposal        Proposal         @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  invoices        Invoice[]
+  managedServices ManagedService[]
 
   @@index([status])
   @@index([startDate])
@@ -392,8 +397,9 @@ model Project {
   projectManager User?    @relation("ProjectManager", fields: [projectManagerId], references: [id], onDelete: SetNull)
   createdByUser  User?    @relation("ProjectCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  managedServices ManagedService[]
 
   @@index([projectManagerId])
   @@index([createdByUserId])
@@ -403,6 +409,98 @@ model Project {
   @@index([targetEndDate])
   @@index([createdAt])
   @@map("projects")
+}
+
+model ManagedService {
+  id String @id @default(cuid())
+
+  organizationId String
+  projectId      String?
+  contractId     String?
+
+  serviceNumber String  @unique
+  name          String
+  description   String?
+
+  type   ManagedServiceType
+  status ManagedServiceStatus @default(DRAFT)
+  sla    ManagedServiceSla    @default(STANDARD)
+
+  recurringFee Decimal? @db.Decimal(15, 2)
+  currency     String   @default("NGN")
+
+  billingFrequency ManagedServiceBillingFrequency @default(MONTHLY)
+
+  startDate DateTime?
+  endDate   DateTime?
+
+  serviceManagerId String?
+  notes            String?
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  project        Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  contract       Contract?    @relation(fields: [contractId], references: [id], onDelete: SetNull)
+  serviceManager User?        @relation("ManagedServiceManager", fields: [serviceManagerId], references: [id], onDelete: SetNull)
+
+  serviceRequests ServiceRequest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([projectId])
+  @@index([contractId])
+  @@index([type])
+  @@index([status])
+  @@index([serviceManagerId])
+  @@index([startDate])
+  @@index([endDate])
+  @@index([createdAt])
+  @@map("managed_services")
+}
+
+model ServiceRequest {
+  id String @id @default(cuid())
+
+  managedServiceId String
+  organizationId   String
+
+  requestNumber String @unique
+
+  title       String
+  description String?
+
+  status   ServiceRequestStatus   @default(OPEN)
+  priority ServiceRequestPriority @default(NORMAL)
+
+  assignedToId String?
+
+  openedAt   DateTime  @default(now())
+  assignedAt DateTime?
+  startedAt  DateTime?
+  resolvedAt DateTime?
+  closedAt   DateTime?
+
+  resolution String?
+  notes      String?
+
+  managedService ManagedService @relation(fields: [managedServiceId], references: [id], onDelete: Cascade)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  assignedTo User? @relation("ServiceRequestAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([managedServiceId])
+  @@index([organizationId])
+  @@index([status])
+  @@index([priority])
+  @@index([assignedToId])
+  @@index([openedAt])
+  @@index([createdAt])
+  @@map("service_requests")
 }
 
 model Activity {
@@ -583,4 +681,53 @@ enum PaymentStatus {
   COMPLETED
   VOID
   REFUNDED
+}
+
+enum ManagedServiceType {
+  MANAGED_IT
+  CLOUD
+  SOFTWARE_SUPPORT
+  AI_SUPPORT
+  WEBSITE
+  NETWORK
+  INFRASTRUCTURE
+  CUSTOM
+}
+
+enum ManagedServiceStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ENDED
+  CANCELLED
+}
+
+enum ManagedServiceSla {
+  BASIC
+  STANDARD
+  PRIORITY
+  PREMIUM
+}
+
+enum ManagedServiceBillingFrequency {
+  MONTHLY
+  QUARTERLY
+  ANNUALLY
+}
+
+enum ServiceRequestStatus {
+  OPEN
+  ASSIGNED
+  IN_PROGRESS
+  WAITING
+  RESOLVED
+  CLOSED
+  CANCELLED
+}
+
+enum ServiceRequestPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
 }
