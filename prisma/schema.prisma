@@ -34,6 +34,7 @@ model User {
   createdPayments                Payment[]               @relation("PaymentCreatedBy")
   managedServices                ManagedService[]        @relation("ManagedServiceManager")
   serviceRequestsAssigned        ServiceRequest[]        @relation("ServiceRequestAssignee")
+  preparedServiceReports         ServiceReport[]         @relation("ServiceReportPreparer")
   sessions                       Session[]
 
   @@index([role])
@@ -68,6 +69,7 @@ model Organization {
   leads           Lead[]
   managedServices ManagedService[]
   serviceRequests ServiceRequest[]
+  serviceReports  ServiceReport[]
 
   @@index([name])
   @@index([industry])
@@ -455,6 +457,7 @@ model ManagedService {
 
   serviceRequests ServiceRequest[]
   invoices        Invoice[]
+  serviceReports  ServiceReport[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -516,6 +519,61 @@ model ServiceRequest {
   @@index([openedAt])
   @@index([createdAt])
   @@map("service_requests")
+}
+
+model ServiceReport {
+  id String @id @default(cuid())
+
+  organizationId   String
+  managedServiceId String
+  preparedById     String?
+
+  reportNumber String @unique
+
+  reportingPeriodStart DateTime
+  reportingPeriodEnd   DateTime
+  reportDate           DateTime @default(now())
+
+  status      ServiceReportStatus @default(DRAFT)
+  finalizedAt DateTime?
+
+  // Narrative sections
+  executiveSummary String? @db.Text
+  workPerformed    String? @db.Text
+  incidentSummary  String? @db.Text
+  recommendations  String? @db.Text
+  nextSteps        String? @db.Text
+
+  // Snapshot of service-request activity
+  totalRequests    Int @default(0)
+  resolvedRequests Int @default(0)
+  openRequests     Int @default(0)
+  urgentRequests   Int @default(0)
+
+  slaEligibleRequests Int      @default(0)
+  slaMetRequests      Int      @default(0)
+  slaBreachedRequests Int      @default(0)
+  slaComplianceRate   Decimal? @db.Decimal(5, 2)
+
+  // Snapshot of billing figures; informational only
+  billingCurrency  String  @default("NGN")
+  totalInvoiced    Decimal @default(0) @db.Decimal(15, 2)
+  totalPaid        Decimal @default(0) @db.Decimal(15, 2)
+  totalOutstanding Decimal @default(0) @db.Decimal(15, 2)
+
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  managedService ManagedService @relation(fields: [managedServiceId], references: [id], onDelete: Cascade)
+  preparedBy     User?          @relation("ServiceReportPreparer", fields: [preparedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([managedServiceId, reportingPeriodStart, reportingPeriodEnd])
+  @@index([organizationId, reportDate])
+  @@index([managedServiceId, reportingPeriodStart])
+  @@index([status])
+  @@index([preparedById])
+  @@map("service_reports")
 }
 
 model Activity {
@@ -745,4 +803,9 @@ enum ServiceRequestPriority {
   NORMAL
   HIGH
   URGENT
+}
+
+enum ServiceReportStatus {
+  DRAFT
+  FINALIZED
 }

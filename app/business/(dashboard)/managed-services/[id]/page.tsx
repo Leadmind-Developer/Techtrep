@@ -64,6 +64,51 @@ type ApiResponse = {
     error?: string;
     message?: string;
 };
+
+
+type ServiceReport = {
+  id: string;
+  reportNumber: string;
+  status: string;
+  reportingPeriodStart: string;
+  reportingPeriodEnd: string;
+  reportDate: string;
+  executiveSummary: string | null;
+  totalRequests: number;
+  resolvedRequests: number;
+  openRequests: number;
+  urgentRequests: number;
+  slaEligibleRequests: number;
+  slaMetRequests: number;
+  slaBreachedRequests: number;
+  slaComplianceRate: string | number | null;
+  billingCurrency: string;
+  totalInvoiced: string | number;
+  totalPaid: string | number;
+  totalOutstanding: string | number;
+};
+
+type ServiceReportApiResponse = {
+  success?: boolean;
+  message?: string;
+  error?: string;
+  report?: ServiceReport | {
+    id: string;
+    reportNumber: string;
+    status: string;
+  };
+};
+
+function getDefaultReportPeriod(): string {
+  const date = new Date();
+  date.setUTCDate(1);
+  date.setUTCMonth(date.getUTCMonth() - 1);
+
+  return `${date.getUTCFullYear()}-${String(
+    date.getUTCMonth() + 1,
+  ).padStart(2, "0")}`;
+}
+
 const typeLabels: Record<string, string> = {
 MANAGED_IT: "Managed IT",
 CLOUD: "Cloud",
@@ -263,6 +308,16 @@ const [saving, setSaving] = useState(false);
 const [editing, setEditing] = useState(false);
 const [users, setUsers] = useState<UserOption[]>([]);
 const [usersLoading, setUsersLoading] = useState(false);
+
+const [reportPeriod, setReportPeriod] = useState(
+  getDefaultReportPeriod,
+);
+const [reportGenerating, setReportGenerating] = useState(false);
+const [reportError, setReportError] = useState("");
+const [reportMessage, setReportMessage] = useState("");
+const [generatedReport, setGeneratedReport] =
+  useState<ServiceReport | null>(null);
+
 
 const [form, setForm] = useState({
 name: "",
@@ -520,6 +575,68 @@ try {
 
 }
 
+
+async function generateServiceReport() {
+  if (!service || reportGenerating) {
+    return;
+  }
+
+  if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(reportPeriod)) {
+    setReportError("Select a valid reporting month.");
+    return;
+  }
+
+  try {
+    setReportGenerating(true);
+    setReportError("");
+    setReportMessage("");
+    setGeneratedReport(null);
+
+    const response = await fetch(
+      `/api/managed-services/${service.id}/reports?period=${encodeURIComponent(reportPeriod)}`,
+      { method: "POST" },
+    );
+
+    const payload: ServiceReportApiResponse =
+      await response.json();
+
+    if (!response.ok) {
+      if (response.status === 409) {
+        setReportMessage(
+          payload.message ??
+            "A report already exists for this service and period.",
+        );
+        return;
+      }
+
+      throw new Error(
+        payload.error ||
+          payload.message ||
+          "Unable to generate the service report.",
+      );
+    }
+
+    if (!payload.report || !("totalRequests" in payload.report)) {
+      throw new Error(
+        "The API did not return the generated report details.",
+      );
+    }
+
+    setGeneratedReport(payload.report);
+    setReportMessage(
+      "Draft report generated successfully. It has not been finalized or sent to the client.",
+    );
+  } catch (requestError) {
+    setReportError(
+      requestError instanceof Error
+        ? requestError.message
+        : "Unable to generate the service report.",
+    );
+  } finally {
+    setReportGenerating(false);
+  }
+}
+
 function cancelEditing() {
 if (!service) {
 return;
@@ -696,6 +813,222 @@ return ( <div className="space-y-6"> <div className="flex flex-col gap-4 lg:flex
       </div>
     </div>
   )}
+
+  
+<section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+  <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div>
+      <h2 className="text-lg font-semibold text-slate-900">
+        Service Reports
+      </h2>
+      <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-500">
+        Generate an internal monthly report covering service requests,
+        resolution SLA performance, invoices and payments. Reports
+        remain drafts until finalized.
+      </p>
+    </div>
+
+    <span className="w-fit rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+      Internal
+    </span>
+  </div>
+
+  <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-end">
+    <div className="w-full sm:max-w-xs">
+      <label
+        htmlFor="service-report-period"
+        className="mb-1.5 block text-sm font-medium text-slate-700"
+      >
+        Reporting Month
+      </label>
+      <input
+        id="service-report-period"
+        type="month"
+        value={reportPeriod}
+        max={getDefaultReportPeriod()}
+        onChange={(event) => {
+          setReportPeriod(event.target.value);
+          setReportError("");
+          setReportMessage("");
+          setGeneratedReport(null);
+        }}
+        disabled={reportGenerating}
+        className={inputClassName}
+      />
+      <p className="mt-1 text-xs text-slate-500">
+        Defaults to the previous completed month.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      onClick={() => void generateServiceReport()}
+      disabled={reportGenerating || !reportPeriod}
+      className="rounded-lg bg-[#39358c] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#2f2b76] disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      {reportGenerating ? "Generating Draft..." : "Generate Draft Report"}
+    </button>
+  </div>
+
+  {reportError && (
+    <div
+      role="alert"
+      className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+    >
+      {reportError}
+    </div>
+  )}
+
+  {reportMessage && (
+    <div
+      role="status"
+      className={`mt-4 rounded-lg border px-4 py-3 text-sm ${
+        generatedReport
+          ? "border-green-200 bg-green-50 text-green-800"
+          : "border-amber-200 bg-amber-50 text-amber-800"
+      }`}
+    >
+      {reportMessage}
+    </div>
+  )}
+
+  {generatedReport && (
+    <div className="mt-6 border-t border-slate-200 pt-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+            Report Number
+          </p>
+          <h3 className="mt-1 text-lg font-bold text-slate-900">
+            {generatedReport.reportNumber}
+          </h3>
+          <p className="mt-1 text-sm text-slate-500">
+            {formatDate(generatedReport.reportingPeriodStart)} –{" "}
+            {formatDate(
+              new Date(
+                new Date(
+                  generatedReport.reportingPeriodEnd,
+                ).getTime() -
+                  24 * 60 * 60 * 1000,
+              ).toISOString(),
+            )}
+          </p>
+        </div>
+
+        <span className="w-fit rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
+          Draft
+        </span>
+      </div>
+
+      {generatedReport.executiveSummary && (
+        <p className="mt-4 text-sm leading-6 text-slate-700">
+          {generatedReport.executiveSummary}
+        </p>
+      )}
+
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          {
+            label: "Requests Opened",
+            value: generatedReport.totalRequests,
+          },
+          {
+            label: "Resolved / Closed",
+            value: generatedReport.resolvedRequests,
+          },
+          {
+            label: "Currently Open",
+            value: generatedReport.openRequests,
+          },
+          {
+            label: "Urgent Requests",
+            value: generatedReport.urgentRequests,
+          },
+        ].map((metric) => (
+          <div
+            key={metric.label}
+            className="rounded-lg border border-slate-200 bg-slate-50 p-4"
+          >
+            <p className="text-xs font-medium text-slate-500">
+              {metric.label}
+            </p>
+            <p className="mt-2 text-2xl font-semibold text-slate-900">
+              {metric.value}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-5 rounded-lg border border-slate-200 p-4">
+        <h4 className="font-semibold text-slate-900">
+          Resolution SLA Performance
+        </h4>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <DetailItem
+            label="Evaluated Requests"
+            value={generatedReport.slaEligibleRequests}
+          />
+          <DetailItem
+            label="Met SLA"
+            value={generatedReport.slaMetRequests}
+          />
+          <DetailItem
+            label="Breached SLA"
+            value={generatedReport.slaBreachedRequests}
+          />
+        </div>
+
+        <p className="mt-4 text-sm text-slate-600">
+          Compliance:{" "}
+          <strong className="text-slate-900">
+            {generatedReport.slaComplianceRate === null
+              ? "Not available"
+              : `${Number(
+                  generatedReport.slaComplianceRate,
+                ).toFixed(2)}%`}
+          </strong>
+        </p>
+      </div>
+
+      <div className="mt-5 rounded-lg border border-slate-200 p-4">
+        <h4 className="font-semibold text-slate-900">
+          Financial Summary
+        </h4>
+
+        <dl className="mt-4 grid gap-5 sm:grid-cols-3">
+          <DetailItem
+            label="Invoiced"
+            value={formatMoney(
+              generatedReport.totalInvoiced,
+              generatedReport.billingCurrency,
+            )}
+          />
+          <DetailItem
+            label="Payments Received"
+            value={formatMoney(
+              generatedReport.totalPaid,
+              generatedReport.billingCurrency,
+            )}
+          />
+          <DetailItem
+            label="Outstanding"
+            value={formatMoney(
+              generatedReport.totalOutstanding,
+              generatedReport.billingCurrency,
+            )}
+          />
+        </dl>
+      </div>
+
+      <p className="mt-4 text-xs leading-5 text-slate-500">
+        This is a saved snapshot of the report metrics at generation
+        time. Later changes to service requests, invoices or payments
+        do not automatically refresh this draft.
+      </p>
+    </div>
+  )}
+</section>
 
   {editing ? (
     <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
