@@ -537,6 +537,10 @@ model ServiceReport {
   status      ServiceReportStatus @default(DRAFT)
   finalizedAt DateTime?
 
+  publicTokenHash      String?   @unique
+  publicTokenExpiresAt DateTime?
+  publicTokenRevokedAt DateTime?
+
   // Narrative sections
   executiveSummary String? @db.Text
   workPerformed    String? @db.Text

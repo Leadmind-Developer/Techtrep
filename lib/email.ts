@@ -1,33 +1,56 @@
 import nodemailer from "nodemailer";
 
-const smtpHost = process.env.SMTP_HOST;
-const smtpPort = Number(process.env.SMTP_PORT || 587);
-const smtpUser = process.env.SMTP_USER;
-const smtpPassword = process.env.SMTP_PASSWORD;
-const emailFrom = process.env.EMAIL_FROM;
-const emailTo = process.env.EMAIL_TO;
+type MailerConfig = {
+  transporter: ReturnType<typeof nodemailer.createTransport>;
+  emailFrom: string;
+  emailTo: string;
+};
 
-if (
-  !smtpHost ||
-  !smtpUser ||
-  !smtpPassword ||
-  !emailFrom ||
-  !emailTo
-) {
-  throw new Error(
-    "SMTP email configuration is incomplete. Check SMTP_HOST, SMTP_USER, SMTP_PASSWORD, EMAIL_FROM and EMAIL_TO."
-  );
+let cachedTransporter:
+  | ReturnType<typeof nodemailer.createTransport>
+  | undefined;
+
+function getMailerConfig(): MailerConfig {
+  const smtpHost = process.env.SMTP_HOST;
+  const smtpPort = Number(process.env.SMTP_PORT || 587);
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPassword = process.env.SMTP_PASSWORD;
+  const emailFrom = process.env.EMAIL_FROM;
+  const emailTo = process.env.EMAIL_TO;
+
+  if (
+    !smtpHost ||
+    !smtpUser ||
+    !smtpPassword ||
+    !emailFrom ||
+    !emailTo ||
+    !Number.isInteger(smtpPort) ||
+    smtpPort < 1 ||
+    smtpPort > 65535
+  ) {
+    throw new Error(
+      "SMTP email configuration is incomplete or invalid. Check SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, EMAIL_FROM and EMAIL_TO.",
+    );
+  }
+
+  if (!cachedTransporter) {
+    cachedTransporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: {
+        user: smtpUser,
+        pass: smtpPassword,
+      },
+    });
+  }
+
+  return {
+    transporter: cachedTransporter,
+    emailFrom,
+    emailTo,
+  };
 }
-
-const transporter = nodemailer.createTransport({
-  host: smtpHost,
-  port: smtpPort,
-  secure: smtpPort === 465,
-  auth: {
-    user: smtpUser,
-    pass: smtpPassword,
-  },
-});
 
 export interface AuditEmailData {
   auditRequestId: string;
@@ -171,6 +194,8 @@ export async function sendAuditNotification(
     </html>
   `;
 
+  const { transporter, emailFrom, emailTo } = getMailerConfig();
+
   await transporter.sendMail({
     from: emailFrom,
     to: emailTo,
@@ -271,6 +296,7 @@ export async function sendAuditConfirmation(
     </html>
   `;
 
+  const { transporter, emailFrom, emailTo } = getMailerConfig();
   await transporter.sendMail({
     from: emailFrom,
     to: data.email,
@@ -448,6 +474,8 @@ export async function sendProposalEmail(
     ? `Valid Until: ${data.validUntil}`
     : "";
 
+  const { transporter, emailFrom, emailTo } = getMailerConfig();
+
   await transporter.sendMail({
     from: emailFrom,
     to: data.recipientEmail,
@@ -514,7 +542,7 @@ export async function sendProposalAcceptanceNotification(
       <body style="margin:0; padding:0; background:#f8fafc; font-family:Arial,Helvetica,sans-serif; color:#0f172a;">
         <div style="max-width:640px; margin:0 auto; padding:32px 20px;">
           <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
-            
+
             <div style="background:#39358c; padding:24px;">
               <h1 style="margin:0; color:#ffffff; font-size:22px;">
                 Proposal Accepted
@@ -614,6 +642,8 @@ export async function sendProposalAcceptanceNotification(
   const amountText = data.amount
     ? `Proposal Amount: ${data.currency} ${data.amount}`
     : "";
+
+  const { transporter, emailFrom, emailTo } = getMailerConfig();
 
   await transporter.sendMail({
     from: emailFrom,
@@ -753,6 +783,8 @@ export async function sendProposalAcceptanceConfirmation(
     ? `Proposal Amount: ${data.currency} ${data.amount}`
     : "";
 
+  const { transporter, emailFrom, emailTo } = getMailerConfig();
+
   await transporter.sendMail({
     from: emailFrom,
     to: data.recipientEmail,
@@ -777,5 +809,120 @@ Thank you for choosing Techtrep Business Solutions.
 Regards,
 Techtrep Business Solutions
     `.trim(),
+  });
+}
+
+
+export interface ServiceReportEmailData {
+  recipientName: string;
+  recipientEmail: string;
+  organizationName: string;
+  serviceName: string;
+  reportNumber: string;
+  reportingPeriod: string;
+  reportUrl: string;
+  pdfBuffer: Buffer;
+}
+
+export async function sendServiceReportEmail(
+  data: ServiceReportEmailData,
+): Promise<void> {
+  const subject =
+    `Service Report ${data.reportNumber} — ${data.organizationName}`;
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <body style="margin:0;padding:0;background:#f5f7fb;font-family:Arial,Helvetica,sans-serif;color:#172033;">
+        <div style="max-width:700px;margin:0 auto;padding:32px 20px;">
+          <div style="background:#39358C;padding:24px 28px;border-radius:14px 14px 0 0;color:#ffffff;">
+            <h1 style="margin:0;font-size:24px;">Your Service Report</h1>
+            <p style="margin:8px 0 0;">Techtrep Business Solutions</p>
+          </div>
+
+          <div style="background:#ffffff;padding:28px;border:1px solid #e5e7eb;border-top:0;border-radius:0 0 14px 14px;">
+            <p style="font-size:15px;line-height:1.7;">
+              Hello ${escapeHtml(data.recipientName)},
+            </p>
+
+            <p style="font-size:15px;line-height:1.7;">
+              Please find attached your finalized managed service report.
+            </p>
+
+            <table style="width:100%;border-collapse:collapse;font-size:14px;">
+              <tr>
+                <td style="padding:8px 0;font-weight:bold;">Report number</td>
+                <td style="padding:8px 0;">${escapeHtml(data.reportNumber)}</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0;font-weight:bold;">Organization</td>
+                <td style="padding:8px 0;">${escapeHtml(data.organizationName)}</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0;font-weight:bold;">Service</td>
+                <td style="padding:8px 0;">${escapeHtml(data.serviceName)}</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0;font-weight:bold;">Reporting period</td>
+                <td style="padding:8px 0;">${escapeHtml(data.reportingPeriod)}</td>
+              </tr>
+            </table>
+
+            <p style="margin:28px 0;">
+              <a href="${escapeHtml(data.reportUrl)}"
+                 style="display:inline-block;background:#39358C;color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:6px;font-weight:bold;">
+                View Your Report
+              </a>
+            </p>
+
+            <p style="font-size:13px;line-height:1.7;color:#64748b;">
+              The report link is time-limited. Please keep it private and contact
+              Techtrep if you believe it has been shared with the wrong person.
+            </p>
+          </div>
+
+          <p style="font-size:12px;text-align:center;color:#94a3b8;margin-top:20px;">
+            Techtrep Business Solutions<br />
+            Technology, Automation &amp; AI for Growing Businesses
+          </p>
+        </div>
+      </body>
+    </html>
+  `;
+
+  const text = `
+Hello ${data.recipientName},
+
+Please find attached your finalized managed service report.
+
+Report number: ${data.reportNumber}
+Organization: ${data.organizationName}
+Service: ${data.serviceName}
+Reporting period: ${data.reportingPeriod}
+
+View your report:
+${data.reportUrl}
+
+The report link is time-limited. Please keep it private.
+
+Regards,
+Techtrep Business Solutions
+  `.trim();
+
+  const { transporter, emailFrom } = getMailerConfig();
+
+  await transporter.sendMail({
+    from: emailFrom,
+    to: data.recipientEmail,
+    subject,
+    html,
+    text,
+    attachments: [
+      {
+        filename: `${data.reportNumber}.pdf`,
+        content: data.pdfBuffer,
+        contentType: "application/pdf",
+      },
+    ],
   });
 }

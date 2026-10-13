@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -65,7 +65,6 @@ type ApiResponse = {
     message?: string;
 };
 
-
 type ServiceReport = {
   id: string;
   reportNumber: string;
@@ -73,7 +72,12 @@ type ServiceReport = {
   reportingPeriodStart: string;
   reportingPeriodEnd: string;
   reportDate: string;
+  finalizedAt: string | null;
   executiveSummary: string | null;
+  workPerformed: string | null;
+  incidentSummary: string | null;
+  recommendations: string | null;
+  nextSteps: string | null;
   totalRequests: number;
   resolvedRequests: number;
   openRequests: number;
@@ -92,11 +96,68 @@ type ServiceReportApiResponse = {
   success?: boolean;
   message?: string;
   error?: string;
-  report?: ServiceReport | {
+  report?:
+  | ServiceReport
+  | {
     id: string;
     reportNumber: string;
     status: string;
   };
+};
+
+function isCompleteServiceReport(
+  report: ServiceReportApiResponse["report"],
+): report is ServiceReport {
+  return (
+    report !== undefined &&
+    "totalRequests" in report &&
+    "reportingPeriodStart" in report &&
+    "reportingPeriodEnd" in report &&
+    "executiveSummary" in report
+  );
+}
+
+type ServiceReportHistoryItem = {
+  id: string;
+  reportNumber: string;
+  status: string;
+  reportingPeriodStart: string;
+  reportingPeriodEnd: string;
+  reportDate: string;
+  finalizedAt: string | null;
+};
+
+type ServiceReportHistoryApiResponse = {
+  success?: boolean;
+  message?: string;
+  reports?: ServiceReportHistoryItem[];
+};
+
+
+type OrganizationContact = {
+  id: string;
+  name: string;
+  email: string;
+  role: string | null;
+};
+
+type OrganizationContactsApiResponse = {
+  success?: boolean;
+  contacts?: OrganizationContact[];
+  message?: string;
+  error?: string;
+};
+
+type SendServiceReportApiResponse = {
+  success?: boolean;
+  message?: string;
+  error?: string;
+  report?: {
+    id: string;
+    reportNumber: string;
+  };
+  recipientEmail?: string;
+  tokenExpiresAt?: string;
 };
 
 function getDefaultReportPeriod(): string {
@@ -154,13 +215,13 @@ const inputClassName =
 
 function formatDate(value: string | null): string {
 if (!value) {
-return "—";
+return "â€”";
 }
 
 const date = new Date(value);
 
 if (Number.isNaN(date.getTime())) {
-return "—";
+return "â€”";
 }
 
 return new Intl.DateTimeFormat("en-NG", {
@@ -172,13 +233,13 @@ year: "numeric",
 
 function formatDateTime(value: string | null): string {
 if (!value) {
-return "—";
+return "â€”";
 }
 
 const date = new Date(value);
 
 if (Number.isNaN(date.getTime())) {
-return "—";
+return "â€”";
 }
 
 return new Intl.DateTimeFormat("en-NG", {
@@ -195,7 +256,7 @@ amount: string | number | null,
 currency: string,
 ): string {
 if (amount === null || amount === undefined || amount === "") {
-return "—";
+return "â€”";
 }
 
 const numericAmount =
@@ -317,7 +378,32 @@ const [reportError, setReportError] = useState("");
 const [reportMessage, setReportMessage] = useState("");
 const [generatedReport, setGeneratedReport] =
   useState<ServiceReport | null>(null);
+const [reportSaving, setReportSaving] = useState(false);
+const [reportFinalizing, setReportFinalizing] = useState(false);
+const [reportHistory, setReportHistory] = useState<
+  ServiceReportHistoryItem[]
+>([]);
+const [reportHistoryLoading, setReportHistoryLoading] =
+  useState(false);
+const [reportOpening, setReportOpening] = useState(false);
 
+const [reportContacts, setReportContacts] = useState<
+  OrganizationContact[]
+>([]);
+const [reportContactsLoading, setReportContactsLoading] =
+  useState(false);
+const [reportContactError, setReportContactError] = useState("");
+const [selectedReportContacts, setSelectedReportContacts] =
+  useState<Record<string, string>>({});
+const [sendingReportId, setSendingReportId] = useState<string | null>(
+  null,
+);
+const [reportSendMessages, setReportSendMessages] = useState<
+  Record<string, string>
+>({});
+const [reportSendErrors, setReportSendErrors] = useState<
+  Record<string, string>
+>({});
 
 const [form, setForm] = useState({
 name: "",
@@ -368,6 +454,7 @@ return;
 try {
   setLoading(true);
   setError("");
+
 
   const response = await fetch(`/api/managed-services/${id}`);
 
@@ -468,7 +555,7 @@ try {
         billingFrequency: form.billingFrequency,
         billingEnabled: form.billingEnabled,
         nextBillingDate:
-          form.billingEnabled && form.nextBillingDate          
+          form.billingEnabled && form.nextBillingDate
             ? form.nextBillingDate
             : null,
         startDate: form.startDate || null,
@@ -601,22 +688,24 @@ async function generateServiceReport() {
       await response.json();
 
     if (!response.ok) {
-      if (response.status === 409) {
-        setReportMessage(
-          payload.message ??
-            "A report already exists for this service and period.",
-        );
-        return;
-      }
+  if (response.status === 409 && payload.report?.id) {
+    setReportMessage(
+      `${payload.message ?? "A report already exists for this period."} Opening the existing report...`,
+    );
 
-      throw new Error(
-        payload.error ||
-          payload.message ||
-          "Unable to generate the service report.",
-      );
-    }
+    await openServiceReport(payload.report.id);
+    await loadServiceReportHistory();
+    return;
+  }
 
-    if (!payload.report || !("totalRequests" in payload.report)) {
+  throw new Error(
+    payload.error ||
+      payload.message ||
+      "Unable to generate the service report.",
+  );
+}
+
+    if (!isCompleteServiceReport(payload.report)) {
       throw new Error(
         "The API did not return the generated report details.",
       );
@@ -634,6 +723,437 @@ async function generateServiceReport() {
     );
   } finally {
     setReportGenerating(false);
+  }
+}
+
+const loadServiceReportHistory = useCallback(async () => {
+  if (!service?.id) {
+    setReportHistory([]);
+    return;
+  }
+
+  try {
+    setReportHistoryLoading(true);
+
+    const response = await fetch(
+      `/api/managed-services/${service.id}/reports`,
+      { cache: "no-store" },
+    );
+
+    const payload: ServiceReportHistoryApiResponse =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        payload.message || "Unable to load report history.",
+      );
+    }
+
+    setReportHistory(payload.reports ?? []);
+  } catch (requestError) {
+    setReportError(
+      requestError instanceof Error
+        ? requestError.message
+        : "Unable to load report history.",
+    );
+  } finally {
+    setReportHistoryLoading(false);
+  }
+}, [service?.id]);
+
+
+const loadReportContacts = useCallback(async () => {
+  const organizationId = service?.organization?.id;
+
+  if (!organizationId) {
+    setReportContacts([]);
+    setReportContactError(
+      "This managed service has no linked organization.",
+    );
+    return;
+  }
+
+  try {
+    setReportContactsLoading(true);
+    setReportContactError("");
+
+    const response = await fetch(
+      `/api/organizations/${organizationId}/contacts`,
+      { cache: "no-store" },
+    );
+
+    const payload: OrganizationContactsApiResponse =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        payload.message ||
+          payload.error ||
+          "Unable to load organization contacts.",
+      );
+    }
+
+    const contacts = payload.contacts ?? [];
+    setReportContacts(contacts);
+
+    setSelectedReportContacts((current) => {
+      const next = { ...current };
+
+      for (const report of reportHistory) {
+        if (
+          report.status === "FINALIZED" &&
+          !next[report.id] &&
+          contacts.length > 0
+        ) {
+          next[report.id] = contacts[0].id;
+        }
+      }
+
+      return next;
+    });
+  } catch (requestError) {
+    setReportContactError(
+      requestError instanceof Error
+        ? requestError.message
+        : "Unable to load organization contacts.",
+    );
+  } finally {
+    setReportContactsLoading(false);
+  }
+}, [service?.organization?.id, reportHistory]);
+
+useEffect(() => {
+  if (
+    service?.organization?.id &&
+    reportHistory.some((report) => report.status === "FINALIZED")
+  ) {
+    void loadReportContacts();
+  } else {
+    setReportContacts([]);
+    setReportContactError("");
+  }
+}, [
+  service?.organization?.id,
+  reportHistory,
+  loadReportContacts,
+]);
+
+useEffect(() => {
+  if (service?.id) {
+    void loadServiceReportHistory();
+  } else {
+    setReportHistory([]);
+  }
+}, [service?.id, loadServiceReportHistory]);
+
+async function openServiceReport(reportId: string) {
+  if (!service || reportOpening) {
+    return;
+  }
+
+  try {
+    setReportOpening(true);
+    setReportError("");
+    setReportMessage("");
+
+    const response = await fetch(
+      `/api/managed-services/${service.id}/reports/${reportId}`,
+      { cache: "no-store" },
+    );
+
+    const payload: ServiceReportApiResponse =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        payload.message ||
+          payload.error ||
+          "Unable to open the service report.",
+      );
+    }
+
+    if (
+      !payload.report ||
+      !("totalRequests" in payload.report)
+    ) {
+      throw new Error(
+        "The report details were not returned by the API.",
+      );
+    }
+
+    setGeneratedReport(payload.report);
+
+    const start = new Date(
+      payload.report.reportingPeriodStart,
+    );
+
+    setReportPeriod(
+      `${start.getUTCFullYear()}-${String(
+        start.getUTCMonth() + 1,
+      ).padStart(2, "0")}`,
+    );
+
+    setReportMessage(
+      `Opened ${payload.report.reportNumber}.`,
+    );
+  } catch (requestError) {
+    setReportError(
+      requestError instanceof Error
+        ? requestError.message
+        : "Unable to open the service report.",
+    );
+  } finally {
+    setReportOpening(false);
+  }
+}
+
+
+async function sendServiceReport(report: ServiceReportHistoryItem) {
+  if (
+    !service ||
+    report.status !== "FINALIZED" ||
+    sendingReportId
+  ) {
+    return;
+  }
+
+  const contactId = selectedReportContacts[report.id];
+
+  if (!contactId) {
+    setReportSendErrors((current) => ({
+      ...current,
+      [report.id]: "Select a recipient before sending the report.",
+    }));
+    return;
+  }
+
+  try {
+    setSendingReportId(report.id);
+
+    setReportSendErrors((current) => ({
+      ...current,
+      [report.id]: "",
+    }));
+
+    setReportSendMessages((current) => ({
+      ...current,
+      [report.id]: "",
+    }));
+
+    const response = await fetch(
+      `/api/managed-services/${service.id}/reports/${report.id}/send`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ contactId }),
+      },
+    );
+
+    const payload: SendServiceReportApiResponse =
+      await response.json();
+
+    if (!response.ok || !payload.success) {
+      throw new Error(
+        payload.message ||
+          payload.error ||
+          "Unable to send the service report.",
+      );
+    }
+
+    setReportSendMessages((current) => ({
+      ...current,
+      [report.id]: payload.recipientEmail
+        ? `Report sent successfully to ${payload.recipientEmail}.`
+        : payload.message || "Report sent successfully.",
+    }));
+
+    await loadServiceReportHistory();
+  } catch (requestError) {
+    setReportSendErrors((current) => ({
+      ...current,
+      [report.id]:
+        requestError instanceof Error
+          ? requestError.message
+          : "Unable to send the service report.",
+    }));
+  } finally {
+    setSendingReportId(null);
+  }
+}
+
+async function saveServiceReport() {
+  if (!service || !generatedReport || reportSaving) {
+    return;
+  }
+
+  if (generatedReport.status !== "DRAFT") {
+    setReportError("Only draft reports can be edited.");
+    return;
+  }
+
+  try {
+    setReportSaving(true);
+    setReportError("");
+    setReportMessage("");
+
+    const response = await fetch(
+      `/api/managed-services/${service.id}/reports/${generatedReport.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          executiveSummary: generatedReport.executiveSummary,
+          workPerformed: generatedReport.workPerformed,
+          incidentSummary: generatedReport.incidentSummary,
+          recommendations: generatedReport.recommendations,
+          nextSteps: generatedReport.nextSteps,
+        }),
+      },
+    );
+
+    const payload: ServiceReportApiResponse =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        payload.message ||
+          payload.error ||
+          "Unable to save the report draft.",
+      );
+    }
+
+    if (!isCompleteServiceReport(payload.report)) {
+      throw new Error(
+        "The saved report was not returned by the API.",
+      );
+    }
+
+    setGeneratedReport(payload.report);
+    setReportMessage(
+      payload.message || "Draft report saved successfully.",
+    );
+  } catch (requestError) {
+    setReportError(
+      requestError instanceof Error
+        ? requestError.message
+        : "Unable to save the report draft.",
+    );
+  } finally {
+    setReportSaving(false);
+  }
+}
+
+async function finalizeServiceReport() {
+  if (!service || !generatedReport || reportFinalizing) {
+    return;
+  }
+
+  if (generatedReport.status !== "DRAFT") {
+    setReportError("This report is not an editable draft.");
+    return;
+  }
+
+  if (
+    !generatedReport.executiveSummary?.trim() ||
+    !generatedReport.workPerformed?.trim() ||
+    !generatedReport.incidentSummary?.trim()
+  ) {
+    setReportError(
+      "Complete the executive summary, work performed, and incident summary before finalizing.",
+    );
+    return;
+  }
+
+  const confirmed = window.confirm(
+    "Finalize this service report? Finalized reports cannot be edited.",
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    setReportFinalizing(true);
+    setReportError("");
+    setReportMessage("");
+
+    // Save the current narrative first so finalization uses
+    // the latest text entered in the form.
+    const saveResponse = await fetch(
+      `/api/managed-services/${service.id}/reports/${generatedReport.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          executiveSummary: generatedReport.executiveSummary,
+          workPerformed: generatedReport.workPerformed,
+          incidentSummary: generatedReport.incidentSummary,
+          recommendations: generatedReport.recommendations,
+          nextSteps: generatedReport.nextSteps,
+        }),
+      },
+    );
+
+    const savePayload: ServiceReportApiResponse =
+      await saveResponse.json();
+
+    if (!saveResponse.ok) {
+      throw new Error(
+        savePayload.message ||
+          savePayload.error ||
+          "Unable to save the draft before finalization.",
+      );
+    }
+
+    if (!isCompleteServiceReport(savePayload.report)) {
+      throw new Error(
+        "The saved report was not returned by the API.",
+      );
+    }
+
+    setGeneratedReport(savePayload.report);
+
+    const response = await fetch(
+      `/api/managed-services/${service.id}/reports/${generatedReport.id}/finalize`,
+      { method: "POST" },
+    );
+
+    const payload: ServiceReportApiResponse =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        payload.message ||
+          payload.error ||
+          "Unable to finalize the report.",
+      );
+    }
+
+    // The finalization endpoint returns the finalized report.
+    if (!isCompleteServiceReport(payload.report)) {
+      throw new Error(
+        "The finalization response did not include the report. Reload the report to verify its status.",
+      );
+    }
+
+    setGeneratedReport(payload.report);
+    setReportMessage(
+      `Report ${payload.report.reportNumber} finalized successfully.`,
+    );
+  } catch (requestError) {
+    setReportError(
+      requestError instanceof Error
+        ? requestError.message
+        : "Unable to finalize the report.",
+    );
+  } finally {
+    setReportFinalizing(false);
   }
 }
 
@@ -679,7 +1199,7 @@ return ( <div className="space-y-6"> <div> <Link
          href="/business/managed-services"
          className="text-sm font-medium text-[#39358c] hover:underline"
        >
-← Back to Managed Services </Link> </div>
+â† Back to Managed Services </Link> </div>
 
     <div className="rounded-xl border border-slate-200 bg-white p-8 text-sm text-slate-500 shadow-sm">
       Loading managed service...
@@ -694,7 +1214,7 @@ return ( <div className="space-y-6"> <div> <Link
          href="/business/managed-services"
          className="text-sm font-medium text-[#39358c] hover:underline"
        >
-← Back to Managed Services </Link> </div>
+â† Back to Managed Services </Link> </div>
 
     <div className="rounded-xl border border-red-200 bg-red-50 p-6">
       <h1 className="text-lg font-semibold text-red-800">
@@ -718,7 +1238,7 @@ return ( <div className="space-y-6"> <div className="flex flex-col gap-4 lg:flex
          href="/business/managed-services"
          className="text-sm font-medium text-[#39358c] hover:underline"
        >
-← Back to Managed Services </Link>
+â† Back to Managed Services </Link>
 
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <h1 className="text-2xl font-bold tracking-tight text-slate-900">
@@ -814,7 +1334,7 @@ return ( <div className="space-y-6"> <div className="flex flex-col gap-4 lg:flex
     </div>
   )}
 
-  
+
 <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
   <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
     <div>
@@ -850,7 +1370,6 @@ return ( <div className="space-y-6"> <div className="flex flex-col gap-4 lg:flex
           setReportPeriod(event.target.value);
           setReportError("");
           setReportMessage("");
-          setGeneratedReport(null);
         }}
         disabled={reportGenerating}
         className={inputClassName}
@@ -869,6 +1388,179 @@ return ( <div className="space-y-6"> <div className="flex flex-col gap-4 lg:flex
       {reportGenerating ? "Generating Draft..." : "Generate Draft Report"}
     </button>
   </div>
+
+  <div className="mt-6 border-t border-slate-200 pt-5">
+  <div className="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h3 className="font-semibold text-slate-900">
+        Report History
+      </h3>
+      <p className="mt-1 text-sm text-slate-500">
+        Open an existing report to continue reviewing it or view its finalized version.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      onClick={() => void loadServiceReportHistory()}
+      disabled={reportHistoryLoading}
+      className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+    >
+      {reportHistoryLoading ? "Refreshing..." : "Refresh History"}
+    </button>
+  </div>
+
+  {reportHistory.length === 0 ? (
+    <p className="mt-4 rounded-lg bg-slate-50 p-4 text-sm text-slate-500">
+      {reportHistoryLoading
+        ? "Loading report history..."
+        : "No reports have been recorded for this service yet."}
+    </p>
+  ) : (
+    <div className="mt-4 divide-y divide-slate-200 rounded-lg border border-slate-200">
+      {reportHistory.map((report) => (
+        <div
+          key={report.id}
+          className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div>
+            <p className="font-medium text-slate-900">
+              {report.reportNumber}
+            </p>
+            <p className="mt-1 text-sm text-slate-500">
+              {formatDate(report.reportingPeriodStart)} â€“{" "}
+              {formatDate(
+                new Date(
+                  new Date(
+                    report.reportingPeriodEnd,
+                  ).getTime() - 24 * 60 * 60 * 1000,
+                ).toISOString(),
+              )}
+            </p>
+            {report.finalizedAt && (
+              <p className="mt-1 text-xs text-slate-500">
+                Finalized {formatDateTime(report.finalizedAt)}
+              </p>
+            )}
+          </div>
+
+
+<div className="flex flex-col gap-3 sm:items-end">
+  <div className="flex flex-wrap items-center gap-3">
+    <span
+      className={`rounded-full px-3 py-1 text-xs font-semibold ${
+        report.status === "FINALIZED"
+          ? "bg-green-100 text-green-800"
+          : "bg-amber-100 text-amber-800"
+      }`}
+    >
+      {report.status === "FINALIZED" ? "Finalized" : "Draft"}
+    </span>
+
+    <button
+      type="button"
+      onClick={() => void openServiceReport(report.id)}
+      disabled={reportOpening}
+      className="rounded-lg bg-[#39358c] px-3 py-2 text-sm font-medium text-white hover:bg-[#2f2b76] disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      {reportOpening ? "Opening..." : "Open Report"}
+    </button>
+  </div>
+
+  {report.status === "FINALIZED" && (
+    <div className="w-full space-y-2 sm:w-80">
+      <label
+        htmlFor={`report-recipient-${report.id}`}
+        className="block text-left text-xs font-medium text-slate-700"
+      >
+        Email report to
+      </label>
+
+      <select
+        id={`report-recipient-${report.id}`}
+        value={selectedReportContacts[report.id] ?? ""}
+        onChange={(event) => {
+          const contactId = event.target.value;
+
+          setSelectedReportContacts((current) => ({
+            ...current,
+            [report.id]: contactId,
+          }));
+
+          setReportSendErrors((current) => ({
+            ...current,
+            [report.id]: "",
+          }));
+
+          setReportSendMessages((current) => ({
+            ...current,
+            [report.id]: "",
+          }));
+        }}
+        disabled={
+          reportContactsLoading ||
+          sendingReportId !== null ||
+          reportContacts.length === 0
+        }
+        className={`${inputClassName} disabled:cursor-not-allowed disabled:bg-slate-100`}
+      >
+        <option value="">
+          {reportContactsLoading
+            ? "Loading contacts..."
+            : reportContacts.length === 0
+              ? "No contacts available"
+              : "Select a recipient"}
+        </option>
+
+        {reportContacts.map((contact) => (
+          <option key={contact.id} value={contact.id}>
+            {contact.name} â€” {contact.email}
+          </option>
+        ))}
+      </select>
+
+      <button
+        type="button"
+        onClick={() => void sendServiceReport(report)}
+        disabled={
+          sendingReportId !== null ||
+          reportContactsLoading ||
+          !selectedReportContacts[report.id] ||
+          reportContacts.length === 0
+        }
+        className="w-full rounded-lg border border-[#39358c] bg-white px-3 py-2 text-sm font-medium text-[#39358c] hover:bg-[#39358c]/5 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {sendingReportId === report.id
+          ? "Sending Report..."
+          : "Send Finalized Report"}
+      </button>
+
+      {reportSendErrors[report.id] && (
+        <p role="alert" className="text-left text-xs text-red-700">
+          {reportSendErrors[report.id]}
+        </p>
+      )}
+
+      {reportSendMessages[report.id] && (
+        <p role="status" className="text-left text-xs text-green-700">
+          {reportSendMessages[report.id]}
+        </p>
+      )}
+    </div>
+  )}
+</div>
+
+{reportContactError && (
+  <p role="alert" className="mt-3 text-sm text-red-700">
+    {reportContactError}
+  </p>
+)}
+
+        </div>
+      ))}
+    </div>
+  )}
+</div>
 
   {reportError && (
     <div
@@ -903,7 +1595,7 @@ return ( <div className="space-y-6"> <div className="flex flex-col gap-4 lg:flex
             {generatedReport.reportNumber}
           </h3>
           <p className="mt-1 text-sm text-slate-500">
-            {formatDate(generatedReport.reportingPeriodStart)} –{" "}
+            {formatDate(generatedReport.reportingPeriodStart)} â€“{" "}
             {formatDate(
               new Date(
                 new Date(
@@ -915,16 +1607,138 @@ return ( <div className="space-y-6"> <div className="flex flex-col gap-4 lg:flex
           </p>
         </div>
 
-        <span className="w-fit rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
-          Draft
+        <span
+           className={`w-fit rounded-full px-3 py-1 text-xs font-semibold ${
+            generatedReport.status === "FINALIZED"
+            ? "bg-green-100 text-green-800"
+            : "bg-amber-100 text-amber-800"
+            }`}
+            >
+              {generatedReport.status === "FINALIZED"
+              ? "Finalized"
+              : "Draft"}
         </span>
       </div>
 
-      {generatedReport.executiveSummary && (
-        <p className="mt-4 text-sm leading-6 text-slate-700">
-          {generatedReport.executiveSummary}
+<div className="mt-6 rounded-lg border border-slate-200 p-4">
+  <div>
+    <h4 className="font-semibold text-slate-900">
+      Report Review
+    </h4>
+    <p className="mt-1 text-sm text-slate-500">
+      Review and complete the narrative before finalizing this
+      report. Metrics and financial figures are preserved from
+      generation time.
+    </p>
+  </div>
+
+  <div className="mt-5 space-y-5">
+    {(
+      [
+        {
+          key: "executiveSummary",
+          label: "Executive Summary",
+          required: true,
+          rows: 4,
+        },
+        {
+          key: "workPerformed",
+          label: "Work Performed",
+          required: true,
+          rows: 5,
+        },
+        {
+          key: "incidentSummary",
+          label: "Incident Summary",
+          required: true,
+          rows: 4,
+        },
+        {
+          key: "recommendations",
+          label: "Recommendations",
+          required: false,
+          rows: 4,
+        },
+        {
+          key: "nextSteps",
+          label: "Next Steps",
+          required: false,
+          rows: 4,
+        },
+      ] as const
+    ).map((field) => (
+      <div key={field.key}>
+        <label
+          htmlFor={`report-${field.key}`}
+          className="mb-1.5 block text-sm font-medium text-slate-700"
+        >
+          {field.label}
+          {field.required && (
+            <span className="ml-1 text-red-600">*</span>
+          )}
+        </label>
+
+        <textarea
+          id={`report-${field.key}`}
+          rows={field.rows}
+          maxLength={20000}
+          value={generatedReport[field.key] ?? ""}
+          readOnly={generatedReport.status === "FINALIZED"}
+          onChange={(event) => {
+            const value = event.target.value;
+
+            setGeneratedReport((current) =>
+              current
+                ? { ...current, [field.key]: value }
+                : current,
+            );
+            setReportError("");
+            setReportMessage("");
+          }}
+          className={`${inputClassName} resize-y disabled:cursor-not-allowed disabled:bg-slate-100 read-only:bg-slate-50`}
+        />
+
+        <p className="mt-1 text-xs text-slate-500">
+          {generatedReport[field.key]?.length ?? 0}/20,000 characters
         </p>
-      )}
+      </div>
+    ))}
+  </div>
+
+  {generatedReport.status === "FINALIZED" ? (
+    <div className="mt-5 rounded-lg bg-green-50 p-4 text-sm text-green-800">
+      <p className="font-semibold">
+        This report is finalized and read-only.
+      </p>
+      <p className="mt-1">
+        Finalized on:{" "}
+        {formatDateTime(generatedReport.finalizedAt)}
+      </p>
+    </div>
+  ) : (
+    <div className="mt-5 flex flex-wrap gap-3">
+      <button
+        type="button"
+        onClick={() => void saveServiceReport()}
+        disabled={reportSaving || reportFinalizing}
+        className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {reportSaving ? "Saving Draft..." : "Save Draft"}
+      </button>
+
+      <button
+        type="button"
+        onClick={() => void finalizeServiceReport()}
+        disabled={reportSaving || reportFinalizing}
+        className="rounded-lg bg-[#39358c] px-4 py-2.5 text-sm font-medium text-white hover:bg-[#2f2b76] disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {reportFinalizing
+          ? "Finalizing..."
+          : "Finalize Report"}
+      </button>
+    </div>
+  )}
+</div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {[
@@ -1331,17 +2145,17 @@ return ( <div className="space-y-6"> <div className="flex flex-col gap-4 lg:flex
             .map((user) => (
               <option key={user.id} value={user.id}>
                 {user.name || user.email}
-                {user.name ? ` — ${user.email}` : ""}
+                {user.name ? ` â€” ${user.email}` : ""}
                 </option>
             ))}
 
             </select>
-            <p 
+            <p
             className="mt-1 text-xs text-slate-500"> Select the staff member responsible for this managed
-                service. 
-            </p> 
-            </div>            
-        
+                service.
+            </p>
+            </div>
+
 
         <div className="md:col-span-2">
           <label

@@ -43,6 +43,73 @@ function roundAmount(value: number): number {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
+export async function GET(
+  request: Request,
+  context: RouteContext,
+) {
+  const { response } = await requireApiUser();
+
+  if (response) {
+    return response;
+  }
+
+  try {
+    const { id: managedServiceId } = await context.params;
+
+    const managedService = await prisma.managedService.findUnique({
+      where: { id: managedServiceId },
+      select: { id: true },
+    });
+
+    if (!managedService) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Managed service not found.",
+        },
+        { status: 404 },
+      );
+    }
+
+    const reports = await prisma.serviceReport.findMany({
+      where: { managedServiceId },
+      orderBy: [
+        { reportingPeriodStart: "desc" },
+        { reportDate: "desc" },
+      ],
+      select: {
+        id: true,
+        reportNumber: true,
+        status: true,
+        reportingPeriodStart: true,
+        reportingPeriodEnd: true,
+        reportDate: true,
+        finalizedAt: true,
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      reports,
+    });
+  } catch (error) {
+    console.error("Service report history failed", {
+      error:
+        error instanceof Error
+          ? error.message
+          : "Unknown error",
+    });
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Unable to load service report history.",
+      },
+      { status: 500 },
+    );
+  }
+}
+
 export async function POST(
   request: Request,
   context: RouteContext,
