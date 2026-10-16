@@ -94,6 +94,19 @@ const solutions = [
       "Continuous improvement",
     ],
   },
+  {
+  number: "08",
+  title: "Broadcast Solutions",
+  description:
+    "Connect broadcast operations with playout automation, off-air logging, compliance, traffic management, CRM, billing and audit.",
+  href: "/solutions/broadcast-operations",
+  points: [
+    "Playout automation and logging",
+    "Broadcast compliance",
+    "Traffic, CRM and billing",
+    "Connected audit and reporting",
+  ],
+},
 ];
 
 const principles = [

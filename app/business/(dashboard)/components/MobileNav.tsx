@@ -2,8 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import type { CurrentUser } from "@/lib/auth/authorization";
+import {
+  adminNavigation,
+  businessNavigation,
+  isBusinessNavigationActive,
+} from "@/lib/business-navigation";
 
 import LogoutButton from "../LogoutButton";
 
@@ -11,155 +17,134 @@ type MobileNavProps = {
   user: CurrentUser;
 };
 
-const navigation = [
-  {
-    label: "Dashboard",
-    href: "/business",
-  },
-  {
-    label: "Leads",
-    href: "/business/leads",
-  },
-  {
-    label: "Organizations",
-    href: "/business/organizations",
-  },
-  {
-    label: "Contacts",
-    href: "/business/contacts",
-  },
-  {
-    label: "Audit Requests",
-    href: "/business/audit-requests",
-  },
-  {
-    label: "Opportunities",
-    href: "/business/opportunities",
-  },
-  {
-    label: "Proposals",
-    href: "/business/proposals",
-  },
-  {
-    label: "Contracts",
-    href: "/business/contracts",
-  },
-  {
-    label: "Invoices",
-    href: "/business/invoices",
-  },
-  {
-    label: "Payments",
-    href: "/business/payments",
-  },
-  {
-    label: "Projects",
-    href: "/business/projects",
-  },
-  {
-    label: "Managed Services",
-    href: "/business/managed-services",
-  },
-  {
-    label: "Service Requests",
-    href: "/business/service-requests",
-  },
-  {
-    label: "Activities",
-    href: "/business/activities",
-  },
-  {
-    label: "Performance",
-    href: "/business/performance",
-  },
-  {
-    label: "Security",
-    href: "/business/security",
-  },
-];
-
-const adminNavigation = [
-  {
-    label: "Admin",
-    href: "/business/admin",
-  },
-  {
-    label: "Staff Performance",
-    href: "/business/admin/performance",
-  },
-  {
-    label: "Team Performance",
-    href: "/business/performance/team",
-  },
-];
-
-export default function MobileNav({
-  user,
-}: MobileNavProps) {
+export default function MobileNav({ user }: MobileNavProps) {
   const pathname = usePathname();
 
-  const isActive = (href: string) => {
-    if (href === "/business") {
-      return pathname === href;
-    }
+  const allGroups =
+    user.role === "ADMIN"
+      ? [...businessNavigation, adminNavigation]
+      : businessNavigation;
 
-    return pathname.startsWith(href);
-  };
+  const activeGroup =
+    allGroups.find((group) =>
+      group.items.some((item) =>
+        isBusinessNavigationActive(pathname, item.href),
+      ),
+    )?.label ?? "Workspace";
 
-  const linkClasses = (active: boolean) =>
-    [
-      "whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition",
-      active
-        ? "bg-slate-900 text-white"
-        : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900",
-    ].join(" ");
+  const [expandedGroup, setExpandedGroup] = useState(activeGroup);
+
+  useEffect(() => {
+    setExpandedGroup(activeGroup);
+  }, [activeGroup]);
 
   return (
     <div className="border-b border-slate-200 bg-white lg:hidden">
-      <div className="flex items-center justify-between px-4 py-4">
+      <div className="flex items-center justify-between gap-3 px-4 py-4">
         <Link
           href="/business"
-          className="text-lg font-bold tracking-tight text-slate-900"
+          className="shrink-0 text-lg font-bold tracking-tight text-slate-900"
         >
           Techtrep
         </Link>
 
-        <div className="flex items-center gap-2">
-          <div className="hidden text-right sm:block">
-            <p className="text-sm font-medium text-slate-900">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="hidden min-w-0 text-right sm:block">
+            <p className="truncate text-sm font-medium text-slate-900">
               {user.name || "User"}
             </p>
 
-            <p className="text-xs text-slate-500">
-              {user.role}
-            </p>
+            <p className="text-xs text-slate-500">{user.role}</p>
           </div>
 
           <LogoutButton />
         </div>
       </div>
 
-      <nav className="flex gap-2 overflow-x-auto px-4 pb-4">
-        {navigation.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={linkClasses(isActive(item.href))}
-          >
-            {item.label}
-          </Link>
-        ))}
+      <nav
+        aria-label="Mobile navigation"
+        className="space-y-2 px-4 pb-4"
+      >
+        {allGroups.map((group) => {
+          const expanded = expandedGroup === group.label;
+          const groupHasActiveItem = group.items.some((item) =>
+            isBusinessNavigationActive(pathname, item.href),
+          );
 
-        {user.role === "ADMIN" &&
-          adminNavigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={linkClasses(isActive(item.href))}
+          return (
+            <section
+              key={group.label}
+              className="overflow-hidden rounded-xl border border-slate-200"
             >
-              {item.label}
-            </Link>
-          ))}
+              <button
+                type="button"
+                aria-expanded={expanded}
+                onClick={() =>
+                  setExpandedGroup(expanded ? "" : group.label)
+                }
+                className={[
+                  "flex w-full items-center justify-between gap-3 px-3 py-3 text-left text-sm font-semibold transition",
+                  groupHasActiveItem
+                    ? "bg-violet-50 text-[#39358c]"
+                    : "bg-white text-slate-700 hover:bg-slate-50",
+                ].join(" ")}
+              >
+                <span>{group.label}</span>
+
+                <span className="flex items-center gap-2">
+                  {groupHasActiveItem && (
+                    <span className="size-2 rounded-full bg-[#39358c]" />
+                  )}
+
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    className={[
+                      "size-4 transition-transform",
+                      expanded ? "rotate-180" : "",
+                    ].join(" ")}
+                  >
+                    <path
+                      d="m5 7.5 5 5 5-5"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+
+              {expanded && (
+                <div className="space-y-1 border-t border-slate-200 p-2">
+                  {group.items.map((item) => {
+                    const active = isBusinessNavigationActive(
+                      pathname,
+                      item.href,
+                    );
+
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        aria-current={active ? "page" : undefined}
+                        className={[
+                          "block rounded-lg px-3 py-2.5 text-sm font-medium transition",
+                          active
+                            ? "bg-[#39358c] text-white"
+                            : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+                        ].join(" ")}
+                      >
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+          );
+        })}
       </nav>
     </div>
   );

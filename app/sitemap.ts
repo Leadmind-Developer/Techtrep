@@ -20,6 +20,7 @@ const routes = [
   "/solutions/custom-technology",
   "/solutions/networking-infrastructure",
   "/solutions/managed-technology",
+  "/solutions/broadcast-operations",
 
   // Industries
   "/industries",

@@ -268,6 +268,38 @@ export default function MediaEntertainmentPage() {
         </div>
       </section>
 
+      {/* Dedicated Broadcast Solutions CTA */}
+<section className="border-y border-slate-200 bg-slate-50">
+  <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+    <div className="rounded-3xl border border-slate-200 bg-white p-8 sm:p-10">
+      <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#39358C]">
+            For radio &amp; television broadcasters
+          </p>
+
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+            Connect your broadcast, commercial and business operations.
+          </h2>
+
+          <p className="mt-5 text-base leading-7 text-slate-600">
+            Explore solutions for playout automation, off-air logging,
+            compliance, traffic management, CRM, billing and audit—
+            with integration and automation across your operation.
+          </p>
+        </div>
+
+        <Link
+          href="/solutions/broadcast-operations"
+          className="inline-flex items-center justify-center rounded-lg bg-[#39358C] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#2f2b76]"
+        >
+          Explore Broadcast Solutions →
+        </Link>
+      </div>
+    </div>
+  </div>
+</section>
+
       {/* Opportunities */}
       <section className="bg-white">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
